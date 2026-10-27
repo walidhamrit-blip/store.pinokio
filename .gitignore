@@ -1,0 +1,8 @@
+app/node_modules
+app/dist
+app/.wrangler
+app/.installed
+app/.dev.vars
+app/.dev.vars.*
+!.dev.vars.example
+*.log

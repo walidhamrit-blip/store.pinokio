@@ -1,0 +1,5 @@
+{
+  "title": "Store",
+  "description": "Editorial storefront for a small catalogue: hero and new arrivals, a shop page with filters and sorting, product pages, a slide-out bag that persists in the browser, and a demo checkout backed by a small Hono Worker API.",
+  "icon": "icon.jpg"
+}
