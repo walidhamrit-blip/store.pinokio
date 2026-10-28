@@ -61,10 +61,100 @@ port it actually chose, so you never have to configure one.
   rebuilds a clean environment.
 
 Everything visible in the store is data, not code: the catalogue lives in
-`app/src/data/products.ts`, its French and Arabic copy in
-`app/src/data/i18n.ts`, the interface strings in `app/src/app/i18n/dict.ts`,
-images in `app/public/images`, and the colours, type and all six themes in
-`app/src/styles.css`.
+Cloudflare D1 and is edited from `/admin` (the starter catalogue is bundled in
+`app/src/data/seed.json`), the interface strings in
+`app/src/app/i18n/dict.ts`, images in `app/public/images`, and the colours, type
+and all six themes in `app/src/styles.css`.
+
+## Demo shop with a dashboard — $0
+
+The shop is a demo: no payment provider, no storage bills. Everything the owner
+needs to change lives in **Cloudflare D1**, which is free at this scale, and the
+dashboard is a page of the same Worker.
+
+| Piece | Service | Free plan |
+|---|---|---|
+| Storefront + API + dashboard | Cloudflare Workers | 100k requests/day |
+| Articles, orders, newsletter | Cloudflare D1 (SQLite) | 5 GB, 5M rows read/day, 100k written/day |
+| Fonts, images, CSS, JS | Workers static assets | included |
+| Dashboard login | one Worker secret | free |
+
+Limits are per day and reset at 00:00 UTC; past them queries stop until the
+reset. For a showcase catalogue that is far away — 100k writes/day is thousands
+of orders. No credit card, no add-on.
+
+### The dashboard (`/admin`)
+
+Open `https://<your-worker>/admin` (or `http://localhost:5173/admin` in dev).
+
+- **Articles** — create, edit, duplicate, delete, hide (draft), reorder, mark as
+  bestseller, set price/compare-at price, badge, image, and the option list
+  (glaze, colour, scent…). Every article has one tab per language: **Arabic,
+  French, English**. Arabic is the one customers see first; English is the
+  fallback if a translation is missing, and it mirrors the filled language so a
+  card is never blank.
+- **Orders** — the demo checkout now really stores orders (reference, e-mail,
+  lines, total) instead of generating a reference and forgetting it.
+- **Setup** — where the data lives and the reminder for the password command.
+
+Changes are live immediately: the storefront reads `GET /api/products` on load,
+and falls back to the catalogue bundled in the app if the API is unreachable.
+The bag, language, theme and light/dark mode keep working offline.
+
+### Three commands to switch it on
+
+```sh
+cd app
+npx wrangler d1 create store        # prints the database_id
+npx wrangler secret put ADMIN_PASSWORD
+npm run deploy
+```
+
+`npx wrangler d1 create store` prints a `database_id`. **Paste it into
+`app/wrangler.jsonc`**, replacing the `00000000-…` placeholder. Without a CLI:
+
+1. Cloudflare → **Storage & Databases → D1 → Create** → name it `store`.
+2. Copy the **Database ID**.
+3. On GitHub, open `app/wrangler.jsonc` on `main` → pencil → replace the
+   placeholder with that ID → *Commit changes*.
+
+Keeping the ID in `wrangler.jsonc` matters when Cloudflare builds from Git: the
+file is the source of truth for the deploy, so a binding added only in the
+dashboard would be overwritten on the next push.
+
+There are **no migrations to run**: the Worker creates its tables on the first
+request and seeds them with the starter catalogue.
+
+### Local development
+
+```sh
+cd app
+cp .dev.vars.example .dev.vars   # local dashboard password
+npm run dev                      # http://localhost:5173
+```
+
+Dev uses a local SQLite file in `app/.wrangler`, seeded automatically, so you can
+edit articles without touching production data.
+
+### Backups, and what it costs if the demo grows
+
+```sh
+npx wrangler d1 export store --remote --output backup.sql   # full dump
+npm run db:studio                                           # list the articles
+```
+
+D1 has Time Travel (30 days of point-in-time recovery). If the shop ever needs
+more than 10 GB per database, heavy analytics, or Postgres features (JSONB,
+extensions), keep this code and move the data to Neon/Supabase behind
+**Hyperdrive** — it is free on Workers Paid and works with the same SQL.
+
+### Images
+
+The demo ships its photos in `app/public/images`. A dashboard article can point
+at any `https://` URL (the *Image path or URL* field), which is the simplest way
+for the owner to add new photos without a redeploy. Uploading files from the
+dashboard would need **R2** (also free within 10 GB, no egress fees) — a small
+addition if you want it.
 
 ## Deploy to Cloudflare
 
@@ -133,9 +223,29 @@ both halves in one deployment and is what `deploy.js` uses.
 
 ## API
 
-The Worker behind the storefront exposes three routes. The base URL is the one
-the launcher captured when it started the server (`http://127.0.0.1:5173`
-unless that port was busy) — it is the same URL the **Open Web UI** button uses.
+The Worker behind the storefront exposes the shop routes and the dashboard
+routes. The base URL is the one the launcher captured when it started the
+server (`http://127.0.0.1:5173` unless that port was busy) — it is the same URL
+the **Open Web UI** button uses.
+
+| Route | Auth | What it does |
+|---|---|---|
+| `GET /api/health` | – | Liveness, plus whether D1 and the dashboard are configured |
+| `GET /api/products` | – | Published articles, ordered; falls back to the bundled seed |
+| `POST /api/orders` | – | Validates and stores an order in D1 |
+| `POST /api/newsletter` | – | Stores a subscriber |
+| `GET /api/admin/session` | – | `{ authenticated, configured }` |
+| `POST /api/admin/login` / `logout` | – | Sets or clears the HMAC-signed cookie |
+| `GET /api/admin/products` | cookie | Every article, drafts included |
+| `POST /api/admin/products` | cookie | Creates an article |
+| `PUT /api/admin/products/:slug` | cookie | Updates it (slug changes allowed) |
+| `DELETE /api/admin/products/:slug` | cookie | Deletes it |
+| `GET /api/admin/orders` | cookie | The 100 latest orders with their lines |
+| `POST /api/admin/restore` | cookie | Replaces everything with the starter catalogue |
+
+Auth is a password (`ADMIN_PASSWORD`) exchanged for an HttpOnly, SameSite=Strict
+cookie holding an HMAC-SHA256 signature with a 7-day expiry. Nothing secret is
+ever sent back to the browser.
 
 ### `GET /api/health`
 
@@ -158,11 +268,12 @@ print(requests.get("http://127.0.0.1:5173/api/health").json())  # {'ok': True}
 
 ### `POST /api/orders`
 
-Places a demo order. Body: `{ "email": string, "items": [{ "id": string, "quantity": number }] }`.
+Places a demo order. Body:
+`{ "email": string, "items": [{ "id": string, "option"?: string, "quantity": number }], "subtotal"?: number, "shipping"?: number }`.
 Returns `{ "reference": "YS-XXXXXX" }` on success, or `400` with
-`{ "error": string }` when the email is invalid or the bag is empty. The
-checkout is a demo: swap the handler in `app/src/worker/index.ts` for a Stripe
-Checkout session or persist orders to D1.
+`{ "error": string }` when the email is invalid or the bag is empty. Orders are
+stored in D1 and appear in the dashboard; no payment is taken. Swap the handler
+for a Stripe Checkout session when you want real money.
 
 ```sh
 curl -X POST http://127.0.0.1:5173/api/orders \
@@ -223,7 +334,7 @@ print(res.json())  # {'ok': True}
 
 ```
 store/
-├── app/            # The storefront (React + Vite + Hono Worker)
+├── app/            # The storefront (React + Vite + Hono Worker + D1 dashboard)
 ├── icon.jpg        # Launcher icon
 ├── deploy.js       # Builds and deploys the Worker to Cloudflare
 ├── install.js      # npm install inside app/

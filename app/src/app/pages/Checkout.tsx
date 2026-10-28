@@ -3,7 +3,8 @@ import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router'
 
 import { FREE_SHIPPING_AT } from '../../data/products'
-import { countryLabels, localizeProduct, optionLabel } from '../../data/i18n'
+import { countryLabels, optionLabel } from '../../data/i18n'
+import { localized } from '../../data/products'
 import { Button, ButtonLink, Container, inputClass } from '../components/ui'
 import { money, useCart } from '../lib/cart'
 import { usePrefs } from '../lib/prefs'
@@ -122,7 +123,7 @@ export function Checkout() {
             <h2 className="text-[16px] font-medium">{t('checkout.summary')}</h2>
             <ul className="mt-4 divide-y divide-line">
               {cart.items.map((item) => {
-                const copy = localizeProduct(item.product, lang)
+                const copy = localized(item.product, lang)
                 return (
                   <li key={`${item.slug}-${item.option ?? ''}`} className="flex items-center gap-4 py-3">
                     <span className="image-frame relative size-16 shrink-0 rounded-[14px]">

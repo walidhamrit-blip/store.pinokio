@@ -1,13 +1,15 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useEffect } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router'
 
 import { CartDrawer } from './components/CartDrawer'
 import { Footer } from './components/Footer'
 import { Nav } from './components/Nav'
 import { CartProvider } from './lib/cart'
+import { CatalogProvider } from './lib/catalog'
 import { PrefsProvider } from './lib/prefs'
 import { About } from './pages/About'
+import { Admin } from './pages/Admin'
 import { Checkout, OrderConfirmed } from './pages/Checkout'
 import { Home } from './pages/Home'
 import { Product } from './pages/Product'
@@ -19,6 +21,20 @@ function ScrollToTop() {
     window.scrollTo({ top: 0 })
   }, [pathname])
   return null
+}
+
+/** The dashboard is its own surface: no shop nav, no footer, no bag drawer. */
+function SiteChrome({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
+  if (pathname.startsWith('/admin')) return <>{children}</>
+  return (
+    <>
+      <Nav />
+      {children}
+      <Footer />
+      <CartDrawer />
+    </>
+  )
 }
 
 function Pages() {
@@ -40,6 +56,7 @@ function Pages() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="order/:reference" element={<OrderConfirmed />} />
           <Route path="about" element={<About />} />
+          <Route path="admin" element={<Admin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </motion.main>
@@ -51,13 +68,14 @@ export function App() {
   return (
     <PrefsProvider>
       <BrowserRouter>
-        <CartProvider>
-          <ScrollToTop />
-          <Nav />
-          <Pages />
-          <Footer />
-          <CartDrawer />
-        </CartProvider>
+        <CatalogProvider>
+          <CartProvider>
+            <ScrollToTop />
+            <SiteChrome>
+              <Pages />
+            </SiteChrome>
+          </CartProvider>
+        </CatalogProvider>
       </BrowserRouter>
     </PrefsProvider>
   )
