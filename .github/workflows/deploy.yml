@@ -7,8 +7,7 @@ name: Deploy
 #   Secrets   CLOUDFLARE_API_TOKEN   token with Workers Scripts:Edit + D1:Edit
 #
 # Optional, auto-detected when absent:
-#   Secrets   CLOUDFLARE_ACCOUNT_ID  only needed when the token can see more
-#                                    than one account
+#   (the account id is committed in app/wrangler.jsonc, it is not a secret)
 #             ADMIN_PASSWORD         only needed to *change* the dashboard
 #                                    password; the one already on the Worker
 #                                    is kept by every deploy
@@ -44,7 +43,6 @@ jobs:
         working-directory: app
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
       STORE_URL: ${{ vars.STORE_URL }}
     steps:
@@ -75,24 +73,46 @@ jobs:
             echo "::error::CLOUDFLARE_API_TOKEN is not set — Settings → Secrets and variables → Actions → New repository secret."
             exit 1
           fi
-          # Everything below is optional: wrangler finds the single account on
-          # its own, and a deploy never removes a secret already on the Worker.
-          [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ] || echo "No CLOUDFLARE_ACCOUNT_ID — letting wrangler detect the account."
+          # Everything below is optional: the account id lives in
+          # app/wrangler.jsonc, and a deploy never removes a secret already on
+          # the Worker.
           [ -n "${ADMIN_PASSWORD:-}" ] || echo "No ADMIN_PASSWORD — the password already stored on the Worker is kept."
-          echo "Credentials present."
-
-      - name: Push the dashboard password
-        if: env.ADMIN_PASSWORD != ''
-        run: printf '%s' "$ADMIN_PASSWORD" | npx wrangler secret put ADMIN_PASSWORD
+          echo "Credentials present. Account: $(grep -o 'account_id\": \"[a-f0-9]*' wrangler.jsonc | cut -d'"' -f3)"
 
       - name: Deploy
         id: deploy
         run: |
           set -euo pipefail
+          set +e
           npx wrangler deploy 2>&1 | tee /tmp/deploy.log
+          code=${PIPESTATUS[0]}
+          set -e
+          if [ "$code" -ne 0 ]; then
+            # Annotations are the part of the log that stays readable in the
+            # Actions UI and through the API.
+            tail -n 12 /tmp/deploy.log | sed 's/^/::error::wrangler: /'
+            exit "$code"
+          fi
           url=$(grep -Eo 'https://[A-Za-z0-9.-]+\.workers\.dev' /tmp/deploy.log | tail -n 1 || true)
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Deployed: ${url:-unknown}"
+
+      # After the deploy, so that a password problem can never stop the shop
+      # from being published. The Worker keeps its previous secret on failure.
+      - name: Push the dashboard password
+        if: env.ADMIN_PASSWORD != ''
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          set +e
+          printf '%s' "$ADMIN_PASSWORD" | npx wrangler secret put ADMIN_PASSWORD 2>&1 | tee /tmp/secret.log
+          code=${PIPESTATUS[1]}
+          set -e
+          if [ "$code" -ne 0 ]; then
+            tail -n 8 /tmp/secret.log | sed 's/^/::error::secret put: /'
+            exit "$code"
+          fi
+          echo "ADMIN_PASSWORD updated on the Worker."
 
       - name: Smoke test
         env:
