@@ -1,10 +1,11 @@
 name: Clean credentials
 description: >
-  Trim stray whitespace and line breaks from the Cloudflare credentials. A
-  token pasted from a clipboard often carries a trailing newline, and wrangler
-  then fails with the unhelpful `Headers.set: "***" is an invalid header
-  value`. Doing this once, here, keeps every workflow usable with a paste that
-  is not perfectly clean.
+  Recover from a badly pasted Cloudflare credential. A token copied from the
+  dashboard often arrives with a trailing newline, a surrounding line of text,
+  or an `export CLOUDFLARE_API_TOKEN=…` prefix, and wrangler then fails with the
+  unhelpful `Headers.set: "***" is an invalid header value`. This action trims
+  the value, extracts the 40-character token when it is embedded in something
+  longer, and reports precisely what is wrong when it cannot.
 
 runs:
   using: composite
@@ -13,18 +14,53 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        token=$(printf '%s' "${CLOUDFLARE_API_TOKEN:-}" | tr -d '\r\n\t ')
-        echo "::add-mask::$token"
-        if [ -z "$token" ]; then
+
+        raw=$(printf '%s' "${CLOUDFLARE_API_TOKEN:-}")
+        # Mask every line: GitHub masks literal strings, not whole blocks, and a
+        # multi-line paste must not leave its second line in the log.
+        while IFS= read -r line; do
+          [ -n "$line" ] && echo "::add-mask::$line"
+        done <<< "$raw"
+
+        if [ -z "$(printf '%s' "$raw" | tr -d '[:space:]')" ]; then
           echo "::error::CLOUDFLARE_API_TOKEN is empty — Settings → Secrets and variables → Actions → New repository secret."
           exit 1
         fi
-        bad=$(printf '%s' "$token" | tr -d 'A-Za-z0-9_-' | head -c 20)
-        if [ -n "$bad" ]; then
-          echo "::error::CLOUDFLARE_API_TOKEN contains characters that are not part of a Cloudflare token (length ${#token}). Create a fresh token and paste it as a single line, without quotes."
+
+        # A Cloudflare API token is exactly 40 characters of [A-Za-z0-9_-].
+        # Anything else means the paste carried something extra: a newline, a
+        # whole `export …=` line, a JSON snippet, a label, a second value.
+        # Split the pasted text into maximal word-like runs and keep the ones
+        # whose length is exactly 40 — one and only one, or we refuse to guess.
+        runs=()
+        while IFS= read -r run; do
+          [ "${#run}" -eq 40 ] && runs+=("$run")
+        done < <(printf '%s' "$raw" | grep -oE '[A-Za-z0-9_-]+' || true)
+
+        unique=()
+        for candidate in "${runs[@]+"${runs[@]}"}"; do
+          duplicate=0
+          for seen in "${unique[@]+"${unique[@]}"}"; do
+            [ "$seen" = "$candidate" ] && duplicate=1
+          done
+          [ "$duplicate" -eq 0 ] && unique+=("$candidate")
+        done
+
+        count=${#unique[@]}
+        bad=$(printf '%s' "$raw" | tr -d 'A-Za-z0-9_-' | head -c 40 | fold -w1 | LC_ALL=C sort -u | tr -d '[:space:]')
+
+        if [ "$count" -eq 1 ]; then
+          token="${unique[0]}"
+          echo "::add-mask::$token"
+          if [ "$raw" != "$token" ]; then
+            echo "::warning::The stored secret is not a bare token (${#raw} characters${bad:+, unexpected [${bad}]}). Extracted the single 40-character API token from it — no action needed, but the secret is worth cleaning up."
+          fi
+        else
+          echo "::error::CLOUDFLARE_API_TOKEN is not a Cloudflare API token: ${#raw} characters, ${count} token-shaped candidates${bad:+, unexpected characters [${bad}]}. Create a token (My Profile → API Tokens → Create Token → Custom token) and paste only its value, without quotes or line breaks."
           exit 1
         fi
-        echo "::notice::CLOUDFLARE_API_TOKEN looks valid (${#token} characters)."
+
+        echo "::notice::CLOUDFLARE_API_TOKEN accepted (${#token} characters)."
         printf 'CLOUDFLARE_API_TOKEN=%s\n' "$token" >> "$GITHUB_ENV"
 
     - name: Normalise ADMIN_PASSWORD
