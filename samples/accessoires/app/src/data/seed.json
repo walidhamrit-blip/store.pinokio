@@ -1,0 +1,686 @@
+{
+  "freeShippingAt": 250,
+  "categories": [
+    {
+      "key": "bags",
+      "label": "Bags",
+      "image": "/images/tote.jpg",
+      "blurb": "Totes, crossbodies and evening bags"
+    },
+    {
+      "key": "jewelry",
+      "label": "Jewelry",
+      "image": "/images/earrings.jpg",
+      "blurb": "Gold, silver and pearls"
+    },
+    {
+      "key": "accessories",
+      "label": "Accessories",
+      "image": "/images/hair-clips.jpg",
+      "blurb": "Hair, silk and small things"
+    },
+    {
+      "key": "beauty",
+      "label": "Beauty",
+      "image": "/images/perfume.jpg",
+      "blurb": "Scent, care and gifts"
+    }
+  ],
+  "products": [
+    {
+      "slug": "camel-leather-tote",
+      "price": 320,
+      "compareAt": 380,
+      "category": "bags",
+      "image": "/images/tote.jpg",
+      "badge": "Bestseller",
+      "featured": true,
+      "published": true,
+      "sortOrder": 0,
+      "copy": {
+        "en": {
+          "name": "Camel leather tote",
+          "short": "Structured, fits a laptop",
+          "description": "Our everyday bag: a stiff base that stands on its own, a wide opening you can reach into without looking, and handles long enough for the shoulder.",
+          "details": [
+            "Holds a 13-inch laptop",
+            "Inner zip pocket and two slots",
+            "Gold-tone hardware"
+          ],
+          "materials": "Full-grain leather with a matte finish, lined in cotton twill.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Camel",
+              "Black",
+              "Ivory"
+            ]
+          }
+        },
+        "ar": {
+          "name": "حقيبة توت جلدية",
+          "short": "بتصميم ثابت يتّسع للحاسوب",
+          "description": "حقيبتنا اليومية: قاعدة صلبة تقف وحدها، فتحة واسعة تُدخل يدك دون أن تنظر، ومقابض طويلة تكفي للكتف.",
+          "details": [
+            "تتّسع لحاسوب 13 بوصة",
+            "جيب داخلي بسحّاب وجيبان صغيران",
+            "إكسسوارات بلون ذهبي"
+          ],
+          "materials": "جلد طبيعي كامل الحبيبات بلمسة مطفية، وبطانة من القطن.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Camel",
+              "Black",
+              "Ivory"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Cabas en cuir camel",
+          "short": "Structuré, accepte un ordinateur",
+          "description": "Notre sac du quotidien : une base rigide qui tient debout, une ouverture large où la main entre sans regarder, et des anses assez longues pour l’épaule.",
+          "details": [
+            "Contient un ordinateur 13 pouces",
+            "Poche zippée intérieure et deux fentes",
+            "Attaches dorées"
+          ],
+          "materials": "Cuir pleine fleur au fini mat, doublure en twill de coton.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Camel",
+              "Black",
+              "Ivory"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "quilted-crossbody",
+      "price": 210,
+      "compareAt": null,
+      "category": "bags",
+      "image": "/images/crossbody.jpg",
+      "badge": "New",
+      "featured": true,
+      "published": true,
+      "sortOrder": 1,
+      "copy": {
+        "en": {
+          "name": "Quilted crossbody",
+          "short": "Chain strap, matte leather",
+          "description": "Small enough to forget you are wearing it, big enough for a phone, keys, cards and a lipstick. The chain is fixed so it never tangles.",
+          "details": [
+            "Adjustable chain, 55 cm",
+            "Magnetic flap",
+            "Fits a large phone"
+          ],
+          "materials": "Quilted leather with a matte grain and gold-tone chain.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Black",
+              "Tan"
+            ]
+          }
+        },
+        "ar": {
+          "name": "حقيبة كتف مبطنة",
+          "short": "سلسلة وجلد مطفي",
+          "description": "صغيرة بما يكفي لتنسي أنك تحملينها، وواسعة بما يكفي للهاتف والمفاتيح والبطاقات وأحمر الشفاه. السلسلة ثابتة فلا تتشابك.",
+          "details": [
+            "سلسلة قابلة للتعديل، 55 سم",
+            "إغلاق مغناطيسي",
+            "تتّسع لهاتف كبير"
+          ],
+          "materials": "جلد مبطّن بحبيبات مطفية وسلسلة بلون ذهبي.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Black",
+              "Tan"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Sac bandoulière matelassé",
+          "short": "Chaîne, cuir mat",
+          "description": "Assez petit pour oublier qu’on le porte, assez grand pour un téléphone, des clés, des cartes et un rouge à lèvres. La chaîne est fixe, elle ne s’emmêle pas.",
+          "details": [
+            "Chaîne réglable, 55 cm",
+            "Rabat magnétique",
+            "Contient un grand téléphone"
+          ],
+          "materials": "Cuir matelassé au grain mat, chaîne dorée.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Black",
+              "Tan"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "ivory-chain-bag",
+      "price": 185,
+      "compareAt": null,
+      "category": "bags",
+      "image": "/images/chain-bag.jpg",
+      "badge": null,
+      "featured": false,
+      "published": true,
+      "sortOrder": 2,
+      "copy": {
+        "en": {
+          "name": "Ivory chain bag",
+          "short": "For evenings and weddings",
+          "description": "A soft little bag on a chunky chain, in a warm off-white that flatters every colour. Wear it short on the shoulder or long across the body.",
+          "details": [
+            "Two chain lengths",
+            "Card slot inside",
+            "Soft cotton dust bag included"
+          ],
+          "materials": "Smooth leather in warm ivory with a gold-tone chain.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Gold"
+            ]
+          }
+        },
+        "ar": {
+          "name": "حقيبة سلسلة عاجية",
+          "short": "للمناسبات والأعراس",
+          "description": "حقيبة صغيرة ناعمة على سلسلة عريضة، بلون عاجي دافئ يناسب كل الألوان. البسيها قصيرة على الكتف أو طويلة عبر الجسم.",
+          "details": [
+            "طولان للسلسلة",
+            "جيب للبطاقات في الداخل",
+            "مع كيس قماشي لحفظها"
+          ],
+          "materials": "جلد ناعم بلون عاجي دافئ وسلسلة بلون ذهبي.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Gold"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Sac chaîne ivoire",
+          "short": "Pour les soirées et les mariages",
+          "description": "Un petit sac souple sur grosse chaîne, dans un blanc cassé chaud qui va avec toutes les couleurs. Court à l’épaule ou long en bandoulière.",
+          "details": [
+            "Deux longueurs de chaîne",
+            "Emplacement à cartes",
+            "Pochette en coton incluse"
+          ],
+          "materials": "Cuir lisse ivoire chaud et chaîne dorée.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Gold"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "gold-earring-trio",
+      "price": 65,
+      "compareAt": 80,
+      "category": "jewelry",
+      "image": "/images/earrings.jpg",
+      "badge": "Bestseller",
+      "featured": true,
+      "published": true,
+      "sortOrder": 3,
+      "copy": {
+        "en": {
+          "name": "Earring trio",
+          "short": "Hoops, studs and drops",
+          "description": "Three pairs that work together or alone: a small hoop, a flat stud and a fine drop. Gold-plated brass, light enough to forget by lunch.",
+          "details": [
+            "Three pairs in one box",
+            "Gold-plated brass",
+            "Hypoallergenic steel posts"
+          ],
+          "materials": "Gold-plated brass, 18 mm hoop, with stainless steel posts.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
+        },
+        "ar": {
+          "name": "طقم أقراط ثلاثي",
+          "short": "حلقة وقطعة مسطحة ومعلّقة",
+          "description": "ثلاثة أزواج تُلبس معًا أو كل واحدة وحدها: حلقة صغيرة، وقطعة مسطحة، وأخرى معلّقة. نحاس مطلي بالذهب، خفيف حتى تنسيه.",
+          "details": [
+            "ثلاثة أزواج في علبة واحدة",
+            "نحاس مطلي بالذهب",
+            "أعمدة من الستانلس المناسب للبشرة الحساسة"
+          ],
+          "materials": "نحاس مطلي بالذهب، حلقة 18 مم، وأعمدة ستانلس.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Trio de boucles d’oreilles",
+          "short": "Créoles, puces et pendantes",
+          "description": "Trois paires qui se portent ensemble ou séparément : une petite créole, une puce plate et une pendante fine. Laiton doré, assez léger pour oublier qu’on les porte.",
+          "details": [
+            "Trois paires dans un écrin",
+            "Laiton plaqué or",
+            "Tiges en acier inoxydable"
+          ],
+          "materials": "Laiton plaqué or, créole de 18 mm, tiges en acier inoxydable.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "pearl-layer-necklace",
+      "price": 95,
+      "compareAt": null,
+      "category": "jewelry",
+      "image": "/images/necklace.jpg",
+      "badge": null,
+      "featured": true,
+      "published": true,
+      "sortOrder": 4,
+      "copy": {
+        "en": {
+          "name": "Layered pearl necklace",
+          "short": "Two chains, one clasp",
+          "description": "Both chains are joined at the clasp, so the layering stays exactly as it looked in the mirror. The pearl sits just below the collarbone.",
+          "details": [
+            "38 and 45 cm chains",
+            "Freshwater pearl",
+            "Extender for 3 more cm"
+          ],
+          "materials": "Gold-plated brass chains with a single freshwater pearl.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
+        },
+        "ar": {
+          "name": "عقد طبقات باللؤلؤ",
+          "short": "سلسلتان بمشبك واحد",
+          "description": "السلسلتان موصولتان عند المشبك، فيبقى الترتيب كما رأيته في المرآة. تجلس اللؤلؤة أسفل عظمة الترقوة بقليل.",
+          "details": [
+            "سلسلتان بطول 38 و45 سم",
+            "لؤلؤ طبيعي",
+            "وصلة إضافية 3 سم"
+          ],
+          "materials": "سلاسل نحاس مطلي بالذهب مع لؤلؤة طبيعية واحدة.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Collier de perles superposé",
+          "short": "Deux chaînes, un fermoir",
+          "description": "Les deux chaînes sont réunies au fermoir : la superposition reste exactement comme dans le miroir. La perle tombe juste sous la clavicule.",
+          "details": [
+            "Chaînes de 38 et 45 cm",
+            "Perle d’eau douce",
+            "Rallonge de 3 cm"
+          ],
+          "materials": "Chaînes en laiton plaqué or et une perle d’eau douce.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "steel-cuff",
+      "price": 120,
+      "compareAt": null,
+      "category": "jewelry",
+      "image": "/images/bracelet.jpg",
+      "badge": "Low stock",
+      "featured": false,
+      "published": true,
+      "sortOrder": 5,
+      "copy": {
+        "en": {
+          "name": "Brushed steel cuff",
+          "short": "Wear it every day",
+          "description": "An open cuff with a brushed face and polished edges: it slips on, stays put, and does not mind water. The kind of piece you stop taking off.",
+          "details": [
+            "Open cuff, one size",
+            "Water resistant",
+            "Does not tarnish"
+          ],
+          "materials": "316L stainless steel, brushed and polished by hand.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Steel",
+              "Gold"
+            ]
+          }
+        },
+        "ar": {
+          "name": "إسوارة ستانلس مصقولة",
+          "short": "تُلبس كل يوم",
+          "description": "إسوارة مفتوحة بوجه مطفي وحواف مصقولة: تُلبس بسهولة، تثبت في مكانها، ولا تتأثر بالماء. من القطع التي تتوقف عن خلعها.",
+          "details": [
+            "إسوارة مفتوحة، مقاس واحد",
+            "مقاومة للماء",
+            "لا يتغيّر لونها"
+          ],
+          "materials": "ستانلس ستيل 316L، مصقول يدويًا.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Steel",
+              "Gold"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Bracelet manchette en acier",
+          "short": "À porter tous les jours",
+          "description": "Une manchette ouverte, face brossée et bords polis : elle se glisse, reste en place et ne craint pas l’eau. Le genre de pièce qu’on ne retire plus.",
+          "details": [
+            "Manchette ouverte, taille unique",
+            "Résistante à l’eau",
+            "Ne noircit pas"
+          ],
+          "materials": "Acier inoxydable 316L, brossé et poli à la main.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Steel",
+              "Gold"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "pearl-hair-clips",
+      "price": 38,
+      "compareAt": null,
+      "category": "accessories",
+      "image": "/images/hair-clips.jpg",
+      "badge": "New",
+      "featured": true,
+      "published": true,
+      "sortOrder": 6,
+      "copy": {
+        "en": {
+          "name": "Pearl hair clips",
+          "short": "Set of three",
+          "description": "Three clips that hold a half-up style without pulling, with pearls small enough to look like part of your hair. Good for a wedding, better for a Tuesday.",
+          "details": [
+            "Three clips, three sizes",
+            "Strong spring clasp",
+            "Gift box included"
+          ],
+          "materials": "Gold-plated metal with glass pearls."
+        },
+        "ar": {
+          "name": "مشابك شعر باللؤلؤ",
+          "short": "طقم من ثلاث قطع",
+          "description": "ثلاثة مشابك تثبّت تسريحة نصف مرفوعة دون شدّ، ولؤلؤ صغير يبدو جزءًا من شعرك. مناسبة للعرس، وأجمل في يوم عادي.",
+          "details": [
+            "ثلاثة مشابك بثلاثة أحجام",
+            "مشبك قوي",
+            "تُقدَّم في علبة هدية"
+          ],
+          "materials": "معدن مطلي بالذهب ولؤلؤ زجاجي."
+        },
+        "fr": {
+          "name": "Barrettes en perles",
+          "short": "Lot de trois",
+          "description": "Trois barrettes qui tiennent une demi-queue sans tirer, avec des perles assez petites pour se fondre dans les cheveux. Bien pour un mariage, mieux pour un mardi.",
+          "details": [
+            "Trois barrettes, trois tailles",
+            "Ressort solide",
+            "Écrin offert"
+          ],
+          "materials": "Métal plaqué or et perles de verre."
+        }
+      }
+    },
+    {
+      "slug": "silk-scrunchie-set",
+      "price": 25,
+      "compareAt": null,
+      "category": "accessories",
+      "image": "/images/scrunchies.jpg",
+      "badge": null,
+      "featured": true,
+      "published": true,
+      "sortOrder": 7,
+      "copy": {
+        "en": {
+          "name": "Silk scrunchie set",
+          "short": "Three colours, no creases",
+          "description": "Mulberry silk over a soft elastic, so it holds without leaving a line. Three colours that also work as a bracelet when you take it out.",
+          "details": [
+            "Set of three",
+            "100% mulberry silk",
+            "Hand wash, cold"
+          ],
+          "materials": "19-momme mulberry silk over a covered elastic.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Sage",
+              "Rose"
+            ]
+          }
+        },
+        "ar": {
+          "name": "طقم ربطات شعر حريرية",
+          "short": "ثلاثة ألوان دون آثار",
+          "description": "حرير طبيعي على مطاط ناعم، يثبّت الشعر دون أن يترك أثرًا. ثلاثة ألوان تُلبس أيضًا كإسوارة عند خلعها.",
+          "details": [
+            "طقم من ثلاث قطع",
+            "حرير طبيعي 100%",
+            "يُغسل يدويًا بماء بارد"
+          ],
+          "materials": "حرير طبيعي 19 مومي على مطاط مغلّف.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Sage",
+              "Rose"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Lot de chouchous en soie",
+          "short": "Trois couleurs, sans marque",
+          "description": "Soie de mûrier sur un élastique souple : ça tient sans laisser de pli. Trois teintes qui se portent aussi au poignet une fois retirées.",
+          "details": [
+            "Lot de trois",
+            "100 % soie de mûrier",
+            "Lavage à la main, à froid"
+          ],
+          "materials": "Soie de mûrier 19 momme sur élastique gainé.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Sage",
+              "Rose"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "noor-eau-de-parfum",
+      "price": 145,
+      "compareAt": 170,
+      "category": "beauty",
+      "image": "/images/perfume.jpg",
+      "badge": "Bestseller",
+      "featured": true,
+      "published": true,
+      "sortOrder": 8,
+      "copy": {
+        "en": {
+          "name": "NOOR eau de parfum",
+          "short": "Amber, musk and a little rose",
+          "description": "Our own scent: warm and quiet, closer to clean skin than to perfume. It sits close for the first hour and then opens over the whole day.",
+          "details": [
+            "50 ml",
+            "Eau de parfum, 18% concentration",
+            "Unisex"
+          ],
+          "materials": "Alcohol-based eau de parfum with amber, white musk and rose.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Musk"
+            ]
+          }
+        },
+        "ar": {
+          "name": "عطر نور",
+          "short": "عنبر ومسك ولمسة ورد",
+          "description": "عطرنا الخاص: دافئ وهادئ، أقرب إلى بشرة نظيفة من العطر الثقيل. يبقى قريبًا في الساعة الأولى ثم ينتشر على مدى اليوم.",
+          "details": [
+            "50 مل",
+            "أو دو بارفان بتركيز 18%",
+            "للجنسين"
+          ],
+          "materials": "عطر كحولي بنفحات العنبر والمسك الأبيض والورد.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Musk"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Eau de parfum NOOR",
+          "short": "Ambre, musc et un peu de rose",
+          "description": "Notre parfum : chaud et discret, plus proche d’une peau propre que d’un parfum lourd. Il reste près pendant la première heure, puis s’ouvre sur la journée.",
+          "details": [
+            "50 ml",
+            "Eau de parfum à 18 %",
+            "Mixte"
+          ],
+          "materials": "Eau de parfum alcoolique à l’ambre, musc blanc et rose.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Musk"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "amber-candle",
+      "price": 85,
+      "compareAt": null,
+      "category": "beauty",
+      "image": "/images/candle.jpg",
+      "badge": null,
+      "featured": false,
+      "published": true,
+      "sortOrder": 9,
+      "copy": {
+        "en": {
+          "name": "Amber candle",
+          "short": "40 hours of warm light",
+          "description": "Soy wax in an amber glass jar you will keep for pens afterwards. Light it while you get ready and the room still smells of it hours later.",
+          "details": [
+            "40-hour burn",
+            "Soy wax, cotton wick",
+            "Amber glass with lid"
+          ],
+          "materials": "Soy wax, cotton wick, amber and cedar notes.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Cedar"
+            ]
+          }
+        },
+        "ar": {
+          "name": "شمعة العنبر",
+          "short": "40 ساعة من الضوء الدافئ",
+          "description": "شمع صويا في برطمان زجاجي بلون العنبر ستحتفظين به للأقلام بعد ذلك. أضيئيها وأنتِ تستعدّين، وتبقى رائحة الغرفة ساعات بعدها.",
+          "details": [
+            "احتراق 40 ساعة",
+            "شمع صويا وفتيل قطني",
+            "زجاج عنبري مع غطاء"
+          ],
+          "materials": "شمع صويا وفتيل قطني بنفحات العنبر والأرز.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Cedar"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Bougie à l’ambre",
+          "short": "40 heures de lumière chaude",
+          "description": "Cire de soja dans un pot en verre ambré que vous garderez pour les stylos. Allumez-la pendant que vous vous préparez : la pièce sent encore bon des heures après.",
+          "details": [
+            "40 heures de combustion",
+            "Cire de soja, mèche coton",
+            "Verre ambré avec couvercle"
+          ],
+          "materials": "Cire de soja, mèche coton, notes d’ambre et de cèdre.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Cedar"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

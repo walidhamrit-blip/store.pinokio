@@ -1,0 +1,86 @@
+import { AnimatePresence, motion } from 'motion/react'
+import { useEffect, type ReactNode } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router'
+
+import { CartDrawer } from './components/CartDrawer'
+import { Footer } from './components/Footer'
+import { Nav } from './components/Nav'
+import { WhatsAppButton } from './components/WhatsAppButton'
+import { CartProvider } from './lib/cart'
+import { BASENAME, DEMO } from './lib/demo'
+import { CatalogProvider } from './lib/catalog'
+import { PrefsProvider } from './lib/prefs'
+import { About } from './pages/About'
+import { Admin } from './pages/Admin'
+import { Checkout, OrderConfirmed } from './pages/Checkout'
+import { Home } from './pages/Home'
+import { Product } from './pages/Product'
+import { Shop } from './pages/Shop'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0 })
+  }, [pathname])
+  return null
+}
+
+/** The dashboard is its own surface: no shop nav, no footer, no bag drawer. */
+function SiteChrome({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
+  if (pathname.startsWith('/admin')) return <>{children}</>
+  return (
+    <>
+      <Nav />
+      {children}
+      <Footer />
+      <WhatsAppButton />
+      <CartDrawer />
+    </>
+  )
+}
+
+function Pages() {
+  const location = useLocation()
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.main
+        key={location.pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        className="min-h-[70vh]"
+      >
+        <Routes location={location}>
+          <Route index element={<Home />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="product/:slug" element={<Product />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="order/:reference" element={<OrderConfirmed />} />
+          <Route path="about" element={<About />} />
+          {/* The dashboard needs the Worker API, so the static sample sends it home. */}
+          <Route path="admin" element={DEMO ? <Navigate to="/" replace /> : <Admin />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </motion.main>
+    </AnimatePresence>
+  )
+}
+
+export function App() {
+  return (
+    <PrefsProvider>
+      <BrowserRouter basename={BASENAME || undefined}>
+        <CatalogProvider>
+          <CartProvider>
+            <ScrollToTop />
+            <SiteChrome>
+              <Pages />
+            </SiteChrome>
+          </CartProvider>
+        </CatalogProvider>
+      </BrowserRouter>
+    </PrefsProvider>
+  )
+}

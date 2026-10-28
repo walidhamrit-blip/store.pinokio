@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-lang="ar" data-theme="sand" data-mode="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f1ea" />
+    <meta property="og:title" content="نور NOOR — إكسسوارات | نموذج متجر" />
+    <meta property="og:description" content="نموذج متجر إكسسوارات: حقائب ومجوهرات وهدايا صغيرة، بتصميم عربي أولًا. قالب جاهز لأي متجر إكسسوارات." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/hero.jpg" />
+    <title>نور NOOR — إكسسوارات وحقائب ومجوهرات | نموذج متجر</title>
+    <meta
+      name="description"
+      content="نموذج متجر إكسسوارات (تجريبي): حقائب ومجوهرات وحرير وعطور وهدايا، بالعربية والفرنسية والإنجليزية، بأسعار بالدينار الليبي. NOOR — accessories storefront sample: bags, jewelry, silk, scent and gifts, Arabic-first with full RTL."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Apply the saved language, theme and light/dark mode before the first
+      // paint so the store never flashes the wrong palette or direction.
+      ;(function () {
+        var root = document.documentElement
+        var saved = {}
+        try {
+          saved = JSON.parse(localStorage.getItem('noor-prefs') || '{}') || {}
+        } catch (e) {}
+        var themes = ['sand', 'noir', 'rose', 'olive', 'terra', 'lavender']
+        var lang = saved.lang === 'fr' || saved.lang === 'en' ? saved.lang : 'ar'
+        var theme = themes.indexOf(saved.theme) > -1 ? saved.theme : 'sand'
+        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        var mode = saved.mode === 'dark' || saved.mode === 'light' ? saved.mode : dark ? 'dark' : 'light'
+        root.lang = lang
+        root.dir = lang === 'ar' ? 'rtl' : 'ltr'
+        root.dataset.lang = lang
+        root.dataset.theme = theme
+        root.dataset.mode = mode
+        root.classList.toggle('dark', mode === 'dark')
+        root.style.colorScheme = mode
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

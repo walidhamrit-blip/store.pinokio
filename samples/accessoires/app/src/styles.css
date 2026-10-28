@@ -1,0 +1,336 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/noto-sans-arabic';
+@import '@fontsource-variable/noto-kufi-arabic';
+@import '@fontsource/instrument-serif';
+@import '@fontsource/instrument-serif/400-italic.css';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+
+  /* Default palette: Sand Atelier. Themes below override these same tokens. */
+  --color-bg: #f6f1ea;
+  --color-surface: #fffdf9;
+  --color-surface-2: #efe8de;
+  --color-line: #e5dcd0;
+  --color-line-strong: #d2c7b8;
+  --color-fg: #1c1a17;
+  --color-muted: #6e665c;
+  --color-faint: #9c9389;
+  --color-accent: #b4573b;
+  --color-accent-soft: #f3e2d9;
+  /* Backdrop behind drawers and menus. */
+  --color-scrim: rgb(28 26 23 / 0.32);
+  /* Behind product photography, tuned to the cream of the photos. */
+  --color-frame: #efe9df;
+
+  --radius-control: 14px;
+  --radius-card: 22px;
+  --radius-image: 26px;
+  --radius-dialog: 24px;
+
+  --shadow-soft: 0 1px 2px rgb(28 26 23 / 0.05), 0 12px 40px -16px rgb(28 26 23 / 0.18);
+  --shadow-drawer: 0 0 0 1px rgb(28 26 23 / 0.05), -20px 0 60px -20px rgb(28 26 23 / 0.3);
+
+  --animate-marquee: marquee 36s linear infinite;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Themes
+ *
+ * Every surface in the app reads these tokens, so a theme is just a
+ * palette swap — no component changes, no flash of the wrong colour.
+ * Six directions borrowed from clothing, accessories and beauty:
+ * sand, noir, rose, olive, terracotta, lavender.
+ * ------------------------------------------------------------------ */
+
+:root,
+[data-theme='sand'] {
+  --color-bg: #f6f1ea;
+  --color-surface: #fffdf9;
+  --color-surface-2: #efe8de;
+  --color-line: #e5dcd0;
+  --color-line-strong: #d2c7b8;
+  --color-fg: #1c1a17;
+  --color-muted: #6e665c;
+  --color-faint: #9c9389;
+  --color-accent: #b4573b;
+  --color-accent-soft: #f3e2d9;
+  --color-frame: #efe9df;
+}
+
+[data-theme='noir'] {
+  --color-bg: #ffffff;
+  --color-surface: #fbfbfa;
+  --color-surface-2: #f1f0ee;
+  --color-line: #e4e2de;
+  --color-line-strong: #cbc7c0;
+  --color-fg: #0b0b0b;
+  --color-muted: #6b6862;
+  --color-faint: #9b9791;
+  --color-accent: #a8863f;
+  --color-accent-soft: #f4ecd9;
+  --color-frame: #f2f1ee;
+}
+
+[data-theme='rose'] {
+  --color-bg: #fdf5f4;
+  --color-surface: #fffdfd;
+  --color-surface-2: #f9e9e7;
+  --color-line: #f1dcda;
+  --color-line-strong: #e1c4c0;
+  --color-fg: #2a1a1c;
+  --color-muted: #7d6365;
+  --color-faint: #ab9092;
+  --color-accent: #c25470;
+  --color-accent-soft: #fadfe7;
+  --color-frame: #f8e7e4;
+}
+
+[data-theme='olive'] {
+  --color-bg: #f4f3ea;
+  --color-surface: #fdfcf5;
+  --color-surface-2: #eae8da;
+  --color-line: #dedccb;
+  --color-line-strong: #c6c3ad;
+  --color-fg: #1e2118;
+  --color-muted: #656a55;
+  --color-faint: #969a83;
+  --color-accent: #5f7345;
+  --color-accent-soft: #e3e9d4;
+  --color-frame: #eceade;
+}
+
+[data-theme='terra'] {
+  --color-bg: #fbf0e6;
+  --color-surface: #fffaf5;
+  --color-surface-2: #f7e6d7;
+  --color-line: #efdacb;
+  --color-line-strong: #dcc0aa;
+  --color-fg: #2b1a12;
+  --color-muted: #80604c;
+  --color-faint: #ac8c76;
+  --color-accent: #c25a2e;
+  --color-accent-soft: #fae1d2;
+  --color-frame: #f5e6d8;
+}
+
+[data-theme='lavender'] {
+  --color-bg: #f6f4fb;
+  --color-surface: #fefdff;
+  --color-surface-2: #ede8f7;
+  --color-line: #e2dbf1;
+  --color-line-strong: #ccc2e2;
+  --color-fg: #1f1a2b;
+  --color-muted: #6a6080;
+  --color-faint: #9c92b0;
+  --color-accent: #7658c0;
+  --color-accent-soft: #eae1fb;
+  --color-frame: #efebf8;
+}
+
+/* Dark mode keeps each theme's hue: the neutral ramp inverts and the
+   accent lifts so it still passes contrast on a deep background. */
+html.dark,
+html.dark[data-theme='sand'] {
+  --color-bg: #17140f;
+  --color-surface: #1f1b15;
+  --color-surface-2: #2a251d;
+  --color-line: #332d24;
+  --color-line-strong: #483f34;
+  --color-fg: #f4efe7;
+  --color-muted: #b5aa9b;
+  --color-faint: #8b8275;
+  --color-accent: #e08a68;
+  --color-accent-soft: #3a2620;
+  --color-frame: #241f19;
+}
+
+html.dark[data-theme='noir'] {
+  --color-bg: #0a0a0a;
+  --color-surface: #131313;
+  --color-surface-2: #1d1d1c;
+  --color-line: #272624;
+  --color-line-strong: #3d3b37;
+  --color-fg: #f6f4f0;
+  --color-muted: #a9a59e;
+  --color-faint: #7e7a74;
+  --color-accent: #d8b877;
+  --color-accent-soft: #2b2418;
+  --color-frame: #161615;
+}
+
+html.dark[data-theme='rose'] {
+  --color-bg: #1a1113;
+  --color-surface: #231618;
+  --color-surface-2: #2f1f21;
+  --color-line: #3b272a;
+  --color-line-strong: #533639;
+  --color-fg: #f9eeef;
+  --color-muted: #c6aaad;
+  --color-faint: #98797c;
+  --color-accent: #e78aa2;
+  --color-accent-soft: #3d2029;
+  --color-frame: #251719;
+}
+
+html.dark[data-theme='olive'] {
+  --color-bg: #12150f;
+  --color-surface: #1a1e16;
+  --color-surface-2: #242a20;
+  --color-line: #2f352a;
+  --color-line-strong: #434c3b;
+  --color-fg: #eef0e5;
+  --color-muted: #acb49d;
+  --color-faint: #848c77;
+  --color-accent: #a9bd86;
+  --color-accent-soft: #262f1f;
+  --color-frame: #1b2017;
+}
+
+html.dark[data-theme='terra'] {
+  --color-bg: #1b120c;
+  --color-surface: #241811;
+  --color-surface-2: #312018;
+  --color-line: #3e291e;
+  --color-line-strong: #583a2b;
+  --color-fg: #fbeee4;
+  --color-muted: #caa993;
+  --color-faint: #9e8272;
+  --color-accent: #e8875a;
+  --color-accent-soft: #3f2317;
+  --color-frame: #261a12;
+}
+
+html.dark[data-theme='lavender'] {
+  --color-bg: #131019;
+  --color-surface: #1b1623;
+  --color-surface-2: #261f31;
+  --color-line: #31293e;
+  --color-line-strong: #453b56;
+  --color-fg: #f0ecf9;
+  --color-muted: #b4aac5;
+  --color-faint: #8c829d;
+  --color-accent: #b39cf0;
+  --color-accent-soft: #2b2140;
+  --color-frame: #1d1826;
+}
+
+html.dark {
+  color-scheme: dark;
+  --color-scrim: rgb(0 0 0 / 0.55);
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 48px -18px rgb(0 0 0 / 0.7);
+  --shadow-drawer: 0 0 0 1px rgb(255 255 255 / 0.06), -20px 0 60px -20px rgb(0 0 0 / 0.8);
+}
+
+/* Arabic typography: Noto Kufi for display, Noto Sans Arabic for text.
+   Arabic has no letter-spacing and needs a taller line box. */
+html[lang='ar'] {
+  --font-sans: 'Noto Sans Arabic Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Noto Kufi Arabic Variable', 'Noto Sans Arabic Variable', ui-sans-serif, sans-serif;
+}
+
+html[lang='ar'] body {
+  letter-spacing: 0;
+  line-height: 1.65;
+}
+
+html[lang='ar'] .font-display {
+  line-height: 1.32;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    corner-shape: squircle;
+    border-color: var(--color-line);
+  }
+  .round,
+  .round::before,
+  .round::after {
+    corner-shape: round;
+  }
+  html {
+    background: var(--color-bg);
+    color-scheme: light;
+    overscroll-behavior-y: none;
+    scroll-behavior: smooth;
+    transition: background-color 0.35s ease;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    letter-spacing: -0.008em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-fg) 50%, transparent);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  }
+  img {
+    user-select: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility text-pretty {
+  text-wrap: pretty;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Product imagery sits on a cream that matches the photos, so the frame
+   disappears and the object floats. Themes tint it to match their canvas. */
+@utility image-frame {
+  background: var(--color-frame);
+  overflow: hidden;
+}

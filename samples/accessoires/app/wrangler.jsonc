@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "store",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-09-29",
+  "assets": {
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true
+  },
+  // The catalogue and the orders live here. Free plan: 5 GB, 10 databases.
+  // Create it once — Dashboard → Storage & Databases → D1 → Create (name:
+  // store), then paste the id below, or run:
+  //   npx wrangler d1 create store
+  // The placeholder keeps local `npm run dev` working without a database:
+  // dev uses a local SQLite file, prod needs the real id.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "store",
+      "database_id": "ef272e27-db8d-4a23-b62e-51c72e31e54a"
+    }
+  ],
+  // Set the dashboard password with `npx wrangler secret put ADMIN_PASSWORD`
+  "vars": {},
+  "observability": { "enabled": true }
+}

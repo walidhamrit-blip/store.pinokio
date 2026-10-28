@@ -25,6 +25,34 @@ The storefront is a React + Vite single page app served by a small
 inside this launcher under [`app/`](app), so Install only installs its
 dependencies.
 
+## Samples you can send — `/samples`
+
+Next to the shop itself, this repository publishes **standalone samples**: a
+clickable storefront per specialty, for showing a client what their shop could
+look like. They are static builds — bundled catalogue, checkout confirmed in the
+browser, no server, no database, no cost.
+
+| Sample | Link | Specialty |
+|---|---|---|
+| NOOR — نور | https://walidhamrit-blip.github.io/store.pinokio/accessoires/ | Bags, jewelry, hair, scent and gifts |
+
+The index of all samples is https://walidhamrit-blip.github.io/store.pinokio/.
+They are rebuilt by [`.github/workflows/samples-pages.yml`](.github/workflows/samples-pages.yml)
+on every push, from [`samples/`](samples).
+
+- [`samples/accessoires/`](samples/accessoires) is a complete, independent copy
+  of the storefront under a fictional brand (NOOR). Its README explains how to
+  rebrand it for a client.
+- To add another specialty, copy `samples/accessoires` to `samples/<slug>`,
+  change its `src/data/seed.json`, `src/data/shop.ts` and the brand keys in
+  `src/app/i18n/dict.ts`, then add one copy step to the workflow.
+- To give a sample its own clean URL (`https://<account>.github.io/accessoires/`),
+  push that folder to a repository of its own — GitHub only serves one Pages
+  site per repository, so inside this one the samples live under a sub-path.
+
+The shop in [`app/`](app) is untouched by the samples: it keeps the dashboard,
+the D1 catalogue and real orders.
+
 ## Install with one click
 
 Pinokio handles `pinokio://` links, so this one downloads the launcher straight
@@ -342,6 +370,7 @@ print(res.json())  # {'ok': True}
 ```
 store/
 ├── app/            # The DAOS storefront (React + Vite + Hono Worker + D1 dashboard)
+├── samples/        # Static, brandless samples published on GitHub Pages
 ├── icon.jpg        # Launcher icon
 ├── deploy.js       # Builds and deploys the Worker to Cloudflare
 ├── install.js      # npm install inside app/

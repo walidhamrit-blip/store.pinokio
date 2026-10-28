@@ -1,0 +1,87 @@
+name: Publish the samples to GitHub Pages
+
+# The accessories sample is a static build of the storefront: bundled
+# catalogue, checkout confirmed in the browser, no /admin, no server.
+#
+#   https://<owner>.github.io/<repo>/            the sample index
+#   https://<owner>.github.io/<repo>/accessoires/  the accessories sample
+#
+# Add another specialty by copying samples/accessoires to samples/<slug>,
+# then adding one step copy below — nothing else in the site changes.
+on:
+  push:
+    branches:
+      - main
+      - arena/bb8a518e-store-pinokio
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: samples/accessoires/app/package-lock.json
+
+      - name: Install the sample
+        working-directory: samples/accessoires/app
+        run: npm ci || npm install
+
+      - name: Build the accessories sample
+        working-directory: samples/accessoires/app
+        env:
+          VITE_DEMO: '1'
+          SITE_BASE: /${{ github.event.repository.name }}/accessoires/
+        # `vite build` only: the sample needs no Worker bundle, no postbuild.
+        run: npx vite build
+
+      - name: Assemble the site
+        env:
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          set -e
+          mkdir -p site
+          cp samples/index.html site/index.html
+          cp -r samples/accessoires/app/dist/client site/accessoires
+          touch site/.nojekyll
+          # GitHub Pages serves 404.html for unknown paths (one per site), so a
+          # shared deep link lands on the sample's home page instead of erroring.
+          cat > site/404.html <<HTML
+          <!doctype html>
+          <meta charset="utf-8" />
+          <title>Échantillons</title>
+          <script>
+            var path = location.pathname;
+            var base = '/${REPO}/';
+            var match = path.match(new RegExp('^' + base + '([^/]+)/'));
+            location.replace('/${REPO}/' + (match ? match[1] + '/' : ''));
+          </script>
+          <p><a href="/${REPO}/">Échantillons / نماذج</a></p>
+          HTML
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
