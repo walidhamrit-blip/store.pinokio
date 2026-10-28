@@ -207,9 +207,23 @@ That is the whole setup. Everything else is detected or already in place:
 5. Take the first snapshot immediately instead of waiting for 03:17 UTC:
    *Actions → Backup D1 → Run workflow*. The dump lands in `backups/`.
 
-Nothing else is manual: the D1 binding lives in `app/wrangler.jsonc` (committed,
-non-secret), the password lives in GitHub secrets and is re-pushed on every
-deploy, and the database is snapshotted every night into `backups/`.
+Nothing else is manual: the D1 binding and the account id live in
+`app/wrangler.jsonc` (committed, non-secret), the password already stored on the
+Worker stays in place, and the database is snapshotted every night into
+`backups/`.
+
+### If a deploy fails
+
+| Message | Cause | Fix |
+|---|---|---|
+| `Headers.set: "***" is an invalid header value` | the token was pasted with a line break | already handled: the workflows trim it; if it persists, create a fresh token and paste it as a single line |
+| `Authentication error` / `403` | the token lacks **Workers Scripts:Edit** or **D1:Edit** | edit the token, or create a new one and update the secret |
+| `database is false` in the health check | the D1 binding in `app/wrangler.jsonc` does not match the database | copy the `database_id` from *Storage & Databases → D1 → store* |
+| `dashboard is false` | no `ADMIN_PASSWORD` is stored on the Worker | add the secret once, or run `npx wrangler secret put ADMIN_PASSWORD` |
+
+The last lines of every failed `wrangler` call are published as GitHub
+annotations, so the reason is visible on the run page without opening the raw
+log.
 
 ### Where the articles live, then
 

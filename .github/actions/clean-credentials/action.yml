@@ -1,0 +1,41 @@
+name: Clean credentials
+description: >
+  Trim stray whitespace and line breaks from the Cloudflare credentials. A
+  token pasted from a clipboard often carries a trailing newline, and wrangler
+  then fails with the unhelpful `Headers.set: "***" is an invalid header
+  value`. Doing this once, here, keeps every workflow usable with a paste that
+  is not perfectly clean.
+
+runs:
+  using: composite
+  steps:
+    - name: Normalise CLOUDFLARE_API_TOKEN
+      shell: bash
+      run: |
+        set -euo pipefail
+        token=$(printf '%s' "${CLOUDFLARE_API_TOKEN:-}" | tr -d '\r\n\t ')
+        echo "::add-mask::$token"
+        if [ -z "$token" ]; then
+          echo "::error::CLOUDFLARE_API_TOKEN is empty — Settings → Secrets and variables → Actions → New repository secret."
+          exit 1
+        fi
+        bad=$(printf '%s' "$token" | tr -d 'A-Za-z0-9_-' | head -c 20)
+        if [ -n "$bad" ]; then
+          echo "::error::CLOUDFLARE_API_TOKEN contains characters that are not part of a Cloudflare token (length ${#token}). Create a fresh token and paste it as a single line, without quotes."
+          exit 1
+        fi
+        echo "::notice::CLOUDFLARE_API_TOKEN looks valid (${#token} characters)."
+        printf 'CLOUDFLARE_API_TOKEN=%s\n' "$token" >> "$GITHUB_ENV"
+
+    - name: Normalise ADMIN_PASSWORD
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [ -z "${ADMIN_PASSWORD:-}" ]; then
+          echo "No ADMIN_PASSWORD secret — the password already stored on the Worker is kept."
+          exit 0
+        fi
+        # Only line breaks are removed: a password may legitimately contain spaces.
+        password=$(printf '%s' "$ADMIN_PASSWORD" | tr -d '\r\n')
+        echo "::add-mask::$password"
+        printf 'ADMIN_PASSWORD=%s\n' "$password" >> "$GITHUB_ENV"

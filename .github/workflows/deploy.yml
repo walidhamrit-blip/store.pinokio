@@ -48,6 +48,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: ./.github/actions/clean-credentials
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
