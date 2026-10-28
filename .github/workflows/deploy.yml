@@ -99,6 +99,23 @@ jobs:
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Deployed: ${url:-unknown}"
 
+      # The nightly backup needs D1 access. Prove it here, where a failure is
+      # cheap and visible, instead of discovering it at 03:17 UTC.
+      - name: Check the token can reach D1
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          set +e
+          npx wrangler d1 info store 2>&1 | tee /tmp/d1.log
+          code=${PIPESTATUS[0]}
+          set -e
+          if [ "$code" -ne 0 ]; then
+            tail -n 8 /tmp/d1.log | sed 's/^/::warning::d1: /'
+            echo "::warning::The token cannot query D1, so the nightly backup will fail. Edit the API token and add Account → D1 → Edit."
+            exit 0
+          fi
+          echo "D1 reachable — the nightly backup can export the database."
+
       # After the deploy, so that a password problem can never stop the shop
       # from being published. The Worker keeps its previous secret on failure.
       - name: Push the dashboard password
@@ -138,3 +155,10 @@ jobs:
           echo "$body" | grep -q '"ok":true' || { echo "::error::Worker did not answer /api/health"; exit 1; }
           echo "$body" | grep -q '"database":true' || echo "::warning::database is false — check the D1 binding in app/wrangler.jsonc"
           echo "$body" | grep -q '"dashboard":true' || echo "::warning::dashboard is false — no ADMIN_PASSWORD is stored on the Worker: add the secret (it will be pushed on the next deploy) or set it in the Cloudflare dashboard once"
+          {
+            echo "### Deploy"
+            echo
+            echo "- **URL**: $target"
+            echo "- **Health**: \`$body\`"
+            echo "- **Time**: $(date -u +%Y-%m-%dT%H:%MZ)"
+          } >> "$GITHUB_STEP_SUMMARY"
