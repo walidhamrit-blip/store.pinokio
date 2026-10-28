@@ -15,6 +15,16 @@ on:
   schedule:
     # 03:17 UTC — off the hour, when Cloudflare's API is quiet.
     - cron: '17 3 * * *'
+  # Changing the backup machinery proves it still works: a push that touches
+  # these files produces a snapshot straight away instead of waiting for 03:17
+  # to find out that it broke.
+  push:
+    branches: [main]
+    paths:
+      - 'app/scripts/backup.mjs'
+      - 'app/scripts/restore.mjs'
+      - '.github/workflows/backup.yml'
+      - '.github/actions/clean-credentials/action.yml'
   workflow_dispatch:
     inputs:
       keep:
