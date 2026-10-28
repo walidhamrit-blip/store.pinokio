@@ -1,0 +1,651 @@
+{
+  "products": [
+    {
+      "slug": "pour-over-carafe",
+      "price": 68,
+      "compareAt": null,
+      "category": "ceramics",
+      "image": "/images/carafe.jpg",
+      "badge": "Bestseller",
+      "featured": true,
+      "published": true,
+      "sortOrder": 0,
+      "copy": {
+        "en": {
+          "name": "Pour-over carafe",
+          "short": "Matte stoneware, 750 ml",
+          "description": "A carafe shaped for the slow pour. The waist sits naturally in the hand and the lip is cut so the last drop lands in the cup, not on the table.",
+          "details": [
+            "Holds 750 ml",
+            "Dishwasher safe, though it prefers a rinse",
+            "Each piece varies slightly in tone"
+          ],
+          "materials": "Stoneware with a matte sand glaze, fired at 1240°C in our Lisbon studio."
+        },
+        "ar": {
+          "name": "كَراف القهوة المقطّرة",
+          "short": "خزف مطفي، 750 مل",
+          "description": "كَراف مصمم للصبّ البطيء. يتّسع الخصر ليجلس طبيعيًا في اليد، وحُدّت الحافة بحيث تقع آخر قطرة في الفنجان لا على الطاولة.",
+          "details": [
+            "يتسع لـ 750 مل",
+            "آمن في غسالة الأطباق، لكنه يفضّل الشطف",
+            "تختلف كل قطعة قليلًا في اللون"
+          ],
+          "materials": "خزف بطلاء رملي مطفي، مشوي على حرارة 1240 °م في استوديونا في لشبونة."
+        },
+        "fr": {
+          "name": "Carafe à filtre",
+          "short": "Grès mat, 750 ml",
+          "description": "Une carafe dessinée pour le versement lent. La taille se love dans la main et le bec est coupé pour que la dernière goutte tombe dans la tasse, pas sur la table.",
+          "details": [
+            "Contenance 750 ml",
+            "Compatible lave-vaisselle, mais préfère un rinçage",
+            "Chaque pièce varie légèrement de teinte"
+          ],
+          "materials": "Grès émaillé mat sable, cuit à 1240 °C dans notre atelier de Lisbonne."
+        }
+      }
+    },
+    {
+      "slug": "speckled-mug-pair",
+      "price": 54,
+      "compareAt": null,
+      "category": "ceramics",
+      "image": "/images/mugs.jpg",
+      "badge": null,
+      "featured": true,
+      "published": true,
+      "sortOrder": 1,
+      "copy": {
+        "en": {
+          "name": "Speckled mug, pair",
+          "short": "Oatmeal glaze, 320 ml each",
+          "description": "Two mugs with a generous handle and a lip that is thin enough to drink from well. The speckle comes from iron in the clay, so no two are alike.",
+          "details": [
+            "Set of two",
+            "320 ml each",
+            "Microwave and dishwasher safe"
+          ],
+          "materials": "Iron-flecked stoneware with a satin oatmeal glaze.",
+          "options": {
+            "name": "Glaze",
+            "values": [
+              "Oatmeal",
+              "Ash",
+              "Clay"
+            ]
+          }
+        },
+        "ar": {
+          "name": "كوب منقّط، قطعتان",
+          "short": "طلاء بلون الشوفان، 320 مل لكل كوب",
+          "description": "كوبان بمقبض واسع وحافة رقيقة تكفي للشرب بارتياح. يأتي التنقيط من الحديد في الطين، فلا يتشابه كوبان.",
+          "details": [
+            "طقم من قطعتين",
+            "320 مل لكل كوب",
+            "آمن في الميكروويف وغسالة الأطباق"
+          ],
+          "materials": "خزف مرشوش بالحديد بطلاء ساتاني بلون الشوفان.",
+          "options": {
+            "name": "Glaze",
+            "values": [
+              "Oatmeal",
+              "Ash",
+              "Clay"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Tasses mouchetées, paire",
+          "short": "Émail avoine, 320 ml chacune",
+          "description": "Deux tasses à l’anse généreuse et au bord assez fin pour bien boire. Les mouchetures viennent du fer de l’argile : aucune ne ressemble à une autre.",
+          "details": [
+            "Lot de deux",
+            "320 ml chacune",
+            "Compatible micro-ondes et lave-vaisselle"
+          ],
+          "materials": "Grès tacheté de fer, émail satiné couleur avoine.",
+          "options": {
+            "name": "Glaze",
+            "values": [
+              "Oatmeal",
+              "Ash",
+              "Clay"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "washed-linen-throw",
+      "price": 148,
+      "compareAt": null,
+      "category": "textiles",
+      "image": "/images/throw.jpg",
+      "badge": "New",
+      "featured": true,
+      "published": true,
+      "sortOrder": 2,
+      "copy": {
+        "en": {
+          "name": "Washed linen throw",
+          "short": "Oat, 130 by 180 cm",
+          "description": "Heavyweight European flax, stone-washed until it drapes like something you have owned for years. The fringe is twisted by hand.",
+          "details": [
+            "130 by 180 cm",
+            "Softens further with every wash",
+            "Woven in Portugal"
+          ],
+          "materials": "100% European flax linen, pre-washed. Machine wash cool, line dry.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Oat",
+              "Charcoal",
+              "Sage"
+            ]
+          }
+        },
+        "ar": {
+          "name": "بطّانية كتّان مغسولة",
+          "short": "الشوفان، 130 × 180 سم",
+          "description": "كتّان أوروبي ثقيل، مغسول بالحجر حتى ينسدل كأنه قطعة تملكها منذ سنوات. الأطراف مفتولة باليد.",
+          "details": [
+            "130 × 180 سم",
+            "يزداد نعومة مع كل غسلة",
+            "منسوجة في البرتغال"
+          ],
+          "materials": "كتّان أوروبي 100٪، مغسول مسبقًا. غسيل آلي بماء بارد، وتجفيف على الحبل.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Oat",
+              "Charcoal",
+              "Sage"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Plaid en lin lavé",
+          "short": "Avoine, 130 × 180 cm",
+          "description": "Lin européen épais, lavé à la pierre jusqu’à tomber comme une pièce que vous possédez depuis des années. Les franges sont torsadées à la main.",
+          "details": [
+            "130 × 180 cm",
+            "S’adoucit à chaque lavage",
+            "Tissé au Portugal"
+          ],
+          "materials": "100 % lin européen, prélavé. Lavage machine à froid, séchage à l’air.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Oat",
+              "Charcoal",
+              "Sage"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "walnut-serving-board",
+      "price": 92,
+      "compareAt": null,
+      "category": "kitchen",
+      "image": "/images/board.jpg",
+      "badge": null,
+      "featured": true,
+      "published": true,
+      "sortOrder": 3,
+      "copy": {
+        "en": {
+          "name": "Walnut serving board",
+          "short": "Solid walnut, 60 cm",
+          "description": "A long board cut from a single piece of American black walnut, with a handle turned to sit comfortably in the palm. Finished with food-safe oil.",
+          "details": [
+            "60 by 14 cm",
+            "Hand wash and oil occasionally",
+            "Grain and colour vary"
+          ],
+          "materials": "Solid American black walnut, finished with beeswax and mineral oil."
+        },
+        "ar": {
+          "name": "لوح تقديم من الجوز",
+          "short": "جوز صلب، 60 سم",
+          "description": "لوح طويل مقطوع من قطعة واحدة من الجوز الأسود الأمريكي، بمقبض مخروط ليجلس مريحًا في راحة اليد. مشطّب بزيت آمن للطعام.",
+          "details": [
+            "60 × 14 سم",
+            "غسل يدوي ودهن بالزيت أحيانًا",
+            "تختلف العروق واللون"
+          ],
+          "materials": "جوز أسود أمريكي صلب، مشطّب بشمع العسل والزيت المعدني."
+        },
+        "fr": {
+          "name": "Planche de service en noyer",
+          "short": "Noyer massif, 60 cm",
+          "description": "Une longue planche taillée dans une seule pièce de noyer noir américain, avec une poignée tournée pour bien tenir dans la paume. Finition à l’huile alimentaire.",
+          "details": [
+            "60 × 14 cm",
+            "Lavage à la main, huiler de temps en temps",
+            "Le veinage et la teinte varient"
+          ],
+          "materials": "Noyer noir américain massif, fini à la cire d’abeille et à l’huile minérale."
+        }
+      }
+    },
+    {
+      "slug": "amber-soy-candle",
+      "price": 38,
+      "compareAt": null,
+      "category": "home",
+      "image": "/images/candle.jpg",
+      "badge": "Bestseller",
+      "featured": false,
+      "published": true,
+      "sortOrder": 4,
+      "copy": {
+        "en": {
+          "name": "Soy candle, cedar and fig",
+          "short": "Amber glass, 50 hours",
+          "description": "Dry cedar, green fig and a little smoke. Poured by hand in small batches into reusable amber glass with a cotton wick that burns clean.",
+          "details": [
+            "Approximately 50 hours",
+            "Reusable glass with a wooden lid",
+            "Trim the wick to 5 mm before each burn"
+          ],
+          "materials": "Soy wax, cotton wick, essential and fine fragrance oils.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Cedar and fig",
+              "Tobacco leaf",
+              "Sea salt"
+            ]
+          }
+        },
+        "ar": {
+          "name": "شمعة صويا، الأرز والتين",
+          "short": "زجاج عنبري، 50 ساعة",
+          "description": "أرز جاف وتين أخضر وقليل من الدخان. تُصبّ باليد بكميات صغيرة في زجاج عنبري قابل لإعادة الاستخدام، بفتيل قطني يحترق بنظافة.",
+          "details": [
+            "نحو 50 ساعة",
+            "زجاج قابل لإعادة الاستخدام مع غطاء خشبي",
+            "قصّ الفتيل إلى 5 مم قبل كل إشعال"
+          ],
+          "materials": "شمع صويا، فتيل قطني، زيوت عطرية أساسية ومركّزة.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Cedar and fig",
+              "Tobacco leaf",
+              "Sea salt"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Bougie de soja, cèdre et figue",
+          "short": "Verre ambré, 50 heures",
+          "description": "Cèdre sec, figue verte et un peu de fumée. Coulée à la main en petites séries dans un verre ambré réutilisable, avec une mèche de coton qui brûle proprement.",
+          "details": [
+            "Environ 50 heures",
+            "Verre réutilisable avec couvercle en bois",
+            "Coupez la mèche à 5 mm avant chaque allumage"
+          ],
+          "materials": "Cire de soja, mèche en coton, huiles essentielles et parfums fins.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Cedar and fig",
+              "Tobacco leaf",
+              "Sea salt"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "brass-table-lamp",
+      "price": 240,
+      "compareAt": null,
+      "category": "lighting",
+      "image": "/images/lamp.jpg",
+      "badge": null,
+      "featured": true,
+      "published": true,
+      "sortOrder": 5,
+      "copy": {
+        "en": {
+          "name": "Brass table lamp",
+          "short": "Brushed brass, linen shade",
+          "description": "A small lamp with a tapered brass base and a natural linen shade that turns any bulb warm. Made for a bedside or a desk corner.",
+          "details": [
+            "42 cm tall",
+            "E27 fitting, bulb included",
+            "Inline dimmer switch"
+          ],
+          "materials": "Brushed solid brass base, natural linen shade on a steel frame."
+        },
+        "ar": {
+          "name": "مصباح طاولة نحاسي",
+          "short": "نحاس مصقول، غطاء كتّان",
+          "description": "مصباح صغير بقاعدة نحاسية مخروطية وغطاء من الكتّان الطبيعي يمنح أي مصباح دفئًا. مناسب للطاولة بجانب السرير أو زاوية المكتب.",
+          "details": [
+            "ارتفاع 42 سم",
+            "قاعدة E27، اللمبة مشمولة",
+            "مفتاح تعتيم على السلك"
+          ],
+          "materials": "قاعدة نحاس صلب مصقول، وغطاء كتّان طبيعي على هيكل فولاذي."
+        },
+        "fr": {
+          "name": "Lampe de table en laiton",
+          "short": "Laiton brossé, abat-jour en lin",
+          "description": "Une petite lampe à base en laiton fuselée et abat-jour en lin naturel qui réchauffe n’importe quelle ampoule. Pour une table de nuit ou un coin de bureau.",
+          "details": [
+            "Hauteur 42 cm",
+            "Douille E27, ampoule incluse",
+            "Variateur sur le cordon"
+          ],
+          "materials": "Base en laiton massif brossé, abat-jour en lin naturel sur armature acier."
+        }
+      }
+    },
+    {
+      "slug": "terracotta-vase",
+      "price": 76,
+      "compareAt": null,
+      "category": "ceramics",
+      "image": "/images/vase.jpg",
+      "badge": null,
+      "featured": false,
+      "published": true,
+      "sortOrder": 6,
+      "copy": {
+        "en": {
+          "name": "Tall terracotta vase",
+          "short": "Unglazed, 34 cm",
+          "description": "A tall bottle vase with a narrow neck for a single branch. Left unglazed so the clay keeps its soft, chalky surface.",
+          "details": [
+            "34 cm tall",
+            "Water resistant interior",
+            "Wipe clean"
+          ],
+          "materials": "Red earthenware, sealed inside."
+        },
+        "ar": {
+          "name": "مزهرية تراكوتا عالية",
+          "short": "بدون طلاء، 34 سم",
+          "description": "مزهرية طويلة بعنق ضيق تتسع لغصن واحد. تُركت دون طلاء لتحتفظ الطينة بملمسها الناعم الطباشيري.",
+          "details": [
+            "ارتفاع 34 سم",
+            "بطانة مقاومة للماء",
+            "تُمسح بقطعة قماش"
+          ],
+          "materials": "فخّار أحمر، مبطّن من الداخل."
+        },
+        "fr": {
+          "name": "Grand vase en terre cuite",
+          "short": "Non émaillé, 34 cm",
+          "description": "Un vase bouteille élancé au col étroit, pour une seule branche. Laissé brut pour que l’argile garde sa surface douce et crayeuse.",
+          "details": [
+            "Hauteur 34 cm",
+            "Intérieur résistant à l’eau",
+            "Nettoyage à sec"
+          ],
+          "materials": "Terre cuite rouge, scellée à l’intérieur."
+        }
+      }
+    },
+    {
+      "slug": "waffle-towel-set",
+      "price": 86,
+      "compareAt": null,
+      "category": "textiles",
+      "image": "/images/towels.jpg",
+      "badge": null,
+      "featured": true,
+      "published": true,
+      "sortOrder": 7,
+      "copy": {
+        "en": {
+          "name": "Waffle towel set",
+          "short": "Three towels, cotton",
+          "description": "A loose waffle weave that dries fast and feels light on the skin. Gets fluffier with washing, not thinner.",
+          "details": [
+            "Two bath, one hand towel",
+            "Long-staple Turkish cotton",
+            "Machine wash warm"
+          ],
+          "materials": "100% long-staple cotton, 350 gsm.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Stone",
+              "Moss"
+            ]
+          }
+        },
+        "ar": {
+          "name": "طقم مناشف وافل",
+          "short": "ثلاث مناشف قطنية",
+          "description": "نسيج وافل خفيف يجفّ سريعًا ويبقى لطيفًا على البشرة. يزداد نعومة مع الغسيل لا رقّة.",
+          "details": [
+            "منشفتا استحمام ومنشفة يد",
+            "قطن تركي طويل التيلة",
+            "غسيل آلي بماء دافئ"
+          ],
+          "materials": "قطن 100٪ طويل التيلة، 350 غ/م².",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Stone",
+              "Moss"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Lot de serviettes gaufrées",
+          "short": "Trois serviettes, coton",
+          "description": "Une armure gaufrée lâche qui sèche vite et reste légère sur la peau. Elle s’épaissit au lavage au lieu de s’user.",
+          "details": [
+            "Deux grands draps de bain, une serviette",
+            "Coton turc à longues fibres",
+            "Lavage machine à chaud doux"
+          ],
+          "materials": "100 % coton à longues fibres, 350 g/m².",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Ivory",
+              "Stone",
+              "Moss"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "glass-carafe-set",
+      "price": 44,
+      "compareAt": null,
+      "category": "kitchen",
+      "image": "/images/glass.jpg",
+      "badge": null,
+      "featured": false,
+      "published": true,
+      "sortOrder": 8,
+      "copy": {
+        "en": {
+          "name": "Glass carafe and tumbler",
+          "short": "Borosilicate, 1 l",
+          "description": "A bedside carafe with a tumbler that doubles as its lid. Thin, light and surprisingly tough.",
+          "details": [
+            "1 litre carafe, 250 ml tumbler",
+            "Heat resistant",
+            "Dishwasher safe"
+          ],
+          "materials": "Mouth-blown borosilicate glass."
+        },
+        "ar": {
+          "name": "كَراف وكوب زجاجي",
+          "short": "بوروسيليكات، 1 لتر",
+          "description": "كَراف للسرير مع كوب يعمل غطاءً له أيضًا. رقيق وخفيف ومتين أكثر مما يبدو.",
+          "details": [
+            "كَراف 1 لتر، كوب 250 مل",
+            "مقاوم للحرارة",
+            "آمن في غسالة الأطباق"
+          ],
+          "materials": "زجاج بوروسيليكات منفوخ يدويًا."
+        },
+        "fr": {
+          "name": "Carafe et verre en verre",
+          "short": "Borosilicate, 1 l",
+          "description": "Une carafe de chevet avec son verre qui sert aussi de couvercle. Fine, légère et étonnamment solide.",
+          "details": [
+            "Carafe 1 litre, verre 250 ml",
+            "Résistant à la chaleur",
+            "Compatible lave-vaisselle"
+          ],
+          "materials": "Verre borosilicate soufflé à la bouche."
+        }
+      }
+    },
+    {
+      "slug": "linen-apron",
+      "price": 58,
+      "compareAt": null,
+      "category": "textiles",
+      "image": "/images/apron.jpg",
+      "badge": null,
+      "featured": false,
+      "published": true,
+      "sortOrder": 9,
+      "copy": {
+        "en": {
+          "name": "Linen apron",
+          "short": "Sage, cross-back",
+          "description": "A cross-back apron that stays on the shoulders without a neck strap. Deep front pocket, long ties, no fuss.",
+          "details": [
+            "One size",
+            "Cross-back straps",
+            "Front pocket"
+          ],
+          "materials": "100% washed linen.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Sage",
+              "Natural",
+              "Charcoal"
+            ]
+          }
+        },
+        "ar": {
+          "name": "مريلة كتّان",
+          "short": "أخضر مريمي، بحزام متقاطع",
+          "description": "مريلة بحزام متقاطع تثبت على الكتفين دون شريط حول العنق. جيب أمامي واسع وأربطة طويلة، دون تعقيد.",
+          "details": [
+            "مقاس واحد",
+            "أحزمة متقاطعة",
+            "جيب أمامي"
+          ],
+          "materials": "كتّان مغسول 100٪.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Sage",
+              "Natural",
+              "Charcoal"
+            ]
+          }
+        },
+        "fr": {
+          "name": "Tablier en lin",
+          "short": "Sauge, bretelles croisées",
+          "description": "Un tablier à bretelles croisées qui tient aux épaules sans tour de cou. Grande poche devant, longs liens, sans chichis.",
+          "details": [
+            "Taille unique",
+            "Bretelles croisées",
+            "Poche avant"
+          ],
+          "materials": "100 % lin lavé.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Sage",
+              "Natural",
+              "Charcoal"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "slug": "soapstone-incense-holder",
+      "price": 32,
+      "compareAt": null,
+      "category": "home",
+      "image": "/images/incense.jpg",
+      "badge": "Low stock",
+      "featured": false,
+      "published": true,
+      "sortOrder": 10,
+      "copy": {
+        "en": {
+          "name": "Soapstone incense holder",
+          "short": "Hand-carved stone",
+          "description": "A pebble of black soapstone with a single hole, carved and polished by hand. Heavy enough to stay put, small enough to travel.",
+          "details": [
+            "Approximately 9 cm across",
+            "Fits standard sticks",
+            "Wipe clean"
+          ],
+          "materials": "Natural soapstone. Each one is a slightly different shape."
+        },
+        "ar": {
+          "name": "حاملة بخور من الحجر الأملس",
+          "short": "حجر منحوت يدويًا",
+          "description": "حجر أملس أسود بثقب واحد، منحوت ومصقول باليد. ثقيل بما يكفي ليبقى في مكانه، وصغير بما يكفي للسفر.",
+          "details": [
+            "بعرض 9 سم تقريبًا",
+            "يناسب أعواد البخور العادية",
+            "تُمسح بقطعة قماش"
+          ],
+          "materials": "حجر أملس طبيعي. لكل قطعة شكل مختلف قليلًا."
+        },
+        "fr": {
+          "name": "Porte-encens en stéatite",
+          "short": "Pierre sculptée à la main",
+          "description": "Un galet de stéatite noire percé d’un seul trou, sculpté et poli à la main. Assez lourd pour rester en place, assez petit pour voyager.",
+          "details": [
+            "Environ 9 cm de large",
+            "Pour bâtons standards",
+            "Nettoyage à sec"
+          ],
+          "materials": "Stéatite naturelle. Chaque pièce a une forme légèrement différente."
+        }
+      }
+    }
+  ],
+  "categories": [
+    {
+      "key": "ceramics",
+      "label": "Ceramics",
+      "image": "/images/carafe.jpg",
+      "blurb": "Thrown and glazed by hand"
+    },
+    {
+      "key": "textiles",
+      "label": "Textiles",
+      "image": "/images/throw.jpg",
+      "blurb": "Washed linen and cotton"
+    },
+    {
+      "key": "lighting",
+      "label": "Lighting",
+      "image": "/images/lamp.jpg",
+      "blurb": "Warm, low and quiet"
+    }
+  ],
+  "freeShippingAt": 120
+}

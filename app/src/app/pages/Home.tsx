@@ -2,8 +2,9 @@ import { motion } from 'motion/react'
 import { ArrowRight, Leaf, RefreshCcw, Truck } from 'lucide-react'
 import { Link } from 'react-router'
 
-import { categories, featured, newArrivals } from '../../data/products'
-import { localizeCategory, localizeProduct } from '../../data/i18n'
+import { categories, localized } from '../../data/products'
+import { localizeCategory } from '../../data/i18n'
+import { useCatalog } from '../lib/catalog'
 import { ProductCard } from '../components/ProductCard'
 import { ButtonLink, Container, Reveal, SectionTitle } from '../components/ui'
 import { money } from '../lib/cart'
@@ -13,7 +14,10 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 export function Home() {
   const { t, lang } = usePrefs()
-  const heroProduct = localizeProduct(newArrivals[0], lang)
+  const { products } = useCatalog()
+  const newArrivals = products.slice(0, 4)
+  const featured = products.filter((p) => p.featured)
+  const heroProduct = localized(products[0], lang)
   const heroLines = [t('home.hero.line1'), t('home.hero.line2')]
 
   return (

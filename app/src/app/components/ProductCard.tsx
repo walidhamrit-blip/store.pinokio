@@ -5,18 +5,17 @@ import { Link } from 'react-router'
 import { money, useCart } from '../lib/cart'
 import { cx } from '../lib/cx'
 import { usePrefs } from '../lib/prefs'
-import { localizeProduct } from '../../data/i18n'
-import type { Product } from '../../data/products'
+import { localized, type Product } from '../../data/products'
 
 export function ProductCard({ product, index = 0, priority }: { product: Product; index?: number; priority?: boolean }) {
   const cart = useCart()
   const { lang, t } = usePrefs()
   const [added, setAdded] = useState(false)
-  const copy = localizeProduct(product, lang)
+  const copy = localized(product, lang)
 
   function quickAdd(e: React.MouseEvent) {
     e.preventDefault()
-    cart.add(product, product.options?.values[0])
+    cart.add(product, copy.options?.values[0])
     setAdded(true)
     window.setTimeout(() => setAdded(false), 1400)
   }

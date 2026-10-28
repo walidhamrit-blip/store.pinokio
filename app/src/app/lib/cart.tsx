@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 
-import { bySlug, type Product } from '../../data/products'
+import { seedProducts, type Product } from '../../data/products'
+import { useCatalog } from './catalog'
 
 export interface CartLine {
   slug: string
@@ -25,10 +26,14 @@ const CartContext = createContext<CartState | null>(null)
 const KEY = 'your-store-cart'
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { products, bySlug } = useCatalog()
   const [lines, setLines] = useState<CartLine[]>(() => {
     try {
       const raw = localStorage.getItem(KEY)
-      return raw ? (JSON.parse(raw) as CartLine[]).filter((l) => bySlug(l.slug)) : []
+      if (!raw) return []
+      // Keep the bag even before the catalogue arrives: drop only the lines
+      // whose product no longer exists.
+      return (JSON.parse(raw) as CartLine[]).filter((l) => typeof l?.slug === 'string')
     } catch {
       return []
     }
@@ -58,7 +63,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const clear = useCallback(() => setLines([]), [])
 
   const value = useMemo<CartState>(() => {
-    const items = lines.map((l) => ({ ...l, product: bySlug(l.slug)! }))
+    const items = lines.flatMap((l) => {
+      const product = bySlug(l.slug) ?? seedProducts.find((p) => p.slug === l.slug)
+      return product ? [{ ...l, product }] : []
+    })
     return {
       lines,
       open,
@@ -71,7 +79,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       count: items.reduce((n, l) => n + l.quantity, 0),
       subtotal: items.reduce((n, l) => n + l.quantity * l.product.price, 0),
     }
-  }, [lines, open, add, setQuantity, remove, clear])
+  }, [lines, open, add, setQuantity, remove, clear, products, bySlug])
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

@@ -4,6 +4,12 @@
 // (dist/client), and `wrangler deploy` uploads both: the Worker serves the API
 // and the assets binding serves the store, with SPA fallback for the routes.
 //
+// Before the first deploy, create the database and the dashboard password:
+//
+//   cd app
+//   npx wrangler d1 create store        # paste the id into wrangler.jsonc
+//   npx wrangler secret put ADMIN_PASSWORD
+//
 // Authentication: run `npx wrangler login` once (or set CLOUDFLARE_API_TOKEN
 // and CLOUDFLARE_ACCOUNT_ID) inside app/ before using this menu item. If you
 // are not logged in yet, the first run prints the login URL — click it, come

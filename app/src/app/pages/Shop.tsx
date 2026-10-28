@@ -3,17 +3,17 @@ import { SlidersHorizontal, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
-import { products, type Category } from '../../data/products'
+import { categoryKeys, type Category } from '../../data/products'
 import { categoryLabel } from '../../data/i18n'
+import { useCatalog } from '../lib/catalog'
 import { ProductCard } from '../components/ProductCard'
 import { Button, Container } from '../components/ui'
 import { cx } from '../lib/cx'
 import { usePrefs } from '../lib/prefs'
 
-const categoryKeys: Category[] = ['ceramics', 'textiles', 'lighting', 'kitchen', 'home']
-
 export function Shop() {
   const { t, lang } = usePrefs()
+  const { products } = useCatalog()
   const [params, setParams] = useSearchParams()
   const [mobileOpen, setMobileOpen] = useState(false)
   const category = params.get('category') ?? ''
@@ -50,7 +50,7 @@ export function Shop() {
     if (sort === 'new') items = [...items].sort((a, b) => (b.badge === 'New' ? 1 : 0) - (a.badge === 'New' ? 1 : 0))
     if (sort === 'featured') items = [...items].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
     return items
-  }, [category, price, sort])
+  }, [products, category, price, sort])
 
   const title = category ? categoryLabel(category as Category, lang) : t('shop.all')
   const activeCount = (category ? 1 : 0) + (price ? 1 : 0)

@@ -4,7 +4,8 @@ import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 
 import { FREE_SHIPPING_AT } from '../../data/products'
-import { localizeProduct, optionLabel } from '../../data/i18n'
+import { optionLabel } from '../../data/i18n'
+import { localized } from '../../data/products'
 import { money, useCart } from '../lib/cart'
 import { usePrefs } from '../lib/prefs'
 import { Button } from './ui'
@@ -86,7 +87,7 @@ export function CartDrawer() {
                 <ul className="flex-1 divide-y divide-line overflow-y-auto px-6 py-2">
                   <AnimatePresence initial={false}>
                     {cart.items.map((item) => {
-                      const copy = localizeProduct(item.product, lang)
+                      const copy = localized(item.product, lang)
                       return (
                         <motion.li
                           key={`${item.slug}-${item.option ?? ''}`}

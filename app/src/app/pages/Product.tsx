@@ -3,39 +3,47 @@ import { ArrowLeft, Check, Minus, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 
-import { bySlug, products } from '../../data/products'
-import { categoryLabel, localizeProduct, optionLabel } from '../../data/i18n'
+import { localized, type Badge, type OptionName } from '../../data/products'
+import { categoryLabel, optionLabel } from '../../data/i18n'
+import { useCatalog } from '../lib/catalog'
 import { ProductCard } from '../components/ProductCard'
 import { Button, Container, Stepper } from '../components/ui'
 import { money, useCart } from '../lib/cart'
 import { cx } from '../lib/cx'
 import { usePrefs } from '../lib/prefs'
+import type { TKey } from '../i18n/dict'
+
+const BADGE_KEY: Record<Badge, TKey> = { New: 'badge.New', Bestseller: 'badge.Bestseller', 'Low stock': 'badge.Low stock' }
+const OPTION_KEY: Partial<Record<OptionName | string, TKey>> = { Glaze: 'option.Glaze', Colour: 'option.Colour', Scent: 'option.Scent' }
 
 export function Product() {
   const { slug } = useParams()
-  const base = slug ? bySlug(slug) : undefined
   const { lang, t } = usePrefs()
-  const product = base ? localizeProduct(base, lang) : undefined
+  const { products, bySlug, ready } = useCatalog()
   const cart = useCart()
+  const current = slug ? bySlug(slug) : undefined
+  const product = current ? localized(current, lang) : undefined
   const [option, setOption] = useState<string | undefined>(product?.options?.values[0])
   const [quantity, setQuantity] = useState(1)
   const [view, setView] = useState(0)
   const [added, setAdded] = useState(false)
   const [open, setOpen] = useState<number | null>(0)
 
-  // Keyed on the slug so switching language keeps the chosen option and
-  // quantity: only a different product resets the page.
+  // A newly chosen product starts from the top with its first option; a
+  // language switch keeps the visitor's choice.
   useEffect(() => {
     setView(0)
+    window.scrollTo({ top: 0 })
   }, [slug])
 
   useEffect(() => {
-    setOption(base?.options?.values[0])
+    setOption(current?.copy ? (current.copy[lang] ?? current.copy.en).options?.values[0] : undefined)
     setQuantity(1)
-    window.scrollTo({ top: 0 })
-  }, [base])
+  }, [current, lang])
 
-  if (!product) return <Navigate to="/shop" replace />
+  // Wait for the catalogue before deciding the product is gone.
+  if (!product) return ready ? <Navigate to="/shop" replace /> : <Container className="min-h-[50vh]">{null}</Container>
+
 
   // One photo, three framings: a full view and two closer crops read as a
   // small gallery until you add real detail shots.
@@ -52,7 +60,7 @@ export function Product() {
   ]
 
   function add() {
-    cart.add(base!, option, quantity)
+    cart.add(current!, option, quantity)
     setAdded(true)
     window.setTimeout(() => setAdded(false), 1600)
   }
@@ -93,8 +101,8 @@ export function Product() {
                 style={views[view].style}
               />
             </AnimatePresence>
-            {base?.badge && (
-              <span className="absolute start-4 top-4 rounded-[10px] bg-surface/90 px-2.5 py-1 text-[12px] font-medium backdrop-blur">{t(`badge.${base.badge}`)}</span>
+            {current?.badge && (
+              <span className="absolute start-4 top-4 rounded-[10px] bg-surface/90 px-2.5 py-1 text-[12px] font-medium backdrop-blur">{t(BADGE_KEY[current.badge])}</span>
             )}
           </div>
         </div>
@@ -108,7 +116,7 @@ export function Product() {
           {product.options && (
             <div className="mt-8">
               <p className="text-[14px] font-medium">
-                {t(`option.${product.options.name}`)}
+                {OPTION_KEY[product.options.name] ? t(OPTION_KEY[product.options.name]!) : product.options.name}
                 {option && <span className="ms-1.5 font-normal text-muted">{optionLabel(option, lang)}</span>}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
