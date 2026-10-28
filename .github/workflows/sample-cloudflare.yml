@@ -1,0 +1,78 @@
+name: Publish the sample to Cloudflare Pages
+
+# A permanent link for the accessories sample, independent of GitHub Pages:
+#   https://accessoires.pages.dev
+#
+# It reuses CLOUDFLARE_API_TOKEN, the secret the shop's own deploy already
+# needs (Workers Scripts:Edit + D1:Edit — add Pages:Edit to it for this job).
+# The sample is a static build: no Worker, no database, no cost.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - arena/bb8a518e-store-pinokio
+    paths:
+      - 'samples/accessoires/**'
+      - '.github/workflows/sample-cloudflare.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sample-cloudflare
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      # Committed on purpose (it is an identifier, not a secret) — same account
+      # as app/wrangler.jsonc.
+      CLOUDFLARE_ACCOUNT_ID: c49a339ecc1caadccb50c672cdbd88da
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: samples/accessoires/app/package-lock.json
+
+      - name: Install
+        working-directory: samples/accessoires/app
+        run: npm ci || npm install
+
+      - name: Build the static sample
+        working-directory: samples/accessoires/app
+        env:
+          VITE_DEMO: '1'
+        # Served from the root of its own domain, so no SITE_BASE.
+        run: npx vite build
+
+      - name: SPA fallback for shared deep links
+        working-directory: samples/accessoires/app
+        run: cp dist/client/index.html dist/client/404.html
+
+      - name: Check credentials
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is not set — Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+
+      - name: Create the Pages project (once)
+        working-directory: samples/accessoires/app
+        continue-on-error: true
+        run: npx wrangler pages project create accessoires --production-branch main
+
+      - name: Deploy
+        id: deploy
+        working-directory: samples/accessoires/app
+        run: |
+          set -o pipefail
+          npx wrangler pages deploy dist/client --project-name accessoires --branch main 2>&1 | tee /tmp/pages.log
+          url=$(grep -Eo 'https://[A-Za-z0-9.-]+\.pages\.dev' /tmp/pages.log | tail -n 1 || true)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Published: ${url:-unknown}"
