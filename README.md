@@ -53,7 +53,8 @@ port it actually chose, so you never have to configure one.
 - **Open Web UI** opens the running storefront.
 - **Terminal** shows the live server log for the running session.
 - **Deploy to Cloudflare** builds the store and uploads it as a Worker with
-  static assets (see [Deploy to Cloudflare](#deploy-to-cloudflare)).
+  static assets (see [Deploy to Cloudflare](#deploy-to-cloudflare)). Not needed
+  if you let GitHub Actions deploy on every push.
 - **Update** pulls this launcher (when it is a git checkout) and re-runs Install.
 - **Reinstall** runs Install again, for example after changing package.json.
 - **Reset** removes `app/node_modules`, `app/dist`, `app/.wrangler` and the
@@ -101,29 +102,30 @@ Changes are live immediately: the storefront reads `GET /api/products` on load,
 and falls back to the catalogue bundled in the app if the API is unreachable.
 The bag, language, theme and light/dark mode keep working offline.
 
-### Three commands to switch it on
+### The database (already wired)
+
+The D1 database `store` exists and its **non-secret** id is committed in
+`app/wrangler.jsonc`, so every deploy attaches it automatically:
+
+```jsonc
+"d1_databases": [{ "binding": "DB", "database_name": "store", "database_id": "ef27…e54a" }]
+```
+
+There are **no migrations to run**: the Worker creates its tables on the first
+request and seeds them with the starter catalogue (`app/src/data/seed.json`).
+
+What must *never* go in that file: passwords and tokens. `ADMIN_PASSWORD` is a
+Worker secret, pushed automatically by the deploy workflow from the GitHub
+secret of the same name (or once by hand:
+`npx wrangler secret put ADMIN_PASSWORD`).
+
+Starting from scratch (empty Cloudflare account)? Create the database once and
+commit its id:
 
 ```sh
 cd app
 npx wrangler d1 create store        # prints the database_id
-npx wrangler secret put ADMIN_PASSWORD
-npm run deploy
 ```
-
-`npx wrangler d1 create store` prints a `database_id`. **Paste it into
-`app/wrangler.jsonc`**, replacing the `00000000-…` placeholder. Without a CLI:
-
-1. Cloudflare → **Storage & Databases → D1 → Create** → name it `store`.
-2. Copy the **Database ID**.
-3. On GitHub, open `app/wrangler.jsonc` on `main` → pencil → replace the
-   placeholder with that ID → *Commit changes*.
-
-Keeping the ID in `wrangler.jsonc` matters when Cloudflare builds from Git: the
-file is the source of truth for the deploy, so a binding added only in the
-dashboard would be overwritten on the next push.
-
-There are **no migrations to run**: the Worker creates its tables on the first
-request and seeds them with the starter catalogue.
 
 ### Local development
 
@@ -136,17 +138,21 @@ npm run dev                      # http://localhost:5173
 Dev uses a local SQLite file in `app/.wrangler`, seeded automatically, so you can
 edit articles without touching production data.
 
-### Backups, and what it costs if the demo grows
+### Backups
+
+Automatic, every night, committed to this repository — see
+[Everything on GitHub](#everything-on-github-nothing-by-hand). Nothing to run.
 
 ```sh
-npx wrangler d1 export store --remote --output backup.sql   # full dump
-npm run db:studio                                           # list the articles
+npm run db:backup                                    # force one now (production)
+npm run db:backup -- --keep=90                       # keep more history
+npm run db:studio                                    # peek at the articles
 ```
 
-D1 has Time Travel (30 days of point-in-time recovery). If the shop ever needs
-more than 10 GB per database, heavy analytics, or Postgres features (JSONB,
-extensions), keep this code and move the data to Neon/Supabase behind
-**Hyperdrive** — it is free on Workers Paid and works with the same SQL.
+Growing past the demo? D1 is 10 GB per database, with 30 days of point-in-time
+recovery. If the shop ever needs more, heavy analytics or Postgres features
+(JSONB, extensions), keep this code and move the data to Neon/Supabase behind
+**Hyperdrive** — free on Workers Paid, same SQL.
 
 ### Images
 
@@ -155,6 +161,79 @@ at any `https://` URL (the *Image path or URL* field), which is the simplest way
 for the owner to add new photos without a redeploy. Uploading files from the
 dashboard would need **R2** (also free within 10 GB, no egress fees) — a small
 addition if you want it.
+
+## Everything on GitHub, nothing by hand
+
+Three workflows do the work. Once the repository settings below are filled in,
+you never open a terminal, the Cloudflare dashboard, or a "Retry build" button
+again.
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| [`deploy.yml`](.github/workflows/deploy.yml) | push to `main` | `npm ci`, typecheck, tests, build, pushes `ADMIN_PASSWORD`, `wrangler deploy`, then calls `/api/health` and fails loudly if the shop is not answering |
+| [`backup.yml`](.github/workflows/backup.yml) | daily 03:17 UTC + *Run workflow* | exports D1 to `backups/<db>-<timestamp>.sql.gz`, commits it, keeps the newest `BACKUP_KEEP` (30 by default) |
+| [`restore.yml`](.github/workflows/restore.yml) | *Actions → Restore D1* | puts a snapshot back into production, guarded by a `restore` confirmation |
+
+A backup commit never restarts the shop (the deploy workflow ignores
+`backups/**`, and the bot's own push cannot trigger workflows), and a docs edit
+does not redeploy either.
+
+### One-time setup: a single secret
+
+1. **Create a Cloudflare API token** — Dashboard → *My Profile* → *API Tokens* →
+   *Create Token* → *Custom token*:
+   - Permissions: **Account → Workers Scripts → Edit**, **Account → D1 → Edit**
+   - Zone resources: not needed (no route or DNS change)
+   - Copy the value immediately: it is shown once.
+2. **Paste it into GitHub** — *Settings → Secrets and variables → Actions →
+   New repository secret*, name **`CLOUDFLARE_API_TOKEN`**.
+
+That is the whole setup. Everything else is detected or already in place:
+
+| Kind | Name | Needed? |
+|---|---|---|
+| Secret | `CLOUDFLARE_API_TOKEN` | **yes** — the only required field |
+| Secret | `CLOUDFLARE_ACCOUNT_ID` | no — wrangler finds the single account by itself |
+| Secret | `ADMIN_PASSWORD` | no — only to *change* the dashboard password from GitHub; a deploy never removes the secret already on the Worker |
+| Variable | `STORE_URL` | no — the URL is read from `wrangler deploy` output for the health check |
+| Variable | `BACKUP_KEEP` | no — 30 snapshots by default |
+| Variable | `SKIP_ACTIONS_DEPLOY` | no — `true` only if Cloudflare's own Git build deploys instead |
+
+3. **Keep a single deploy pipeline** — Workers & Pages → `store` →
+   *Settings → Builds*: **disconnect** the repository so only `deploy.yml`
+   deploys. (The alternative, keeping Cloudflare's builds, requires
+   `SKIP_ACTIONS_DEPLOY=true` plus a build watch-path exclusion `backups/*`,
+   otherwise every nightly backup commit triggers a pointless rebuild.)
+4. Merge the branch. The first deploy runs on its own and `Actions` shows the
+   health check result.
+5. Take the first snapshot immediately instead of waiting for 03:17 UTC:
+   *Actions → Backup D1 → Run workflow*. The dump lands in `backups/`.
+
+Nothing else is manual: the D1 binding lives in `app/wrangler.jsonc` (committed,
+non-secret), the password lives in GitHub secrets and is re-pushed on every
+deploy, and the database is snapshotted every night into `backups/`.
+
+### Where the articles live, then
+
+Articles are **data**, not code: they are edited in `/admin` and stored in D1.
+A `git clone` alone therefore does not contain the current catalogue — the last
+nightly snapshot in [`backups/`](backups) does (plain SQL, readable and
+restorable). That is the point of the backup workflow: the repository holds the
+code *and* a daily copy of the content, without anyone exporting anything.
+
+### Restoring a day-old catalogue
+
+*Actions → Restore D1 → Run workflow*, paste
+`backups/store-2026-10-28T03-17-42-681Z.sql.gz`, type `restore`. Locally, the
+same thing:
+
+```sh
+cd app
+npm run db:restore -- ../backups/store-2026-10-28T03-17-42-681Z.sql.gz --yes
+```
+
+Cloudflare also keeps 30 days of point-in-time recovery:
+`npx wrangler d1 time-travel restore store --timestamp=2026-10-28T10:00:00Z`.
 
 ## Deploy to Cloudflare
 
@@ -334,6 +413,8 @@ print(res.json())  # {'ok': True}
 
 ```
 store/
+├── .github/        # Actions: deploy on push, nightly D1 backup, restore
+├── backups/        # D1 snapshots committed by the backup workflow
 ├── app/            # The storefront (React + Vite + Hono Worker + D1 dashboard)
 ├── icon.jpg        # Launcher icon
 ├── deploy.js       # Builds and deploys the Worker to Cloudflare
