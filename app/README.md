@@ -127,8 +127,8 @@ Nothing to run by hand once the repository secrets exist:
 D1:Edit). Everything else is optional and auto-detected: `CLOUDFLARE_ACCOUNT_ID`
 (wrangler finds the single account), `ADMIN_PASSWORD` (only to change the
 dashboard password from GitHub — a deploy never removes the secret stored on the
-Worker), `STORE_URL` (the deploy output is used otherwise), `BACKUP_KEEP`,
-`SKIP_ACTIONS_DEPLOY=true` if you prefer Cloudflare's own Git builds.
+Worker), `STORE_URL` (the deploy output is used otherwise), `BACKUP_KEEP`.
+`Deploy` is the only pipeline; Cloudflare's own Git build stays disconnected.
 
 The scripts are plain Node so they run identically on Windows and in CI:
 
