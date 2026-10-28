@@ -102,7 +102,7 @@ jobs:
       # After the deploy, so that a password problem can never stop the shop
       # from being published. The Worker keeps its previous secret on failure.
       - name: Push the dashboard password
-        if: env.ADMIN_PASSWORD != ''
+        if: env.ADMIN_PASSWORD_READY == '1'
         continue-on-error: true
         run: |
           set -euo pipefail

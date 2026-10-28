@@ -218,6 +218,8 @@ Worker stays in place, and the database is snapshotted every night into
 |---|---|---|
 | `Headers.set: "***" is an invalid header value` | the token secret holds something else than the bare token: a line break, an `export …=` line, a label, quotes | already handled: the workflows trim it and extract the 40-character token when it is embedded in longer text; the run shows a warning naming the extra characters |
 | `Authentication error` / `403` | the token lacks **Workers Scripts:Edit** or **D1:Edit** | edit the token, or create a new one and update the secret |
+| `CLOUDFLARE_API_TOKEN is not a Cloudflare API token` | the secret holds something else: a file path, a URL, a second value | store the token itself — 40 characters (older tokens) or `cfut_`/`cfat_` + 40 characters + checksum, 53 in total (2026 tokens) |
+| `ADMIN_PASSWORD not used` (warning) | that secret is not a plausible password | nothing to do: the password already on the Worker is kept, the dashboard keeps working |
 | `database is false` in the health check | the D1 binding in `app/wrangler.jsonc` does not match the database | copy the `database_id` from *Storage & Databases → D1 → store* |
 | `dashboard is false` | no `ADMIN_PASSWORD` is stored on the Worker | add the secret once, or run `npx wrangler secret put ADMIN_PASSWORD` |
 
