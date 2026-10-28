@@ -178,36 +178,35 @@ A backup commit never restarts the shop (the deploy workflow ignores
 `backups/**`, and the bot's own push cannot trigger workflows), and a docs edit
 does not redeploy either.
 
-### One-time setup (5 minutes, then it runs itself)
+### One-time setup: a single secret
 
 1. **Create a Cloudflare API token** — Dashboard → *My Profile* → *API Tokens* →
    *Create Token* → *Custom token*:
-   - Permissions: **Account → Workers Scripts → Edit**, **Account → D1 → Edit**,
-     **Account → Account Settings → Read**
-   - Zone resources: *All zones* (or leave empty; no route permission needed)
-2. **Copy your Account ID** — Cloudflare dashboard URL:
-   `dash.cloudflare.com/`**`<account-id>`**`/workers-and-pages`
-3. **Add them to GitHub** — *Settings → Secrets and variables → Actions*:
+   - Permissions: **Account → Workers Scripts → Edit**, **Account → D1 → Edit**
+   - Zone resources: not needed (no route or DNS change)
+   - Copy the value immediately: it is shown once.
+2. **Paste it into GitHub** — *Settings → Secrets and variables → Actions →
+   New repository secret*, name **`CLOUDFLARE_API_TOKEN`**.
 
-   | Kind | Name | Value |
-   |---|---|---|
-   | Secret | `CLOUDFLARE_API_TOKEN` | the token from step 1 |
-   | Secret | `CLOUDFLARE_ACCOUNT_ID` | the 32-character id from step 2 |
-   | Secret | `ADMIN_PASSWORD` | the dashboard password (pushed to the Worker on every deploy) |
-   | Variable | `STORE_URL` | `https://store.<your-subdomain>.workers.dev` (enables the smoke test) |
-   | Variable | `BACKUP_KEEP` | optional, keep more than 30 snapshots |
+That is the whole setup. Everything else is detected or already in place:
 
-4. **Pick a single deploy pipeline** — Workers & Pages → `store` →
-   *Settings → Builds*:
-   - *Recommended:* **disconnect** the repository (or set the production branch
-     to none) so only `deploy.yml` deploys.
-   - *Or* keep Cloudflare's builds and set the repository variable
-     `SKIP_ACTIONS_DEPLOY=true`; `deploy.yml` then skips itself. In that case
-     also add a build watch-path exclusion `backups/*`, otherwise every nightly
-     backup commit triggers a pointless rebuild.
-5. Merge this branch. The first deploy runs on its own; `Actions` shows the
+| Kind | Name | Needed? |
+|---|---|---|
+| Secret | `CLOUDFLARE_API_TOKEN` | **yes** — the only required field |
+| Secret | `CLOUDFLARE_ACCOUNT_ID` | no — wrangler finds the single account by itself |
+| Secret | `ADMIN_PASSWORD` | no — only to *change* the dashboard password from GitHub; a deploy never removes the secret already on the Worker |
+| Variable | `STORE_URL` | no — the URL is read from `wrangler deploy` output for the health check |
+| Variable | `BACKUP_KEEP` | no — 30 snapshots by default |
+| Variable | `SKIP_ACTIONS_DEPLOY` | no — `true` only if Cloudflare's own Git build deploys instead |
+
+3. **Keep a single deploy pipeline** — Workers & Pages → `store` →
+   *Settings → Builds*: **disconnect** the repository so only `deploy.yml`
+   deploys. (The alternative, keeping Cloudflare's builds, requires
+   `SKIP_ACTIONS_DEPLOY=true` plus a build watch-path exclusion `backups/*`,
+   otherwise every nightly backup commit triggers a pointless rebuild.)
+4. Merge the branch. The first deploy runs on its own and `Actions` shows the
    health check result.
-6. Take the first snapshot immediately instead of waiting for 03:17 UTC:
+5. Take the first snapshot immediately instead of waiting for 03:17 UTC:
    *Actions → Backup D1 → Run workflow*. The dump lands in `backups/`.
 
 Nothing else is manual: the D1 binding lives in `app/wrangler.jsonc` (committed,

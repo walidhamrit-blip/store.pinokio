@@ -119,14 +119,16 @@ Nothing to run by hand once the repository secrets exist:
 
 | Workflow | Trigger | Purpose |
 |---|---|---|
-| `Deploy` | push to `main` | install, typecheck, tests, build, push `ADMIN_PASSWORD`, `wrangler deploy`, `/api/health` smoke test |
+| `Deploy` | push to `main` | install, typecheck, tests, build, `wrangler deploy`, `/api/health` smoke test on the URL wrangler printed |
 | `Backup D1` | daily 03:17 UTC, or *Run workflow* | `npm run db:backup` → `backups/<db>-<timestamp>.sql.gz` committed, retention `BACKUP_KEEP` (30) |
 | `Restore D1` | *Actions → Restore D1* | `npm run db:restore` on a snapshot, guarded by typing `restore` |
 
-Secrets: `CLOUDFLARE_API_TOKEN` (Workers Scripts:Edit + D1:Edit + Account
-Settings:Read), `CLOUDFLARE_ACCOUNT_ID`, `ADMIN_PASSWORD`.
-Variables: `STORE_URL` (smoke test), `SKIP_ACTIONS_DEPLOY=true` if you prefer
-Cloudflare's own Git builds, `BACKUP_KEEP`.
+**One secret is required**: `CLOUDFLARE_API_TOKEN` (Workers Scripts:Edit +
+D1:Edit). Everything else is optional and auto-detected: `CLOUDFLARE_ACCOUNT_ID`
+(wrangler finds the single account), `ADMIN_PASSWORD` (only to change the
+dashboard password from GitHub — a deploy never removes the secret stored on the
+Worker), `STORE_URL` (the deploy output is used otherwise), `BACKUP_KEEP`,
+`SKIP_ACTIONS_DEPLOY=true` if you prefer Cloudflare's own Git builds.
 
 The scripts are plain Node so they run identically on Windows and in CI:
 

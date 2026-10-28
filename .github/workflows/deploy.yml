@@ -3,16 +3,20 @@ name: Deploy
 # Push to main → typecheck, tests, build, deploy. Nothing to click, nothing to
 # run locally.
 #
-# Requirements (one-time, in the repository settings):
+# Required (one-time, in the repository settings) — one single secret:
 #   Secrets   CLOUDFLARE_API_TOKEN   token with Workers Scripts:Edit + D1:Edit
-#             CLOUDFLARE_ACCOUNT_ID  32 hex characters, from the dashboard URL
-#             ADMIN_PASSWORD          dashboard password (pushed as a Worker
-#                                     secret on every deploy)
-#   Variables STORE_URL               https://store.<subdomain>.workers.dev
-#                                     (optional: enables the post-deploy check)
-#             SKIP_ACTIONS_DEPLOY     "true" to let Cloudflare's own Git build
-#                                     deploy instead of this workflow
-#             BACKUP_KEEP             snapshots to keep (default 30)
+#
+# Optional, auto-detected when absent:
+#   Secrets   CLOUDFLARE_ACCOUNT_ID  only needed when the token can see more
+#                                    than one account
+#             ADMIN_PASSWORD         only needed to *change* the dashboard
+#                                    password; the one already on the Worker
+#                                    is kept by every deploy
+#   Variables STORE_URL              health-check target; otherwise the URL is
+#                                    read from the deploy output
+#             SKIP_ACTIONS_DEPLOY    "true" to let Cloudflare's own Git build
+#                                    deploy instead of this workflow
+#             BACKUP_KEEP            snapshots to keep (default 30)
 #
 # If Cloudflare is already building from GitHub (Workers & Pages → store →
 # Settings → Builds), turn that off first: two pipelines deploying the same
@@ -74,13 +78,10 @@ jobs:
             echo "::error::CLOUDFLARE_API_TOKEN is not set — Settings → Secrets and variables → Actions → New repository secret."
             exit 1
           fi
-          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
-            echo "::error::CLOUDFLARE_ACCOUNT_ID is not set (32 hex characters, visible in the dashboard URL)."
-            exit 1
-          fi
-          if [ -z "${ADMIN_PASSWORD:-}" ]; then
-            echo "::warning::ADMIN_PASSWORD is not set — the password already stored on the Worker is left untouched and the dashboard stays as it is."
-          fi
+          # Everything below is optional: wrangler finds the single account on
+          # its own, and a deploy never removes a secret already on the Worker.
+          [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ] || echo "No CLOUDFLARE_ACCOUNT_ID — letting wrangler detect the account."
+          [ -n "${ADMIN_PASSWORD:-}" ] || echo "No ADMIN_PASSWORD — the password already stored on the Worker is kept."
           echo "Credentials present."
 
       - name: Push the dashboard password
@@ -88,19 +89,33 @@ jobs:
         run: printf '%s' "$ADMIN_PASSWORD" | npx wrangler secret put ADMIN_PASSWORD
 
       - name: Deploy
-        run: npx wrangler deploy
-
-      - name: Smoke test
-        if: env.STORE_URL != ''
+        id: deploy
         run: |
           set -euo pipefail
+          npx wrangler deploy 2>&1 | tee /tmp/deploy.log
+          url=$(grep -Eo 'https://[A-Za-z0-9.-]+\.workers\.dev' /tmp/deploy.log | tail -n 1 || true)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Deployed: ${url:-unknown}"
+
+      - name: Smoke test
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euo pipefail
+          target="${STORE_URL:-$DEPLOY_URL}"
+          if [ -z "$target" ]; then
+            echo "::warning::Deployed URL not detected — health check skipped. Set the STORE_URL variable to force it."
+            exit 0
+          fi
+          echo "Checking $target/api/health"
+          body=""
           for attempt in 1 2 3 4 5; do
-            body=$(curl -fsS --max-time 10 "$STORE_URL/api/health" || true)
+            body=$(curl -fsS --max-time 10 "$target/api/health" || true)
             [ -n "$body" ] && break
-            echo "Waiting for $STORE_URL (attempt $attempt)…"
+            echo "Waiting for $target (attempt $attempt)…"
             sleep 4
           done
           echo "Health: $body"
           echo "$body" | grep -q '"ok":true' || { echo "::error::Worker did not answer /api/health"; exit 1; }
           echo "$body" | grep -q '"database":true' || echo "::warning::database is false — check the D1 binding in app/wrangler.jsonc"
-          echo "$body" | grep -q '"dashboard":true' || echo "::warning::dashboard is false — add the ADMIN_PASSWORD secret"
+          echo "$body" | grep -q '"dashboard":true' || echo "::warning::dashboard is false — no ADMIN_PASSWORD is stored on the Worker: add the secret (it will be pushed on the next deploy) or set it in the Cloudflare dashboard once"
