@@ -174,6 +174,8 @@ const en = {
   'footer.link.contact': 'Contact us',
   'footer.link.about': 'About DAOS',
   'footer.copyright': '© {year} DAOS — Zliten, Libya. Prices in Libyan dinar.',
+  'demo.notice':
+    'Demo sample — a storefront template. Nothing is ordered and nothing is sent: every page, filter, bag and checkout works in the browser only.',
   'admin.title': 'Dashboard',
   'admin.subtitle': 'Manage articles, prices and orders.',
   'admin.login.title': 'Sign in',
@@ -427,6 +429,8 @@ const fr: Partial<Record<TKey, string>> = {
   'footer.link.contact': 'Nous écrire',
   'footer.link.about': 'À propos de DAOS',
   'footer.copyright': '© {year} DAOS — Zliten, Libye. Prix en dinar libyen.',
+  'demo.notice':
+    'Échantillon de démonstration — un modèle de boutique. Rien n’est commandé ni envoyé : chaque page, filtre, panier et commande fonctionne uniquement dans le navigateur.',
   'admin.title': 'Tableau de bord',
   'admin.subtitle': 'Gérez les articles, les prix et les commandes.',
   'admin.login.title': 'Connexion',
@@ -678,6 +682,8 @@ const ar: Partial<Record<TKey, string>> = {
   'footer.link.contact': 'اتصل بنا',
   'footer.link.about': 'عن داوس',
   'footer.copyright': '© {year} داوس — زليتن، ليبيا. الأسعار بالدينار الليبي.',
+  'demo.notice':
+    'نموذج تجريبي — قالب متجر. لا يتم إرسال أي طلب أو بيانات: كل الصفحات والفلاتر والحقيبة وإتمام الطلب تعمل داخل المتصفح فقط.',
   'admin.title': 'لوحة التحكم',
   'admin.subtitle': 'أدر المقالات والأسعار والطلبات.',
   'admin.login.title': 'تسجيل الدخول',

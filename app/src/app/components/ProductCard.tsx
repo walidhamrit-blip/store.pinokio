@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 
 import { money, useCart } from '../lib/cart'
+import { asset } from '../lib/demo'
 import { cx } from '../lib/cx'
 import { usePrefs } from '../lib/prefs'
 import { localized, type Product } from '../../data/products'
@@ -31,7 +32,7 @@ export function ProductCard({ product, index = 0, priority }: { product: Product
       <Link to={`/product/${product.slug}`} className="block">
         <div className="image-frame relative aspect-[3/4] rounded-image">
           <img
-            src={product.image}
+            src={asset(product.image)}
             alt={copy.name}
             loading={priority ? 'eager' : 'lazy'}
             className="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"

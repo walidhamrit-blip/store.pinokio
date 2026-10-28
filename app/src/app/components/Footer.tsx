@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { Container, inputClass } from './ui'
 import { Logo } from './Nav'
 import { shop } from '../../data/shop'
+import { DEMO } from '../lib/demo'
 import { usePrefs } from '../lib/prefs'
 import type { TKey } from '../i18n/dict'
 
@@ -47,6 +48,10 @@ export function Footer() {
   async function submit(e: FormEvent) {
     e.preventDefault()
     setState('sending')
+    if (DEMO) {
+      setState('done')
+      return
+    }
     const response = await fetch('/api/newsletter', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email }) })
     setState(response.ok ? 'done' : 'error')
   }
@@ -119,6 +124,11 @@ export function Footer() {
           <p className="text-[13px] text-faint">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
           <Logo className="text-muted" />
         </div>
+        {DEMO && (
+          <p className="mt-6 rounded-card border border-line bg-surface-2/60 p-4 text-[13px] leading-relaxed text-muted">
+            {t('demo.notice')}
+          </p>
+        )}
       </Container>
     </footer>
   )

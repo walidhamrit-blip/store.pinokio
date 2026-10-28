@@ -7,6 +7,8 @@ import { countryLabels, optionLabel } from '../../data/i18n'
 import { localized } from '../../data/products'
 import { Button, ButtonLink, Container, inputClass } from '../components/ui'
 import { money, useCart } from '../lib/cart'
+import { DEMO, asset } from '../lib/demo'
+import { shop } from '../../data/shop'
 import { usePrefs } from '../lib/prefs'
 
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
@@ -35,6 +37,16 @@ export function Checkout() {
   async function submit(e: FormEvent) {
     e.preventDefault()
     setState('sending')
+    // The sample has no backend: it confirms the order in the browser so the
+    // whole flow can be clicked through from a shared link.
+    if (DEMO) {
+      const prefix = shop.name.toUpperCase().replace(/[^A-Z0-9]/g, '') || 'DEMO'
+      const reference = `${prefix}-${Date.now().toString(36).slice(-6).toUpperCase()}`
+      const summary = { reference, email: form.email, items: cart.items, total }
+      cart.clear()
+      navigate(`/order/${reference}`, { state: summary })
+      return
+    }
     try {
       const response = await fetch('/api/orders', {
         method: 'POST',
@@ -131,7 +143,7 @@ export function Checkout() {
                 return (
                   <li key={`${item.slug}-${item.option ?? ''}`} className="flex items-center gap-4 py-3">
                     <span className="image-frame relative size-16 shrink-0 rounded-[14px]">
-                      <img src={item.product.image} alt="" className="size-full object-cover" />
+                      <img src={asset(item.product.image)} alt="" className="size-full object-cover" />
                       <span className="round absolute -end-1.5 -top-1.5 grid min-w-5 place-items-center rounded-full bg-fg px-1.5 text-[11px] font-semibold tabular-nums text-bg">{item.quantity}</span>
                     </span>
                     <span className="min-w-0 flex-1">

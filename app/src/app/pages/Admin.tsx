@@ -10,6 +10,7 @@ import { ModeToggle } from '../components/preferences'
 import { LANGUAGES, type Lang } from '../i18n/dict'
 import { cx } from '../lib/cx'
 import { money } from '../lib/cart'
+import { asset } from '../lib/demo'
 import { usePrefs } from '../lib/prefs'
 
 type Tab = 'products' | 'orders' | 'settings'
@@ -193,7 +194,7 @@ export function Admin() {
                 return (
                   <li key={product.slug} className="flex flex-wrap items-center gap-4 p-3 sm:p-4">
                     <span className="image-frame size-14 shrink-0 rounded-[14px]">
-                      <img src={product.image} alt="" className="size-full object-cover" />
+                      <img src={asset(product.image)} alt="" className="size-full object-cover" />
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-[15px] font-medium">{copy.name || product.copy.en.name}</p>
@@ -499,7 +500,7 @@ function Editor({ product, onClose, onSaved }: { product: Product; onClose: () =
 
           <aside className="flex flex-col gap-4">
             <div className="image-frame relative aspect-[4/5] rounded-image">
-              <img src={draft.image} alt="" className="size-full object-cover" />
+              <img src={asset(draft.image)} alt="" className="size-full object-cover" />
               <span className="absolute bottom-3 end-3 grid size-9 place-items-center rounded-[10px] bg-surface/90 text-muted">
                 <ImagePlus className="size-4" />
               </span>

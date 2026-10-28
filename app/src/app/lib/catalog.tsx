@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 
+import { DEMO } from './demo'
 import { seedProducts, type Product } from '../../data/products'
 
 interface CatalogState {
@@ -28,6 +29,13 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null)
 
   const refresh = useCallback(async () => {
+    // The static sample ships its catalogue; there is no API to ask.
+    if (DEMO) {
+      setProducts(seedProducts)
+      setLive(false)
+      setReady(true)
+      return
+    }
     try {
       const response = await fetch('/api/products', { headers: { accept: 'application/json' } })
       if (!response.ok) throw new Error(`HTTP ${response.status}`)

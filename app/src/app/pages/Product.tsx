@@ -9,6 +9,7 @@ import { useCatalog } from '../lib/catalog'
 import { ProductCard } from '../components/ProductCard'
 import { Button, Container, Stepper } from '../components/ui'
 import { money, useCart } from '../lib/cart'
+import { asset } from '../lib/demo'
 import { cx } from '../lib/cx'
 import { usePrefs } from '../lib/prefs'
 import type { TKey } from '../i18n/dict'
@@ -83,7 +84,7 @@ export function Product() {
                 onClick={() => setView(i)}
                 className={cx('image-frame aspect-[3/4] rounded-[14px] border-2 transition-colors', view === i ? 'border-fg' : 'border-transparent')}
               >
-                <img src={product.image} alt="" className="size-full object-cover" style={v.style} />
+                <img src={asset(product.image)} alt="" className="size-full object-cover" style={v.style} />
               </button>
             ))}
           </div>
@@ -91,7 +92,7 @@ export function Product() {
             <AnimatePresence mode="wait" initial={false}>
               <motion.img
                 key={view}
-                src={product.image}
+                src={asset(product.image)}
                 alt={product.name}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

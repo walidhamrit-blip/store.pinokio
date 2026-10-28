@@ -7,6 +7,7 @@ import { Footer } from './components/Footer'
 import { Nav } from './components/Nav'
 import { WhatsAppButton } from './components/WhatsAppButton'
 import { CartProvider } from './lib/cart'
+import { BASENAME, DEMO } from './lib/demo'
 import { CatalogProvider } from './lib/catalog'
 import { PrefsProvider } from './lib/prefs'
 import { About } from './pages/About'
@@ -58,7 +59,8 @@ function Pages() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="order/:reference" element={<OrderConfirmed />} />
           <Route path="about" element={<About />} />
-          <Route path="admin" element={<Admin />} />
+          {/* The dashboard needs the Worker API, so the static sample sends it home. */}
+          <Route path="admin" element={DEMO ? <Navigate to="/" replace /> : <Admin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </motion.main>
@@ -69,7 +71,7 @@ function Pages() {
 export function App() {
   return (
     <PrefsProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={BASENAME || undefined}>
         <CatalogProvider>
           <CartProvider>
             <ScrollToTop />

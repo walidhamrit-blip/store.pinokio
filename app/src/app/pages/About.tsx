@@ -2,6 +2,7 @@ import { Clock, MapPin, MessageCircle, Navigation, Phone, Star, Truck } from 'lu
 
 import { shop, directionsUrl, shopText } from '../../data/shop'
 import { ButtonLink, Container, Reveal } from '../components/ui'
+import { asset } from '../lib/demo'
 import { usePrefs } from '../lib/prefs'
 
 export function About() {
@@ -30,7 +31,7 @@ export function About() {
           </p>
         </div>
         <Reveal className="image-frame aspect-[4/3] rounded-[28px]">
-          <img src="/images/hero.jpg" alt={t('about.imageAlt')} className="size-full object-cover" />
+          <img src={asset("/images/hero.jpg")} alt={t('about.imageAlt')} className="size-full object-cover" />
         </Reveal>
       </div>
 

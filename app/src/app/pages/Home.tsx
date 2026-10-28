@@ -6,6 +6,7 @@ import { shop, directionsUrl, shopText } from '../../data/shop'
 import { categories, localized } from '../../data/products'
 import { localizeCategory } from '../../data/i18n'
 import { useCatalog } from '../lib/catalog'
+import { asset } from '../lib/demo'
 import { ProductCard } from '../components/ProductCard'
 import { ButtonLink, Container, Reveal, SectionTitle } from '../components/ui'
 import { money } from '../lib/cart'
@@ -71,13 +72,13 @@ export function Home() {
               transition={{ duration: 1.1, delay: 0.2, ease }}
               className="image-frame relative aspect-[4/3] rounded-[32px] lg:aspect-[5/4]"
             >
-              <img src="/images/hero.jpg" alt={heroProduct.name} className="size-full object-cover" fetchPriority="high" />
+              <img src={asset("/images/hero.jpg")} alt={heroProduct.name} className="size-full object-cover" fetchPriority="high" />
               <Link
                 to={`/product/${heroProduct.slug}`}
                 className="absolute bottom-4 start-4 flex items-center gap-3 rounded-[16px] bg-surface/90 py-2 ps-2 pe-4 text-[13px] shadow-soft backdrop-blur transition-colors hover:bg-surface"
               >
                 <span className="image-frame size-10 rounded-[12px]">
-                  <img src={heroProduct.image} alt="" className="size-full object-cover" />
+                  <img src={asset(heroProduct.image)} alt="" className="size-full object-cover" />
                 </span>
                 <span>
                   <span className="block font-medium">{heroProduct.name}</span>
@@ -123,7 +124,7 @@ export function Home() {
                 <Reveal key={c.key} delay={i * 0.08}>
                   <Link to={`/shop?category=${c.key}`} className="group image-frame relative block aspect-[4/5] rounded-image">
                     <img
-                      src={c.image}
+                      src={asset(c.image)}
                       alt={c.label}
                       className="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
                     />
@@ -149,7 +150,7 @@ export function Home() {
         <Container>
           <div className="grid items-center gap-10 rounded-[32px] bg-surface-2/60 p-5 sm:p-8 lg:grid-cols-2 lg:gap-16 lg:p-12">
             <Reveal className="image-frame aspect-[4/3] rounded-image">
-              <img src="/images/lookbook.jpg" alt={t('about.imageAlt')} className="size-full object-cover" loading="lazy" />
+              <img src={asset("/images/lookbook.jpg")} alt={t('about.imageAlt')} className="size-full object-cover" loading="lazy" />
             </Reveal>
             <Reveal delay={0.1} className="lg:pe-8">
               <p className="text-[14px] text-muted">{t('home.editorial.eyebrow')}</p>

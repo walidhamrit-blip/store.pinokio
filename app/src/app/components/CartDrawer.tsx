@@ -7,6 +7,7 @@ import { FREE_SHIPPING_AT } from '../../data/products'
 import { optionLabel } from '../../data/i18n'
 import { localized } from '../../data/products'
 import { money, useCart } from '../lib/cart'
+import { asset } from '../lib/demo'
 import { usePrefs } from '../lib/prefs'
 import { Button } from './ui'
 
@@ -99,7 +100,7 @@ export function CartDrawer() {
                         >
                           <div className="flex gap-4 py-4">
                             <Link to={`/product/${item.slug}`} onClick={() => cart.setOpen(false)} className="image-frame size-[88px] shrink-0 rounded-[16px]">
-                              <img src={item.product.image} alt="" className="size-full object-cover" />
+                              <img src={asset(item.product.image)} alt="" className="size-full object-cover" />
                             </Link>
                             <div className="flex min-w-0 flex-1 flex-col">
                               <div className="flex items-start justify-between gap-3">
