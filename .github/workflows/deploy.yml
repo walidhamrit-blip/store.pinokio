@@ -1,0 +1,96 @@
+name: Deploy
+
+# Push to main → typecheck, tests, build, deploy. Nothing to click, nothing to
+# run locally.
+#
+# Requirements (one-time, in the repository settings):
+#   Secrets   CLOUDFLARE_API_TOKEN   token with Workers Scripts:Edit + D1:Edit
+#             CLOUDFLARE_ACCOUNT_ID  32 hex characters, from the dashboard URL
+#             ADMIN_PASSWORD          dashboard password (pushed as a Worker
+#                                     secret on every deploy)
+#   Variables STORE_URL               https://store.<subdomain>.workers.dev
+#                                     (optional: enables the post-deploy check)
+#             SKIP_ACTIONS_DEPLOY     "true" to let Cloudflare's own Git build
+#                                     deploy instead of this workflow
+#             BACKUP_KEEP             snapshots to keep (default 30)
+#
+# If Cloudflare is already building from GitHub (Workers & Pages → store →
+# Settings → Builds), turn that off first: two pipelines deploying the same
+# Worker race each other.
+
+on:
+  push:
+    branches: [main]
+    # Backups and docs must not restart the shop.
+    paths-ignore:
+      - 'backups/**'
+      - '**/*.md'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: vars.SKIP_ACTIONS_DEPLOY != 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      STORE_URL: ${{ vars.STORE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Explain missing credentials
+        if: env.CLOUDFLARE_API_TOKEN == ''
+        run: |
+          echo "::error::CLOUDFLARE_API_TOKEN is not set. Add it in Settings → Secrets and variables → Actions."
+          exit 1
+
+      - name: Push the dashboard password
+        if: env.ADMIN_PASSWORD != ''
+        run: printf '%s' "$ADMIN_PASSWORD" | npx wrangler secret put ADMIN_PASSWORD
+
+      - name: Deploy
+        run: npx wrangler deploy
+
+      - name: Smoke test
+        if: env.STORE_URL != ''
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5; do
+            body=$(curl -fsS --max-time 10 "$STORE_URL/api/health" || true)
+            [ -n "$body" ] && break
+            echo "Waiting for $STORE_URL (attempt $attempt)…"
+            sleep 4
+          done
+          echo "Health: $body"
+          echo "$body" | grep -q '"ok":true' || { echo "::error::Worker did not answer /api/health"; exit 1; }
+          echo "$body" | grep -q '"database":true' || echo "::warning::database is false — check the D1 binding in app/wrangler.jsonc"
+          echo "$body" | grep -q '"dashboard":true' || echo "::warning::dashboard is false — add the ADMIN_PASSWORD secret"

@@ -113,6 +113,28 @@ the `sites_deploy` tool from this directory. `scripts/postbuild.mjs` strips
 hidden files, source maps and their `sourceMappingURL` comments, so the same
 `dist/` is accepted by both targets.
 
+## Automation (GitHub Actions)
+
+Nothing to run by hand once the repository secrets exist:
+
+| Workflow | Trigger | Purpose |
+|---|---|---|
+| `Deploy` | push to `main` | install, typecheck, tests, build, push `ADMIN_PASSWORD`, `wrangler deploy`, `/api/health` smoke test |
+| `Backup D1` | daily 03:17 UTC, or *Run workflow* | `npm run db:backup` → `backups/<db>-<timestamp>.sql.gz` committed, retention `BACKUP_KEEP` (30) |
+| `Restore D1` | *Actions → Restore D1* | `npm run db:restore` on a snapshot, guarded by typing `restore` |
+
+Secrets: `CLOUDFLARE_API_TOKEN` (Workers Scripts:Edit + D1:Edit + Account
+Settings:Read), `CLOUDFLARE_ACCOUNT_ID`, `ADMIN_PASSWORD`.
+Variables: `STORE_URL` (smoke test), `SKIP_ACTIONS_DEPLOY=true` if you prefer
+Cloudflare's own Git builds, `BACKUP_KEEP`.
+
+The scripts are plain Node so they run identically on Windows and in CI:
+
+```sh
+npm run db:backup -- --keep=30     # export production into backups/
+npm run db:restore -- ../backups/store-….sql.gz --yes
+```
+
 ## Tests
 
 ```sh

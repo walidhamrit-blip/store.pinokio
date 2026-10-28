@@ -3,5 +3,5 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react()],
-  test: { environment: 'jsdom', include: ['test/**/*.test.tsx'], restoreMocks: true },
+  test: { environment: 'jsdom', include: ['test/**/*.test.{ts,tsx}'], restoreMocks: true },
 })

@@ -1,0 +1,79 @@
+name: Restore D1
+
+# Put a snapshot from backups/ back into the production database, from the
+# Actions tab — no terminal, no wrangler login.
+#
+#   Actions → Restore D1 → Run workflow
+#     file    backups/store-2026-10-28T03-17-42-681Z.sql.gz
+#     confirm restore
+#
+# This overwrites the catalogue and the orders. `confirm` must be typed exactly
+# as `restore`, and the workflow only accepts files inside backups/.
+
+on:
+  workflow_dispatch:
+    inputs:
+      file:
+        description: Snapshot path inside backups/ (e.g. backups/store-2026-10-28T03-17-42-681Z.sql.gz)
+        type: string
+        required: true
+      confirm:
+        description: Type "restore" to confirm the overwrite
+        type: string
+        required: true
+
+concurrency:
+  group: d1-restore
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  restore:
+    if: inputs.confirm == 'restore'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      SNAPSHOT: ${{ inputs.file }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Validate the snapshot path
+        working-directory: .
+        run: |
+          set -euo pipefail
+          case "$SNAPSHOT" in
+            backups/*.sql|backups/*.sql.gz) ;;
+            *) echo "::error::File must be inside backups/ and end with .sql or .sql.gz"; exit 1 ;;
+          esac
+          test -f "$SNAPSHOT" || { echo "::error::$SNAPSHOT not found in the repository"; exit 1; }
+          echo "Restoring $SNAPSHOT"
+
+      - name: Restore
+        working-directory: .
+        run: node app/scripts/restore.mjs "$SNAPSHOT" --yes
+
+      - name: Smoke test
+        if: vars.STORE_URL != ''
+        env:
+          STORE_URL: ${{ vars.STORE_URL }}
+        run: |
+          set -euo pipefail
+          sleep 5
+          body=$(curl -fsS --max-time 10 "$STORE_URL/api/health" || true)
+          echo "Health: $body"
+          echo "$body" | grep -q '"ok":true' || { echo "::error::Worker is not answering after the restore"; exit 1; }

@@ -13,7 +13,9 @@
     "login": "wrangler login",
     "db:create": "wrangler d1 create store",
     "db:studio": "wrangler d1 execute store --remote --command \"SELECT slug, price, published FROM products ORDER BY sort_order\"",
-    "test": "vitest run --config test/vitest.config.ts"
+    "test": "vitest run --config test/vitest.config.ts",
+    "db:backup": "node scripts/backup.mjs",
+    "db:restore": "node scripts/restore.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
