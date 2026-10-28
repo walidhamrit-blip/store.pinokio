@@ -16,9 +16,15 @@ import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
 
 const args = process.argv.slice(2)
+// Accepts both `--out=dir` and `--out dir`: the first is what npm scripts show
+// in their documentation, the second is what people type, and a silently
+// ignored `--out` used to send the dump to the wrong directory.
 const option = (name, fallback) => {
-  const found = args.find((arg) => arg.startsWith(`--${name}=`))
-  return found ? found.split('=')[1] : fallback
+  const inline = args.find((arg) => arg.startsWith(`--${name}=`))
+  if (inline) return inline.slice(name.length + 3)
+  const index = args.indexOf(`--${name}`)
+  if (index !== -1 && args[index + 1] && !args[index + 1].startsWith('--')) return args[index + 1]
+  return fallback
 }
 
 const database = option('database', process.env.D1_DATABASE ?? 'store')
