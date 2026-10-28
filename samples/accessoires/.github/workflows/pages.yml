@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+# Publish this sample as its own site: https://<account>.github.io/<repo>/
+#
+# One-time: Settings → Pages → Source: GitHub Actions. Then every push to main
+# builds the storefront with VITE_DEMO=1 (bundled catalogue, checkout confirmed
+# in the browser, no dashboard) and publishes it.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        working-directory: app
+        run: npm ci || npm install
+
+      - name: Build the static sample
+        working-directory: app
+        env:
+          VITE_DEMO: '1'
+          # A project site lives under /<repo>/; a user site or a custom domain
+          # serves from the root, where SITE_BASE should be unset.
+          SITE_BASE: /${{ github.event.repository.name }}/
+        run: npx vite build
+
+      - name: SPA fallback for shared deep links
+        working-directory: app
+        run: cp dist/client/index.html dist/client/404.html && touch dist/client/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist/client
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
