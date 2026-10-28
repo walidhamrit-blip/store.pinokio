@@ -71,8 +71,16 @@ jobs:
         id: deploy
         working-directory: samples/accessoires/app
         run: |
-          set -o pipefail
+          set +e
           npx wrangler pages deploy dist/client --project-name accessoires --branch main 2>&1 | tee /tmp/pages.log
+          code=${PIPESTATUS[0]}
+          set -e
+          if [ "$code" -ne 0 ]; then
+            # Annotations stay readable in the Actions UI and through the API,
+            # unlike the raw log. Mirrors the shop's own deploy workflow.
+            tail -n 20 /tmp/pages.log | sed 's/^/::error::wrangler: /'
+            exit "$code"
+          fi
           url=$(grep -Eo 'https://[A-Za-z0-9.-]+\.pages\.dev' /tmp/pages.log | tail -n 1 || true)
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Published: ${url:-unknown}"
