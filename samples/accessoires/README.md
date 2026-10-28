@@ -4,7 +4,7 @@ Un **échantillon de boutique en ligne** pour la spécialité *accessoires* :
 sac, bijoux, cheveux, parfums et cadeaux. C'est le lien que tu envoies à un
 client pour lui montrer à quoi ressemblerait son magasin.
 
-**En ligne :** https://walidhamrit-blip.github.io/store.pinokio/accessoires/
+**En ligne :** https://noor-accessoires.walidhamrit.workers.dev
 
 ## Ce que le client peut faire dans l'échantillon
 
@@ -93,36 +93,41 @@ pour obtenir un lien propre du type `https://<compte>.github.io/accessoires/`.
 Limite de GitHub Pages : un lien profond partagé (`/accessoires/product/...`)
 retombe sur la page d'accueil. Le lien à envoyer est la racine du site.
 
-## Mise en ligne — ce qui bloque, et quoi faire
+## Où le site est publié
 
-Le lien `https://walidhamrit-blip.github.io/store.pinokio/accessoires/` ne
-répond **que si GitHub Pages est activé** sur le dépôt. Tant que ce n'est pas
-fait, le job `deploy` échoue en une seconde et l'URL renvoie 404 (il n'existe
-aucun site à cette adresse).
+| Adresse | État |
+|---|---|
+| https://noor-accessoires.walidhamrit.workers.dev | **en ligne** — Worker statique Cloudflare, publié par [`.github/workflows/sample-cloudflare.yml`](../../.github/workflows/sample-cloudflare.yml) |
+| https://walidhamrit-blip.github.io/store.pinokio/accessoires/ | en attente de GitHub Pages (voir plus bas) |
 
-Une seule fois, dans le dépôt `store.pinokio` :
+Le Worker ne demande que la permission *Workers Scripts:Edit* du jeton
+`CLOUDFLARE_API_TOKEN` déjà utilisé par la boutique : aucune autorisation
+supplémentaire, aucune base de données, aucun coût. À chaque push touchant
+`samples/accessoires/`, le site est reconstruit et republié.
 
-1. https://github.com/walidhamrit-blip/store.pinokio/settings/pages
-2. **Build and deployment → Source** : choisir **GitHub Actions**
-   (et non « Deploy from a branch »).
-3. Enregistrer, puis relancer le workflow *Publish the samples to GitHub Pages*
-   (Actions → le run → **Re-run all jobs**), ou pousser un commit.
+## GitHub Pages : pourquoi l'URL 404
 
-Les étapes suivantes sont automatiques : chaque push reconstruit l'échantillon
-et le publie.
+Pages est bien activé (`build_type: workflow`), mais l'environnement
+`github-pages` n'autorise **que la branche `main`** comme source de
+déploiement. Un workflow lancé depuis `arena/bb8a518e-store-pinokio` est refusé
+par GitHub :
 
-### Sans GitHub Pages — Cloudflare Pages
+> Branch "arena/bb8a518e-store-pinokio" is not allowed to deploy to github-pages
+> due to environment protection rules.
 
-[`.github/workflows/sample-cloudflare.yml`](../../.github/workflows/sample-cloudflare.yml)
-sait publier le même build sur `https://accessoires.pages.dev`. Testé le
-2026-10-28 : le job échoue à `Authentication error [code: 10000]`, car le jeton
-`CLOUDFLARE_API_TOKEN` du dépôt n'a que *Workers Scripts:Edit* et *D1:Edit*.
-Il suffit d'ajouter **Account → Cloudflare Pages → Edit** à ce jeton
-(Cloudflare → My Profile → API Tokens → Edit), puis de relancer le workflow.
+Deux façons de l'obtenir, au choix :
 
-### Sans Pages du tout
+1. **Autoriser la branche** — Settings → Environments → `github-pages` →
+   *Deployment branches and tags* → **Add deployment branch** →
+   `arena/bb8a518e-store-pinokio` (ou *Any branch*). Le workflow
+   [`samples-pages.yml`](../../.github/workflows/samples-pages.yml) reprend
+   alors son rôle : l'échantillon arrive sur `/store.pinokio/accessoires/`.
+2. **Passer par `main`** — fusionner ce travail dans `main` : la politique
+   d'environnement l'accepte déjà, et le workflow publie l'index des
+   échantillons sur `/store.pinokio/` et l'échantillon sur `/accessoires/`.
 
-`accessoires-site.zip` (à la racine du dépôt, non versionné — régénérable avec
-la commande ci-dessus) contient le site prêt à glisser-déposer sur un
-hébergeur statique : Netlify Drop, Cloudflare Pages (*Upload assets*), Vercel…
-L'URL est fournie par l'hébergeur en quelques secondes.
+## Sans Pages du tout
+
+`accessoires-site.zip` (racine du dépôt, non versionné) contient le build prêt
+à glisser-déposer sur Netlify Drop, Cloudflare Pages (*Upload assets*) ou
+Vercel — URL fournie en quelques secondes.

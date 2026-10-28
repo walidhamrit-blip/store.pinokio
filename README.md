@@ -34,11 +34,14 @@ browser, no server, no database, no cost.
 
 | Sample | Link | Specialty |
 |---|---|---|
-| NOOR — نور | https://walidhamrit-blip.github.io/store.pinokio/accessoires/ | Bags, jewelry, hair, scent and gifts |
+| NOOR — نور | https://noor-accessoires.walidhamrit.workers.dev | Bags, jewelry, hair, scent and gifts |
 
-The index of all samples is https://walidhamrit-blip.github.io/store.pinokio/.
-They are rebuilt by [`.github/workflows/samples-pages.yml`](.github/workflows/samples-pages.yml)
-on every push, from [`samples/`](samples).
+The sample is rebuilt by [`.github/workflows/sample-cloudflare.yml`](.github/workflows/sample-cloudflare.yml)
+on every push that touches [`samples/`](samples): a static Worker, deployed with
+the same `CLOUDFLARE_API_TOKEN` the shop already uses, so there is nothing new to
+authorise. [`samples-pages.yml`](.github/workflows/samples-pages.yml) additionally
+publishes the samples through GitHub Pages once that is reachable from `main`
+(its environment allows no other branch).
 
 - [`samples/accessoires/`](samples/accessoires) is a complete, independent copy
   of the storefront under a fictional brand (NOOR). Its README explains how to
