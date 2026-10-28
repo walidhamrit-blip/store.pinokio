@@ -46,6 +46,8 @@ jobs:
           # backup will never restart a deploy.
           persist-credentials: true
 
+      - uses: ./.github/actions/clean-credentials
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
