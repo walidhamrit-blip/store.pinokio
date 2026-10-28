@@ -6,6 +6,7 @@ import { CartDrawer } from './components/CartDrawer'
 import { Footer } from './components/Footer'
 import { Nav } from './components/Nav'
 import { CartProvider } from './lib/cart'
+import { PrefsProvider } from './lib/prefs'
 import { About } from './pages/About'
 import { Checkout, OrderConfirmed } from './pages/Checkout'
 import { Home } from './pages/Home'
@@ -48,14 +49,16 @@ function Pages() {
 
 export function App() {
   return (
-    <BrowserRouter>
-      <CartProvider>
-        <ScrollToTop />
-        <Nav />
-        <Pages />
-        <Footer />
-        <CartDrawer />
-      </CartProvider>
-    </BrowserRouter>
+    <PrefsProvider>
+      <BrowserRouter>
+        <CartProvider>
+          <ScrollToTop />
+          <Nav />
+          <Pages />
+          <Footer />
+          <CartDrawer />
+        </CartProvider>
+      </BrowserRouter>
+    </PrefsProvider>
   )
 }

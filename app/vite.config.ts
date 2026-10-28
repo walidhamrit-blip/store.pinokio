@@ -5,5 +5,11 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), cloudflare()],
-  server: { port: 5173, strictPort: false },
+  server: {
+    port: 5173,
+    strictPort: false,
+    // Preview is served through a proxy host, so accept any Host header.
+    host: '0.0.0.0',
+    allowedHosts: true,
+  },
 })

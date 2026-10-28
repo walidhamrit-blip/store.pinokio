@@ -49,6 +49,11 @@ module.exports = {
       text: "Start",
       href: "start.js"
     }, {
+      icon: "fa-solid fa-cloud-arrow-up",
+      text: "Deploy to Cloudflare",
+      href: "deploy.js",
+      confirm: "Build the storefront and upload it to Cloudflare Workers? Run `npx wrangler login` in app/ first if you have not signed in."
+    }, {
       icon: "fa-solid fa-rotate",
       text: "Update",
       href: "update.js"
