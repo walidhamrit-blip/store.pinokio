@@ -14,7 +14,7 @@ import { usePrefs } from '../lib/prefs'
 import type { TKey } from '../i18n/dict'
 
 const BADGE_KEY: Record<Badge, TKey> = { New: 'badge.New', Bestseller: 'badge.Bestseller', 'Low stock': 'badge.Low stock' }
-const OPTION_KEY: Partial<Record<OptionName | string, TKey>> = { Glaze: 'option.Glaze', Colour: 'option.Colour', Scent: 'option.Scent' }
+const OPTION_KEY: Partial<Record<OptionName | string, TKey>> = { Colour: 'option.Colour', Finish: 'option.Finish', Scent: 'option.Scent' }
 
 export function Product() {
   const { slug } = useParams()

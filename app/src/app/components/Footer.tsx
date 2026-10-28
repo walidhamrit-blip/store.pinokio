@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 
 import { Container, inputClass } from './ui'
 import { Logo } from './Nav'
+import { shop } from '../../data/shop'
 import { usePrefs } from '../lib/prefs'
 import type { TKey } from '../i18n/dict'
 
@@ -12,10 +13,10 @@ const columns: { title: TKey; links: [TKey, string][] }[] = [
     title: 'footer.col.shop',
     links: [
       ['footer.link.all', '/shop'],
-      ['cat.ceramics', '/shop?category=ceramics'],
-      ['cat.textiles', '/shop?category=textiles'],
-      ['cat.lighting', '/shop?category=lighting'],
-      ['cat.kitchen', '/shop?category=kitchen'],
+      ['cat.bags', '/shop?category=bags'],
+      ['cat.jewelry', '/shop?category=jewelry'],
+      ['cat.accessories', '/shop?category=accessories'],
+      ['cat.beauty', '/shop?category=beauty'],
     ],
   },
   {
@@ -31,9 +32,9 @@ const columns: { title: TKey; links: [TKey, string][] }[] = [
     title: 'footer.col.studio',
     links: [
       ['footer.link.about', '/about'],
-      ['footer.link.journal', '/about'],
-      ['footer.link.stockists', '/about'],
-      ['footer.link.wholesale', '/about'],
+      ['footer.link.visit', '/about'],
+      ['footer.link.facebook', shop.facebook],
+      ['footer.link.whatsapp', `https://wa.me/${shop.whatsapp}`],
     ],
   },
 ]
@@ -93,9 +94,20 @@ export function Footer() {
                 <ul className="mt-4 flex flex-col gap-2.5">
                   {col.links.map(([label, to]) => (
                     <li key={label}>
-                      <Link to={to} className="text-[14px] text-muted transition-colors hover:text-fg">
-                        {t(label)}
-                      </Link>
+                      {to.startsWith('http') ? (
+                        <a
+                          href={to}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="text-[14px] text-muted transition-colors hover:text-fg"
+                        >
+                          {t(label)}
+                        </a>
+                      ) : (
+                        <Link to={to} className="text-[14px] text-muted transition-colors hover:text-fg">
+                          {t(label)}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

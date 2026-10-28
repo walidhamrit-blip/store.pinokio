@@ -47,10 +47,10 @@ beforeEach(() => {
 })
 
 it('renders the catalogue coming from the API, not the bundle', async () => {
-  catalogue = seedProducts.map((p, i) => (i === 0 ? { ...p, price: 123, copy: { ...p.copy, fr: { ...p.copy.fr!, name: 'Carafe éditée' } } } : p))
+  catalogue = seedProducts.map((p, i) => (i === 0 ? { ...p, price: 320, copy: { ...p.copy, fr: { ...p.copy.fr!, name: 'Cabas édité' } } } : p))
   render(<App />)
-  await waitFor(() => expect(screen.getAllByText('Carafe éditée').length).toBeGreaterThan(0))
-  expect(screen.getAllByText('$123').length).toBeGreaterThan(0)
+  await waitFor(() => expect(screen.getAllByText('Cabas édité').length).toBeGreaterThan(0))
+  expect(screen.getAllByText('320 LYD').length).toBeGreaterThan(0)
 })
 
 it('falls back to the bundled seed when the API fails', async () => {
@@ -58,7 +58,7 @@ it('falls back to the bundled seed when the API fails', async () => {
   globalThis.fetch = (async () => new Response('boom', { status: 500 })) as never
   render(<App />)
   await waitFor(() => expect(screen.getAllByText('Nouveautés').length).toBeGreaterThan(0))
-  expect(screen.getAllByText('Carafe à filtre').length).toBeGreaterThan(0)
+  expect(screen.getAllByText('Cabas en cuir camel').length).toBeGreaterThan(0)
 })
 
 it('guards the dashboard, then lets the owner create an article', async () => {

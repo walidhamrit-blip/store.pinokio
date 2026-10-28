@@ -1,5 +1,5 @@
 {
-  "title": "Store",
-  "description": "Editorial storefront for a small catalogue: hero and new arrivals, a shop page with filters and sorting, product pages, a slide-out bag that persists in the browser, and a demo checkout backed by a small Hono Worker API.",
+  "title": "DAOS — داوس",
+  "description": "Presentation storefront for DAOS (داوس), the accessories shop in Zliten, Libya: bags, jewelry, hair accessories, scent and gifts, with the real address, opening hours, phone and WhatsApp, prices in Libyan dinar, and a demo cash-on-delivery checkout backed by a small Hono Worker API.",
   "icon": "icon.jpg"
 }

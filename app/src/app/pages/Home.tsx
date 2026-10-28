@@ -1,7 +1,8 @@
 import { motion } from 'motion/react'
-import { ArrowRight, Leaf, RefreshCcw, Truck } from 'lucide-react'
+import { ArrowRight, Clock, Leaf, MapPin, MessageCircle, RefreshCcw, Truck } from 'lucide-react'
 import { Link } from 'react-router'
 
+import { shop, directionsUrl, shopText } from '../../data/shop'
 import { categories, localized } from '../../data/products'
 import { localizeCategory } from '../../data/i18n'
 import { useCatalog } from '../lib/catalog'
@@ -203,6 +204,63 @@ export function Home() {
               </Reveal>
             ))}
           </ul>
+        </Container>
+      </section>
+
+      {/* The shop itself: where it is, when it is open, how to reach it. */}
+      <section className="pt-24 sm:pt-32">
+        <Container>
+          <Reveal>
+            <div className="grid gap-8 rounded-[32px] border border-line bg-surface p-6 sm:p-9 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-14">
+              <div>
+                <p className="text-[14px] text-muted">
+                  {shop.name} · {shopText(shop.city, lang)}
+                </p>
+                <h2 className="font-display mt-3 text-balance text-[34px] leading-[1.05] sm:text-[44px] rtl:text-[28px] sm:rtl:text-[36px]">
+                  {shopText(shop.address, lang)}
+                </h2>
+                <div className="mt-6 flex flex-col gap-3 text-[15px] text-muted">
+                  <p className="flex items-start gap-2.5">
+                    <Clock className="mt-0.5 size-4 shrink-0" />
+                    <span>
+                      {shop.hours.map((h) => `${shopText(h, lang)} · ${h.open}–${h.close}`).join(' · ')}
+                    </span>
+                  </p>
+                  <p className="flex items-start gap-2.5">
+                    <Truck className="mt-0.5 size-4 shrink-0" />
+                    <span>{shopText(shop.delivery, lang)}</span>
+                  </p>
+                  <p className="flex items-start gap-2.5">
+                    <MapPin className="mt-0.5 size-4 shrink-0" />
+                    <span dir="ltr">{shop.phone}</span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2.5">
+                <ButtonLink to="/about" size="lg">
+                  {t('home.hero.cta2')}
+                </ButtonLink>
+                <a
+                  href={directionsUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-control border border-line text-[15px] font-medium transition-colors hover:bg-surface-2"
+                >
+                  <MapPin className="size-4" />
+                  {t('about.visit.map')}
+                </a>
+                <a
+                  href={`https://wa.me/${shop.whatsapp}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-control border border-line text-[15px] font-medium transition-colors hover:bg-surface-2"
+                >
+                  <MessageCircle className="size-4" />
+                  {t('about.visit.whatsapp')}
+                </a>
+              </div>
+            </div>
+          </Reveal>
         </Container>
       </section>
     </>

@@ -10,9 +10,9 @@ import { HeaderControls, PreferencesPanel } from './preferences'
 
 const linkDefs = [
   { to: '/shop', key: 'nav.shop' },
-  { to: '/shop?category=ceramics', key: 'nav.ceramics' },
-  { to: '/shop?category=textiles', key: 'nav.textiles' },
-  { to: '/shop?category=lighting', key: 'nav.lighting' },
+  { to: '/shop?category=bags', key: 'nav.bags' },
+  { to: '/shop?category=jewelry', key: 'nav.jewelry' },
+  { to: '/shop?category=accessories', key: 'nav.accessories' },
   { to: '/about', key: 'nav.about' },
 ] as const
 
@@ -20,10 +20,16 @@ export function Logo({ className }: { className?: string }) {
   const { t } = usePrefs()
   return (
     <Link to="/" className={cx('inline-flex items-center gap-2', className)}>
-      <svg viewBox="0 0 24 24" className="size-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden>
-        <path d="M9 4c0 4-3 5-3 10a6 6 0 0 0 12 0c0-5-3-6-3-10z" />
+      <svg viewBox="0 0 24 24" className="size-6 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" aria-hidden>
+        <path d="M6 3.5h5.2a8.5 8.5 0 0 1 0 17H6z" />
+        <circle cx="11.4" cy="12" r="1.5" fill="currentColor" stroke="none" />
       </svg>
-      <span className="font-display whitespace-nowrap text-[19px] leading-none min-[380px]:text-[21px] sm:text-[23px]">{t('brand')}</span>
+      <span className="flex items-baseline gap-2">
+        <span className="font-display whitespace-nowrap text-[19px] leading-none tracking-[0.14em] min-[380px]:text-[21px] sm:text-[22px]">
+          {t('brand')}
+        </span>
+        <span className="hidden text-[10px] leading-none tracking-[0.22em] text-faint min-[380px]:inline">ZLITEN</span>
+      </span>
     </Link>
   )
 }

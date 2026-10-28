@@ -1,17 +1,24 @@
-# Store
+# DAOS — داوس
 
-A one-click Pinokio launcher for the **Store** storefront: an editorial
-storefront for a small catalogue, with a hero and new arrivals on the home page,
-a shop page with category and price filters and sorting, product pages with
-options and an accordion, a slide-out bag with free-shipping progress that
-persists in the browser, and a demo checkout with an order confirmation.
+A one-click Pinokio launcher for **DAOS**, the accessories shop in Zliten, Libya:
+a presentation storefront built from the shop's real listing — address, opening
+hours, phone, WhatsApp, Google rating and the pieces it sells (bags, jewelry,
+hair accessories, scent and gifts).
 
-The store opens in **Arabic** with a full right-to-left layout, and can be read
-in French or English from the language menu. A theme menu offers six palettes
-made for clothes, accessories and beauty — sand, noir, rose, olive, terracotta
-and lavender — and a sun/moon switch flips each of them between light and dark.
-All three preferences are remembered in the browser and applied before the first
-paint, so the store never flashes the wrong colour.
+The shop opens in **Arabic** with a full right-to-left layout and a second name
+in Latin letters, and can be read in French or English from the language menu.
+A theme menu offers six palettes made for clothes, accessories and beauty —
+sand, noir, rose, olive, terracotta and lavender — and a sun/moon switch flips
+each of them between light and dark. All three preferences are remembered in the
+browser and applied before the first paint.
+
+Prices are in **Libyan dinar (LYD)**, delivery inside Libya is free over 250 LYD,
+and checkout is cash on delivery: nothing is charged, the order is recorded in
+the shop dashboard.
+
+The shop, its address and its hours are data — [`app/src/data/shop.ts`](app/src/data/shop.ts)
+is the only place to change them. The catalogue is in
+[`app/src/data/seed.json`](app/src/data/seed.json) and editable from `/admin`.
 
 The storefront is a React + Vite single page app served by a small
 [Hono](https://hono.dev) Worker that handles the API routes. The app ships
@@ -334,7 +341,7 @@ print(res.json())  # {'ok': True}
 
 ```
 store/
-├── app/            # The storefront (React + Vite + Hono Worker + D1 dashboard)
+├── app/            # The DAOS storefront (React + Vite + Hono Worker + D1 dashboard)
 ├── icon.jpg        # Launcher icon
 ├── deploy.js       # Builds and deploys the Worker to Cloudflare
 ├── install.js      # npm install inside app/

@@ -33,7 +33,7 @@ const blankProduct = (): Product => ({
   slug: '',
   price: 0,
   compareAt: null,
-  category: 'ceramics',
+  category: 'accessories',
   image: '/images/hero.jpg',
   badge: null,
   featured: false,

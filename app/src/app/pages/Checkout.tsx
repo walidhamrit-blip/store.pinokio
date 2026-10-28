@@ -1,4 +1,4 @@
-import { Check, Lock } from 'lucide-react'
+import { Banknote, Check, Lock } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router'
 
@@ -22,7 +22,7 @@ export function Checkout() {
   const cart = useCart()
   const navigate = useNavigate()
   const { lang, t } = usePrefs()
-  const [form, setForm] = useState({ email: '', first: '', last: '', address: '', city: '', postcode: '', country: 'United States' })
+  const [form, setForm] = useState({ email: '', first: '', last: '', address: '', city: '', postcode: '', country: 'Libya' })
   const [state, setState] = useState<'idle' | 'sending' | 'error'>('idle')
   const [error, setError] = useState('')
 
@@ -95,20 +95,24 @@ export function Checkout() {
           <section>
             <h2 className="text-[16px] font-medium">{t('checkout.payment')}</h2>
             <div className="mt-4 rounded-card border border-line bg-surface p-5">
-              <div className="flex items-start gap-2 text-[14px] leading-relaxed text-muted">
+              <div className="flex items-start gap-3">
+                <span className="grid size-9 shrink-0 place-items-center rounded-[11px] bg-surface-2">
+                  <Banknote className="size-4" />
+                </span>
+                <div>
+                  <p className="text-[15px] font-medium">{t('checkout.cod')}</p>
+                  <p className="mt-1 text-[14px] leading-relaxed text-muted">{t('checkout.cod.body')}</p>
+                </div>
+              </div>
+              <div className="mt-4 flex items-start gap-2 border-t border-line pt-4 text-[13px] leading-relaxed text-muted">
                 <Lock className="mt-0.5 size-4 shrink-0" />
                 <span>
                   {t('checkout.demoBefore')}{' '}
-                  <code dir="ltr" className="rounded-[6px] bg-surface-2 px-1.5 py-0.5 text-[12.5px]">
+                  <code dir="ltr" className="rounded-[6px] bg-surface-2 px-1.5 py-0.5 text-[12px]">
                     src/worker/index.ts
                   </code>{' '}
                   {t('checkout.demoAfter')}
                 </span>
-              </div>
-              <div className="mt-4 grid grid-cols-2 gap-3 opacity-60">
-                <input disabled dir="ltr" placeholder={t('checkout.card')} className={`${inputClass} col-span-2`} />
-                <input disabled dir="ltr" placeholder={t('checkout.expiry')} className={inputClass} />
-                <input disabled dir="ltr" placeholder={t('checkout.cvc')} className={inputClass} />
               </div>
             </div>
           </section>

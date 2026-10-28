@@ -1,651 +1,686 @@
 {
+  "freeShippingAt": 250,
+  "categories": [
+    {
+      "key": "bags",
+      "label": "Bags",
+      "image": "/images/tote.jpg",
+      "blurb": "Totes, crossbodies and evening bags"
+    },
+    {
+      "key": "jewelry",
+      "label": "Jewelry",
+      "image": "/images/earrings.jpg",
+      "blurb": "Gold, silver and pearls"
+    },
+    {
+      "key": "accessories",
+      "label": "Accessories",
+      "image": "/images/hair-clips.jpg",
+      "blurb": "Hair, silk and small things"
+    },
+    {
+      "key": "beauty",
+      "label": "Beauty",
+      "image": "/images/perfume.jpg",
+      "blurb": "Scent, care and gifts"
+    }
+  ],
   "products": [
     {
-      "slug": "pour-over-carafe",
-      "price": 68,
-      "compareAt": null,
-      "category": "ceramics",
-      "image": "/images/carafe.jpg",
+      "slug": "camel-leather-tote",
+      "price": 320,
+      "compareAt": 380,
+      "category": "bags",
+      "image": "/images/tote.jpg",
       "badge": "Bestseller",
       "featured": true,
       "published": true,
       "sortOrder": 0,
       "copy": {
         "en": {
-          "name": "Pour-over carafe",
-          "short": "Matte stoneware, 750 ml",
-          "description": "A carafe shaped for the slow pour. The waist sits naturally in the hand and the lip is cut so the last drop lands in the cup, not on the table.",
+          "name": "Camel leather tote",
+          "short": "Structured, fits a laptop",
+          "description": "Our everyday bag: a stiff base that stands on its own, a wide opening you can reach into without looking, and handles long enough for the shoulder.",
           "details": [
-            "Holds 750 ml",
-            "Dishwasher safe, though it prefers a rinse",
-            "Each piece varies slightly in tone"
+            "Holds a 13-inch laptop",
+            "Inner zip pocket and two slots",
+            "Gold-tone hardware"
           ],
-          "materials": "Stoneware with a matte sand glaze, fired at 1240°C in our Lisbon studio."
+          "materials": "Full-grain leather with a matte finish, lined in cotton twill.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Camel",
+              "Black",
+              "Ivory"
+            ]
+          }
         },
         "ar": {
-          "name": "كَراف القهوة المقطّرة",
-          "short": "خزف مطفي، 750 مل",
-          "description": "كَراف مصمم للصبّ البطيء. يتّسع الخصر ليجلس طبيعيًا في اليد، وحُدّت الحافة بحيث تقع آخر قطرة في الفنجان لا على الطاولة.",
+          "name": "حقيبة توت جلدية",
+          "short": "بتصميم ثابت يتّسع للحاسوب",
+          "description": "حقيبتنا اليومية: قاعدة صلبة تقف وحدها، فتحة واسعة تُدخل يدك دون أن تنظر، ومقابض طويلة تكفي للكتف.",
           "details": [
-            "يتسع لـ 750 مل",
-            "آمن في غسالة الأطباق، لكنه يفضّل الشطف",
-            "تختلف كل قطعة قليلًا في اللون"
+            "تتّسع لحاسوب 13 بوصة",
+            "جيب داخلي بسحّاب وجيبان صغيران",
+            "إكسسوارات بلون ذهبي"
           ],
-          "materials": "خزف بطلاء رملي مطفي، مشوي على حرارة 1240 °م في استوديونا في لشبونة."
+          "materials": "جلد طبيعي كامل الحبيبات بلمسة مطفية، وبطانة من القطن.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Camel",
+              "Black",
+              "Ivory"
+            ]
+          }
         },
         "fr": {
-          "name": "Carafe à filtre",
-          "short": "Grès mat, 750 ml",
-          "description": "Une carafe dessinée pour le versement lent. La taille se love dans la main et le bec est coupé pour que la dernière goutte tombe dans la tasse, pas sur la table.",
+          "name": "Cabas en cuir camel",
+          "short": "Structuré, accepte un ordinateur",
+          "description": "Notre sac du quotidien : une base rigide qui tient debout, une ouverture large où la main entre sans regarder, et des anses assez longues pour l’épaule.",
           "details": [
-            "Contenance 750 ml",
-            "Compatible lave-vaisselle, mais préfère un rinçage",
-            "Chaque pièce varie légèrement de teinte"
+            "Contient un ordinateur 13 pouces",
+            "Poche zippée intérieure et deux fentes",
+            "Attaches dorées"
           ],
-          "materials": "Grès émaillé mat sable, cuit à 1240 °C dans notre atelier de Lisbonne."
+          "materials": "Cuir pleine fleur au fini mat, doublure en twill de coton.",
+          "options": {
+            "name": "Colour",
+            "values": [
+              "Camel",
+              "Black",
+              "Ivory"
+            ]
+          }
         }
       }
     },
     {
-      "slug": "speckled-mug-pair",
-      "price": 54,
+      "slug": "quilted-crossbody",
+      "price": 210,
       "compareAt": null,
-      "category": "ceramics",
-      "image": "/images/mugs.jpg",
-      "badge": null,
+      "category": "bags",
+      "image": "/images/crossbody.jpg",
+      "badge": "New",
       "featured": true,
       "published": true,
       "sortOrder": 1,
       "copy": {
         "en": {
-          "name": "Speckled mug, pair",
-          "short": "Oatmeal glaze, 320 ml each",
-          "description": "Two mugs with a generous handle and a lip that is thin enough to drink from well. The speckle comes from iron in the clay, so no two are alike.",
+          "name": "Quilted crossbody",
+          "short": "Chain strap, matte leather",
+          "description": "Small enough to forget you are wearing it, big enough for a phone, keys, cards and a lipstick. The chain is fixed so it never tangles.",
           "details": [
-            "Set of two",
-            "320 ml each",
-            "Microwave and dishwasher safe"
+            "Adjustable chain, 55 cm",
+            "Magnetic flap",
+            "Fits a large phone"
           ],
-          "materials": "Iron-flecked stoneware with a satin oatmeal glaze.",
+          "materials": "Quilted leather with a matte grain and gold-tone chain.",
           "options": {
-            "name": "Glaze",
+            "name": "Colour",
             "values": [
-              "Oatmeal",
-              "Ash",
-              "Clay"
+              "Black",
+              "Tan"
             ]
           }
         },
         "ar": {
-          "name": "كوب منقّط، قطعتان",
-          "short": "طلاء بلون الشوفان، 320 مل لكل كوب",
-          "description": "كوبان بمقبض واسع وحافة رقيقة تكفي للشرب بارتياح. يأتي التنقيط من الحديد في الطين، فلا يتشابه كوبان.",
+          "name": "حقيبة كتف مبطنة",
+          "short": "سلسلة وجلد مطفي",
+          "description": "صغيرة بما يكفي لتنسي أنك تحملينها، وواسعة بما يكفي للهاتف والمفاتيح والبطاقات وأحمر الشفاه. السلسلة ثابتة فلا تتشابك.",
           "details": [
-            "طقم من قطعتين",
-            "320 مل لكل كوب",
-            "آمن في الميكروويف وغسالة الأطباق"
+            "سلسلة قابلة للتعديل، 55 سم",
+            "إغلاق مغناطيسي",
+            "تتّسع لهاتف كبير"
           ],
-          "materials": "خزف مرشوش بالحديد بطلاء ساتاني بلون الشوفان.",
+          "materials": "جلد مبطّن بحبيبات مطفية وسلسلة بلون ذهبي.",
           "options": {
-            "name": "Glaze",
+            "name": "Colour",
             "values": [
-              "Oatmeal",
-              "Ash",
-              "Clay"
+              "Black",
+              "Tan"
             ]
           }
         },
         "fr": {
-          "name": "Tasses mouchetées, paire",
-          "short": "Émail avoine, 320 ml chacune",
-          "description": "Deux tasses à l’anse généreuse et au bord assez fin pour bien boire. Les mouchetures viennent du fer de l’argile : aucune ne ressemble à une autre.",
+          "name": "Sac bandoulière matelassé",
+          "short": "Chaîne, cuir mat",
+          "description": "Assez petit pour oublier qu’on le porte, assez grand pour un téléphone, des clés, des cartes et un rouge à lèvres. La chaîne est fixe, elle ne s’emmêle pas.",
           "details": [
-            "Lot de deux",
-            "320 ml chacune",
-            "Compatible micro-ondes et lave-vaisselle"
+            "Chaîne réglable, 55 cm",
+            "Rabat magnétique",
+            "Contient un grand téléphone"
           ],
-          "materials": "Grès tacheté de fer, émail satiné couleur avoine.",
+          "materials": "Cuir matelassé au grain mat, chaîne dorée.",
           "options": {
-            "name": "Glaze",
+            "name": "Colour",
             "values": [
-              "Oatmeal",
-              "Ash",
-              "Clay"
+              "Black",
+              "Tan"
             ]
           }
         }
       }
     },
     {
-      "slug": "washed-linen-throw",
-      "price": 148,
+      "slug": "ivory-chain-bag",
+      "price": 185,
       "compareAt": null,
-      "category": "textiles",
-      "image": "/images/throw.jpg",
-      "badge": "New",
-      "featured": true,
+      "category": "bags",
+      "image": "/images/chain-bag.jpg",
+      "badge": null,
+      "featured": false,
       "published": true,
       "sortOrder": 2,
       "copy": {
         "en": {
-          "name": "Washed linen throw",
-          "short": "Oat, 130 by 180 cm",
-          "description": "Heavyweight European flax, stone-washed until it drapes like something you have owned for years. The fringe is twisted by hand.",
+          "name": "Ivory chain bag",
+          "short": "For evenings and weddings",
+          "description": "A soft little bag on a chunky chain, in a warm off-white that flatters every colour. Wear it short on the shoulder or long across the body.",
           "details": [
-            "130 by 180 cm",
-            "Softens further with every wash",
-            "Woven in Portugal"
+            "Two chain lengths",
+            "Card slot inside",
+            "Soft cotton dust bag included"
           ],
-          "materials": "100% European flax linen, pre-washed. Machine wash cool, line dry.",
+          "materials": "Smooth leather in warm ivory with a gold-tone chain.",
           "options": {
             "name": "Colour",
             "values": [
-              "Oat",
-              "Charcoal",
-              "Sage"
+              "Ivory",
+              "Gold"
             ]
           }
         },
         "ar": {
-          "name": "بطّانية كتّان مغسولة",
-          "short": "الشوفان، 130 × 180 سم",
-          "description": "كتّان أوروبي ثقيل، مغسول بالحجر حتى ينسدل كأنه قطعة تملكها منذ سنوات. الأطراف مفتولة باليد.",
+          "name": "حقيبة سلسلة عاجية",
+          "short": "للمناسبات والأعراس",
+          "description": "حقيبة صغيرة ناعمة على سلسلة عريضة، بلون عاجي دافئ يناسب كل الألوان. البسيها قصيرة على الكتف أو طويلة عبر الجسم.",
           "details": [
-            "130 × 180 سم",
-            "يزداد نعومة مع كل غسلة",
-            "منسوجة في البرتغال"
+            "طولان للسلسلة",
+            "جيب للبطاقات في الداخل",
+            "مع كيس قماشي لحفظها"
           ],
-          "materials": "كتّان أوروبي 100٪، مغسول مسبقًا. غسيل آلي بماء بارد، وتجفيف على الحبل.",
+          "materials": "جلد ناعم بلون عاجي دافئ وسلسلة بلون ذهبي.",
           "options": {
             "name": "Colour",
             "values": [
-              "Oat",
-              "Charcoal",
-              "Sage"
+              "Ivory",
+              "Gold"
             ]
           }
         },
         "fr": {
-          "name": "Plaid en lin lavé",
-          "short": "Avoine, 130 × 180 cm",
-          "description": "Lin européen épais, lavé à la pierre jusqu’à tomber comme une pièce que vous possédez depuis des années. Les franges sont torsadées à la main.",
+          "name": "Sac chaîne ivoire",
+          "short": "Pour les soirées et les mariages",
+          "description": "Un petit sac souple sur grosse chaîne, dans un blanc cassé chaud qui va avec toutes les couleurs. Court à l’épaule ou long en bandoulière.",
           "details": [
-            "130 × 180 cm",
-            "S’adoucit à chaque lavage",
-            "Tissé au Portugal"
+            "Deux longueurs de chaîne",
+            "Emplacement à cartes",
+            "Pochette en coton incluse"
           ],
-          "materials": "100 % lin européen, prélavé. Lavage machine à froid, séchage à l’air.",
+          "materials": "Cuir lisse ivoire chaud et chaîne dorée.",
           "options": {
             "name": "Colour",
             "values": [
-              "Oat",
-              "Charcoal",
-              "Sage"
+              "Ivory",
+              "Gold"
             ]
           }
         }
       }
     },
     {
-      "slug": "walnut-serving-board",
-      "price": 92,
-      "compareAt": null,
-      "category": "kitchen",
-      "image": "/images/board.jpg",
-      "badge": null,
+      "slug": "gold-earring-trio",
+      "price": 65,
+      "compareAt": 80,
+      "category": "jewelry",
+      "image": "/images/earrings.jpg",
+      "badge": "Bestseller",
       "featured": true,
       "published": true,
       "sortOrder": 3,
       "copy": {
         "en": {
-          "name": "Walnut serving board",
-          "short": "Solid walnut, 60 cm",
-          "description": "A long board cut from a single piece of American black walnut, with a handle turned to sit comfortably in the palm. Finished with food-safe oil.",
+          "name": "Earring trio",
+          "short": "Hoops, studs and drops",
+          "description": "Three pairs that work together or alone: a small hoop, a flat stud and a fine drop. Gold-plated brass, light enough to forget by lunch.",
           "details": [
-            "60 by 14 cm",
-            "Hand wash and oil occasionally",
-            "Grain and colour vary"
+            "Three pairs in one box",
+            "Gold-plated brass",
+            "Hypoallergenic steel posts"
           ],
-          "materials": "Solid American black walnut, finished with beeswax and mineral oil."
+          "materials": "Gold-plated brass, 18 mm hoop, with stainless steel posts.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
         },
         "ar": {
-          "name": "لوح تقديم من الجوز",
-          "short": "جوز صلب، 60 سم",
-          "description": "لوح طويل مقطوع من قطعة واحدة من الجوز الأسود الأمريكي، بمقبض مخروط ليجلس مريحًا في راحة اليد. مشطّب بزيت آمن للطعام.",
+          "name": "طقم أقراط ثلاثي",
+          "short": "حلقة وقطعة مسطحة ومعلّقة",
+          "description": "ثلاثة أزواج تُلبس معًا أو كل واحدة وحدها: حلقة صغيرة، وقطعة مسطحة، وأخرى معلّقة. نحاس مطلي بالذهب، خفيف حتى تنسيه.",
           "details": [
-            "60 × 14 سم",
-            "غسل يدوي ودهن بالزيت أحيانًا",
-            "تختلف العروق واللون"
+            "ثلاثة أزواج في علبة واحدة",
+            "نحاس مطلي بالذهب",
+            "أعمدة من الستانلس المناسب للبشرة الحساسة"
           ],
-          "materials": "جوز أسود أمريكي صلب، مشطّب بشمع العسل والزيت المعدني."
+          "materials": "نحاس مطلي بالذهب، حلقة 18 مم، وأعمدة ستانلس.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
         },
         "fr": {
-          "name": "Planche de service en noyer",
-          "short": "Noyer massif, 60 cm",
-          "description": "Une longue planche taillée dans une seule pièce de noyer noir américain, avec une poignée tournée pour bien tenir dans la paume. Finition à l’huile alimentaire.",
+          "name": "Trio de boucles d’oreilles",
+          "short": "Créoles, puces et pendantes",
+          "description": "Trois paires qui se portent ensemble ou séparément : une petite créole, une puce plate et une pendante fine. Laiton doré, assez léger pour oublier qu’on les porte.",
           "details": [
-            "60 × 14 cm",
-            "Lavage à la main, huiler de temps en temps",
-            "Le veinage et la teinte varient"
+            "Trois paires dans un écrin",
+            "Laiton plaqué or",
+            "Tiges en acier inoxydable"
           ],
-          "materials": "Noyer noir américain massif, fini à la cire d’abeille et à l’huile minérale."
+          "materials": "Laiton plaqué or, créole de 18 mm, tiges en acier inoxydable.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Gold",
+              "Silver"
+            ]
+          }
         }
       }
     },
     {
-      "slug": "amber-soy-candle",
-      "price": 38,
+      "slug": "pearl-layer-necklace",
+      "price": 95,
       "compareAt": null,
-      "category": "home",
-      "image": "/images/candle.jpg",
-      "badge": "Bestseller",
-      "featured": false,
+      "category": "jewelry",
+      "image": "/images/necklace.jpg",
+      "badge": null,
+      "featured": true,
       "published": true,
       "sortOrder": 4,
       "copy": {
         "en": {
-          "name": "Soy candle, cedar and fig",
-          "short": "Amber glass, 50 hours",
-          "description": "Dry cedar, green fig and a little smoke. Poured by hand in small batches into reusable amber glass with a cotton wick that burns clean.",
+          "name": "Layered pearl necklace",
+          "short": "Two chains, one clasp",
+          "description": "Both chains are joined at the clasp, so the layering stays exactly as it looked in the mirror. The pearl sits just below the collarbone.",
           "details": [
-            "Approximately 50 hours",
-            "Reusable glass with a wooden lid",
-            "Trim the wick to 5 mm before each burn"
+            "38 and 45 cm chains",
+            "Freshwater pearl",
+            "Extender for 3 more cm"
           ],
-          "materials": "Soy wax, cotton wick, essential and fine fragrance oils.",
+          "materials": "Gold-plated brass chains with a single freshwater pearl.",
           "options": {
-            "name": "Scent",
+            "name": "Finish",
             "values": [
-              "Cedar and fig",
-              "Tobacco leaf",
-              "Sea salt"
+              "Gold",
+              "Silver"
             ]
           }
         },
         "ar": {
-          "name": "شمعة صويا، الأرز والتين",
-          "short": "زجاج عنبري، 50 ساعة",
-          "description": "أرز جاف وتين أخضر وقليل من الدخان. تُصبّ باليد بكميات صغيرة في زجاج عنبري قابل لإعادة الاستخدام، بفتيل قطني يحترق بنظافة.",
+          "name": "عقد طبقات باللؤلؤ",
+          "short": "سلسلتان بمشبك واحد",
+          "description": "السلسلتان موصولتان عند المشبك، فيبقى الترتيب كما رأيته في المرآة. تجلس اللؤلؤة أسفل عظمة الترقوة بقليل.",
           "details": [
-            "نحو 50 ساعة",
-            "زجاج قابل لإعادة الاستخدام مع غطاء خشبي",
-            "قصّ الفتيل إلى 5 مم قبل كل إشعال"
+            "سلسلتان بطول 38 و45 سم",
+            "لؤلؤ طبيعي",
+            "وصلة إضافية 3 سم"
           ],
-          "materials": "شمع صويا، فتيل قطني، زيوت عطرية أساسية ومركّزة.",
+          "materials": "سلاسل نحاس مطلي بالذهب مع لؤلؤة طبيعية واحدة.",
           "options": {
-            "name": "Scent",
+            "name": "Finish",
             "values": [
-              "Cedar and fig",
-              "Tobacco leaf",
-              "Sea salt"
+              "Gold",
+              "Silver"
             ]
           }
         },
         "fr": {
-          "name": "Bougie de soja, cèdre et figue",
-          "short": "Verre ambré, 50 heures",
-          "description": "Cèdre sec, figue verte et un peu de fumée. Coulée à la main en petites séries dans un verre ambré réutilisable, avec une mèche de coton qui brûle proprement.",
+          "name": "Collier de perles superposé",
+          "short": "Deux chaînes, un fermoir",
+          "description": "Les deux chaînes sont réunies au fermoir : la superposition reste exactement comme dans le miroir. La perle tombe juste sous la clavicule.",
           "details": [
-            "Environ 50 heures",
-            "Verre réutilisable avec couvercle en bois",
-            "Coupez la mèche à 5 mm avant chaque allumage"
+            "Chaînes de 38 et 45 cm",
+            "Perle d’eau douce",
+            "Rallonge de 3 cm"
           ],
-          "materials": "Cire de soja, mèche en coton, huiles essentielles et parfums fins.",
+          "materials": "Chaînes en laiton plaqué or et une perle d’eau douce.",
           "options": {
-            "name": "Scent",
+            "name": "Finish",
             "values": [
-              "Cedar and fig",
-              "Tobacco leaf",
-              "Sea salt"
+              "Gold",
+              "Silver"
             ]
           }
         }
       }
     },
     {
-      "slug": "brass-table-lamp",
-      "price": 240,
+      "slug": "steel-cuff",
+      "price": 120,
       "compareAt": null,
-      "category": "lighting",
-      "image": "/images/lamp.jpg",
-      "badge": null,
-      "featured": true,
+      "category": "jewelry",
+      "image": "/images/bracelet.jpg",
+      "badge": "Low stock",
+      "featured": false,
       "published": true,
       "sortOrder": 5,
       "copy": {
         "en": {
-          "name": "Brass table lamp",
-          "short": "Brushed brass, linen shade",
-          "description": "A small lamp with a tapered brass base and a natural linen shade that turns any bulb warm. Made for a bedside or a desk corner.",
+          "name": "Brushed steel cuff",
+          "short": "Wear it every day",
+          "description": "An open cuff with a brushed face and polished edges: it slips on, stays put, and does not mind water. The kind of piece you stop taking off.",
           "details": [
-            "42 cm tall",
-            "E27 fitting, bulb included",
-            "Inline dimmer switch"
+            "Open cuff, one size",
+            "Water resistant",
+            "Does not tarnish"
           ],
-          "materials": "Brushed solid brass base, natural linen shade on a steel frame."
+          "materials": "316L stainless steel, brushed and polished by hand.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Steel",
+              "Gold"
+            ]
+          }
         },
         "ar": {
-          "name": "مصباح طاولة نحاسي",
-          "short": "نحاس مصقول، غطاء كتّان",
-          "description": "مصباح صغير بقاعدة نحاسية مخروطية وغطاء من الكتّان الطبيعي يمنح أي مصباح دفئًا. مناسب للطاولة بجانب السرير أو زاوية المكتب.",
+          "name": "إسوارة ستانلس مصقولة",
+          "short": "تُلبس كل يوم",
+          "description": "إسوارة مفتوحة بوجه مطفي وحواف مصقولة: تُلبس بسهولة، تثبت في مكانها، ولا تتأثر بالماء. من القطع التي تتوقف عن خلعها.",
           "details": [
-            "ارتفاع 42 سم",
-            "قاعدة E27، اللمبة مشمولة",
-            "مفتاح تعتيم على السلك"
+            "إسوارة مفتوحة، مقاس واحد",
+            "مقاومة للماء",
+            "لا يتغيّر لونها"
           ],
-          "materials": "قاعدة نحاس صلب مصقول، وغطاء كتّان طبيعي على هيكل فولاذي."
+          "materials": "ستانلس ستيل 316L، مصقول يدويًا.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Steel",
+              "Gold"
+            ]
+          }
         },
         "fr": {
-          "name": "Lampe de table en laiton",
-          "short": "Laiton brossé, abat-jour en lin",
-          "description": "Une petite lampe à base en laiton fuselée et abat-jour en lin naturel qui réchauffe n’importe quelle ampoule. Pour une table de nuit ou un coin de bureau.",
+          "name": "Bracelet manchette en acier",
+          "short": "À porter tous les jours",
+          "description": "Une manchette ouverte, face brossée et bords polis : elle se glisse, reste en place et ne craint pas l’eau. Le genre de pièce qu’on ne retire plus.",
           "details": [
-            "Hauteur 42 cm",
-            "Douille E27, ampoule incluse",
-            "Variateur sur le cordon"
+            "Manchette ouverte, taille unique",
+            "Résistante à l’eau",
+            "Ne noircit pas"
           ],
-          "materials": "Base en laiton massif brossé, abat-jour en lin naturel sur armature acier."
+          "materials": "Acier inoxydable 316L, brossé et poli à la main.",
+          "options": {
+            "name": "Finish",
+            "values": [
+              "Steel",
+              "Gold"
+            ]
+          }
         }
       }
     },
     {
-      "slug": "terracotta-vase",
-      "price": 76,
+      "slug": "pearl-hair-clips",
+      "price": 38,
       "compareAt": null,
-      "category": "ceramics",
-      "image": "/images/vase.jpg",
-      "badge": null,
-      "featured": false,
+      "category": "accessories",
+      "image": "/images/hair-clips.jpg",
+      "badge": "New",
+      "featured": true,
       "published": true,
       "sortOrder": 6,
       "copy": {
         "en": {
-          "name": "Tall terracotta vase",
-          "short": "Unglazed, 34 cm",
-          "description": "A tall bottle vase with a narrow neck for a single branch. Left unglazed so the clay keeps its soft, chalky surface.",
+          "name": "Pearl hair clips",
+          "short": "Set of three",
+          "description": "Three clips that hold a half-up style without pulling, with pearls small enough to look like part of your hair. Good for a wedding, better for a Tuesday.",
           "details": [
-            "34 cm tall",
-            "Water resistant interior",
-            "Wipe clean"
+            "Three clips, three sizes",
+            "Strong spring clasp",
+            "Gift box included"
           ],
-          "materials": "Red earthenware, sealed inside."
+          "materials": "Gold-plated metal with glass pearls."
         },
         "ar": {
-          "name": "مزهرية تراكوتا عالية",
-          "short": "بدون طلاء، 34 سم",
-          "description": "مزهرية طويلة بعنق ضيق تتسع لغصن واحد. تُركت دون طلاء لتحتفظ الطينة بملمسها الناعم الطباشيري.",
+          "name": "مشابك شعر باللؤلؤ",
+          "short": "طقم من ثلاث قطع",
+          "description": "ثلاثة مشابك تثبّت تسريحة نصف مرفوعة دون شدّ، ولؤلؤ صغير يبدو جزءًا من شعرك. مناسبة للعرس، وأجمل في يوم عادي.",
           "details": [
-            "ارتفاع 34 سم",
-            "بطانة مقاومة للماء",
-            "تُمسح بقطعة قماش"
+            "ثلاثة مشابك بثلاثة أحجام",
+            "مشبك قوي",
+            "تُقدَّم في علبة هدية"
           ],
-          "materials": "فخّار أحمر، مبطّن من الداخل."
+          "materials": "معدن مطلي بالذهب ولؤلؤ زجاجي."
         },
         "fr": {
-          "name": "Grand vase en terre cuite",
-          "short": "Non émaillé, 34 cm",
-          "description": "Un vase bouteille élancé au col étroit, pour une seule branche. Laissé brut pour que l’argile garde sa surface douce et crayeuse.",
+          "name": "Barrettes en perles",
+          "short": "Lot de trois",
+          "description": "Trois barrettes qui tiennent une demi-queue sans tirer, avec des perles assez petites pour se fondre dans les cheveux. Bien pour un mariage, mieux pour un mardi.",
           "details": [
-            "Hauteur 34 cm",
-            "Intérieur résistant à l’eau",
-            "Nettoyage à sec"
+            "Trois barrettes, trois tailles",
+            "Ressort solide",
+            "Écrin offert"
           ],
-          "materials": "Terre cuite rouge, scellée à l’intérieur."
+          "materials": "Métal plaqué or et perles de verre."
         }
       }
     },
     {
-      "slug": "waffle-towel-set",
-      "price": 86,
+      "slug": "silk-scrunchie-set",
+      "price": 25,
       "compareAt": null,
-      "category": "textiles",
-      "image": "/images/towels.jpg",
+      "category": "accessories",
+      "image": "/images/scrunchies.jpg",
       "badge": null,
       "featured": true,
       "published": true,
       "sortOrder": 7,
       "copy": {
         "en": {
-          "name": "Waffle towel set",
-          "short": "Three towels, cotton",
-          "description": "A loose waffle weave that dries fast and feels light on the skin. Gets fluffier with washing, not thinner.",
+          "name": "Silk scrunchie set",
+          "short": "Three colours, no creases",
+          "description": "Mulberry silk over a soft elastic, so it holds without leaving a line. Three colours that also work as a bracelet when you take it out.",
           "details": [
-            "Two bath, one hand towel",
-            "Long-staple Turkish cotton",
-            "Machine wash warm"
+            "Set of three",
+            "100% mulberry silk",
+            "Hand wash, cold"
           ],
-          "materials": "100% long-staple cotton, 350 gsm.",
+          "materials": "19-momme mulberry silk over a covered elastic.",
           "options": {
             "name": "Colour",
             "values": [
               "Ivory",
-              "Stone",
-              "Moss"
+              "Sage",
+              "Rose"
             ]
           }
         },
         "ar": {
-          "name": "طقم مناشف وافل",
-          "short": "ثلاث مناشف قطنية",
-          "description": "نسيج وافل خفيف يجفّ سريعًا ويبقى لطيفًا على البشرة. يزداد نعومة مع الغسيل لا رقّة.",
+          "name": "طقم ربطات شعر حريرية",
+          "short": "ثلاثة ألوان دون آثار",
+          "description": "حرير طبيعي على مطاط ناعم، يثبّت الشعر دون أن يترك أثرًا. ثلاثة ألوان تُلبس أيضًا كإسوارة عند خلعها.",
           "details": [
-            "منشفتا استحمام ومنشفة يد",
-            "قطن تركي طويل التيلة",
-            "غسيل آلي بماء دافئ"
+            "طقم من ثلاث قطع",
+            "حرير طبيعي 100%",
+            "يُغسل يدويًا بماء بارد"
           ],
-          "materials": "قطن 100٪ طويل التيلة، 350 غ/م².",
+          "materials": "حرير طبيعي 19 مومي على مطاط مغلّف.",
           "options": {
             "name": "Colour",
             "values": [
               "Ivory",
-              "Stone",
-              "Moss"
+              "Sage",
+              "Rose"
             ]
           }
         },
         "fr": {
-          "name": "Lot de serviettes gaufrées",
-          "short": "Trois serviettes, coton",
-          "description": "Une armure gaufrée lâche qui sèche vite et reste légère sur la peau. Elle s’épaissit au lavage au lieu de s’user.",
+          "name": "Lot de chouchous en soie",
+          "short": "Trois couleurs, sans marque",
+          "description": "Soie de mûrier sur un élastique souple : ça tient sans laisser de pli. Trois teintes qui se portent aussi au poignet une fois retirées.",
           "details": [
-            "Deux grands draps de bain, une serviette",
-            "Coton turc à longues fibres",
-            "Lavage machine à chaud doux"
+            "Lot de trois",
+            "100 % soie de mûrier",
+            "Lavage à la main, à froid"
           ],
-          "materials": "100 % coton à longues fibres, 350 g/m².",
+          "materials": "Soie de mûrier 19 momme sur élastique gainé.",
           "options": {
             "name": "Colour",
             "values": [
               "Ivory",
-              "Stone",
-              "Moss"
+              "Sage",
+              "Rose"
             ]
           }
         }
       }
     },
     {
-      "slug": "glass-carafe-set",
-      "price": 44,
-      "compareAt": null,
-      "category": "kitchen",
-      "image": "/images/glass.jpg",
-      "badge": null,
-      "featured": false,
+      "slug": "daos-eau-de-parfum",
+      "price": 145,
+      "compareAt": 170,
+      "category": "beauty",
+      "image": "/images/perfume.jpg",
+      "badge": "Bestseller",
+      "featured": true,
       "published": true,
       "sortOrder": 8,
       "copy": {
         "en": {
-          "name": "Glass carafe and tumbler",
-          "short": "Borosilicate, 1 l",
-          "description": "A bedside carafe with a tumbler that doubles as its lid. Thin, light and surprisingly tough.",
+          "name": "DAOS eau de parfum",
+          "short": "Amber, musk and a little rose",
+          "description": "Our own scent: warm and quiet, closer to clean skin than to perfume. It sits close for the first hour and then opens over the whole day.",
           "details": [
-            "1 litre carafe, 250 ml tumbler",
-            "Heat resistant",
-            "Dishwasher safe"
+            "50 ml",
+            "Eau de parfum, 18% concentration",
+            "Unisex"
           ],
-          "materials": "Mouth-blown borosilicate glass."
+          "materials": "Alcohol-based eau de parfum with amber, white musk and rose.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Musk"
+            ]
+          }
         },
         "ar": {
-          "name": "كَراف وكوب زجاجي",
-          "short": "بوروسيليكات، 1 لتر",
-          "description": "كَراف للسرير مع كوب يعمل غطاءً له أيضًا. رقيق وخفيف ومتين أكثر مما يبدو.",
+          "name": "عطر داوس",
+          "short": "عنبر ومسك ولمسة ورد",
+          "description": "عطرنا الخاص: دافئ وهادئ، أقرب إلى بشرة نظيفة من العطر الثقيل. يبقى قريبًا في الساعة الأولى ثم ينتشر على مدى اليوم.",
           "details": [
-            "كَراف 1 لتر، كوب 250 مل",
-            "مقاوم للحرارة",
-            "آمن في غسالة الأطباق"
+            "50 مل",
+            "أو دو بارفان بتركيز 18%",
+            "للجنسين"
           ],
-          "materials": "زجاج بوروسيليكات منفوخ يدويًا."
+          "materials": "عطر كحولي بنفحات العنبر والمسك الأبيض والورد.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Musk"
+            ]
+          }
         },
         "fr": {
-          "name": "Carafe et verre en verre",
-          "short": "Borosilicate, 1 l",
-          "description": "Une carafe de chevet avec son verre qui sert aussi de couvercle. Fine, légère et étonnamment solide.",
+          "name": "Eau de parfum DAOS",
+          "short": "Ambre, musc et un peu de rose",
+          "description": "Notre parfum : chaud et discret, plus proche d’une peau propre que d’un parfum lourd. Il reste près pendant la première heure, puis s’ouvre sur la journée.",
           "details": [
-            "Carafe 1 litre, verre 250 ml",
-            "Résistant à la chaleur",
-            "Compatible lave-vaisselle"
+            "50 ml",
+            "Eau de parfum à 18 %",
+            "Mixte"
           ],
-          "materials": "Verre borosilicate soufflé à la bouche."
+          "materials": "Eau de parfum alcoolique à l’ambre, musc blanc et rose.",
+          "options": {
+            "name": "Scent",
+            "values": [
+              "Amber",
+              "Musk"
+            ]
+          }
         }
       }
     },
     {
-      "slug": "linen-apron",
-      "price": 58,
+      "slug": "amber-candle",
+      "price": 85,
       "compareAt": null,
-      "category": "textiles",
-      "image": "/images/apron.jpg",
+      "category": "beauty",
+      "image": "/images/candle.jpg",
       "badge": null,
       "featured": false,
       "published": true,
       "sortOrder": 9,
       "copy": {
         "en": {
-          "name": "Linen apron",
-          "short": "Sage, cross-back",
-          "description": "A cross-back apron that stays on the shoulders without a neck strap. Deep front pocket, long ties, no fuss.",
+          "name": "Amber candle",
+          "short": "40 hours of warm light",
+          "description": "Soy wax in an amber glass jar you will keep for pens afterwards. Light it while you get ready and the room still smells of it hours later.",
           "details": [
-            "One size",
-            "Cross-back straps",
-            "Front pocket"
+            "40-hour burn",
+            "Soy wax, cotton wick",
+            "Amber glass with lid"
           ],
-          "materials": "100% washed linen.",
+          "materials": "Soy wax, cotton wick, amber and cedar notes.",
           "options": {
-            "name": "Colour",
+            "name": "Scent",
             "values": [
-              "Sage",
-              "Natural",
-              "Charcoal"
+              "Amber",
+              "Cedar"
             ]
           }
         },
         "ar": {
-          "name": "مريلة كتّان",
-          "short": "أخضر مريمي، بحزام متقاطع",
-          "description": "مريلة بحزام متقاطع تثبت على الكتفين دون شريط حول العنق. جيب أمامي واسع وأربطة طويلة، دون تعقيد.",
+          "name": "شمعة العنبر",
+          "short": "40 ساعة من الضوء الدافئ",
+          "description": "شمع صويا في برطمان زجاجي بلون العنبر ستحتفظين به للأقلام بعد ذلك. أضيئيها وأنتِ تستعدّين، وتبقى رائحة الغرفة ساعات بعدها.",
           "details": [
-            "مقاس واحد",
-            "أحزمة متقاطعة",
-            "جيب أمامي"
+            "احتراق 40 ساعة",
+            "شمع صويا وفتيل قطني",
+            "زجاج عنبري مع غطاء"
           ],
-          "materials": "كتّان مغسول 100٪.",
+          "materials": "شمع صويا وفتيل قطني بنفحات العنبر والأرز.",
           "options": {
-            "name": "Colour",
+            "name": "Scent",
             "values": [
-              "Sage",
-              "Natural",
-              "Charcoal"
+              "Amber",
+              "Cedar"
             ]
           }
         },
         "fr": {
-          "name": "Tablier en lin",
-          "short": "Sauge, bretelles croisées",
-          "description": "Un tablier à bretelles croisées qui tient aux épaules sans tour de cou. Grande poche devant, longs liens, sans chichis.",
+          "name": "Bougie à l’ambre",
+          "short": "40 heures de lumière chaude",
+          "description": "Cire de soja dans un pot en verre ambré que vous garderez pour les stylos. Allumez-la pendant que vous vous préparez : la pièce sent encore bon des heures après.",
           "details": [
-            "Taille unique",
-            "Bretelles croisées",
-            "Poche avant"
+            "40 heures de combustion",
+            "Cire de soja, mèche coton",
+            "Verre ambré avec couvercle"
           ],
-          "materials": "100 % lin lavé.",
+          "materials": "Cire de soja, mèche coton, notes d’ambre et de cèdre.",
           "options": {
-            "name": "Colour",
+            "name": "Scent",
             "values": [
-              "Sage",
-              "Natural",
-              "Charcoal"
+              "Amber",
+              "Cedar"
             ]
           }
         }
       }
-    },
-    {
-      "slug": "soapstone-incense-holder",
-      "price": 32,
-      "compareAt": null,
-      "category": "home",
-      "image": "/images/incense.jpg",
-      "badge": "Low stock",
-      "featured": false,
-      "published": true,
-      "sortOrder": 10,
-      "copy": {
-        "en": {
-          "name": "Soapstone incense holder",
-          "short": "Hand-carved stone",
-          "description": "A pebble of black soapstone with a single hole, carved and polished by hand. Heavy enough to stay put, small enough to travel.",
-          "details": [
-            "Approximately 9 cm across",
-            "Fits standard sticks",
-            "Wipe clean"
-          ],
-          "materials": "Natural soapstone. Each one is a slightly different shape."
-        },
-        "ar": {
-          "name": "حاملة بخور من الحجر الأملس",
-          "short": "حجر منحوت يدويًا",
-          "description": "حجر أملس أسود بثقب واحد، منحوت ومصقول باليد. ثقيل بما يكفي ليبقى في مكانه، وصغير بما يكفي للسفر.",
-          "details": [
-            "بعرض 9 سم تقريبًا",
-            "يناسب أعواد البخور العادية",
-            "تُمسح بقطعة قماش"
-          ],
-          "materials": "حجر أملس طبيعي. لكل قطعة شكل مختلف قليلًا."
-        },
-        "fr": {
-          "name": "Porte-encens en stéatite",
-          "short": "Pierre sculptée à la main",
-          "description": "Un galet de stéatite noire percé d’un seul trou, sculpté et poli à la main. Assez lourd pour rester en place, assez petit pour voyager.",
-          "details": [
-            "Environ 9 cm de large",
-            "Pour bâtons standards",
-            "Nettoyage à sec"
-          ],
-          "materials": "Stéatite naturelle. Chaque pièce a une forme légèrement différente."
-        }
-      }
     }
-  ],
-  "categories": [
-    {
-      "key": "ceramics",
-      "label": "Ceramics",
-      "image": "/images/carafe.jpg",
-      "blurb": "Thrown and glazed by hand"
-    },
-    {
-      "key": "textiles",
-      "label": "Textiles",
-      "image": "/images/throw.jpg",
-      "blurb": "Washed linen and cotton"
-    },
-    {
-      "key": "lighting",
-      "label": "Lighting",
-      "image": "/images/lamp.jpg",
-      "blurb": "Warm, low and quiet"
-    }
-  ],
-  "freeShippingAt": 120
+  ]
 }

@@ -1,19 +1,21 @@
-# Store
+# DAOS — داوس
 
-An editorial storefront for a small catalogue: home page with hero, new
-arrivals, categories, a lookbook section and bestsellers; a shop page with
-category and price filters and sorting; product pages with options, quantity
-and an accordion; a slide-out bag with free-shipping progress; and a demo
-checkout with an order confirmation. The bag persists in the browser.
+A presentation storefront for **DAOS**, the accessories shop in Zliten, Libya
+(bags, jewelry, hair accessories, scent and gifts). It is built from the shop's
+real details: the address on Al Muaddat Street behind Al Wahda Bank, Google's
+opening hours, the phone number, WhatsApp, the 4.7 rating, and delivery in
+Zliten, Misrata and Tripoli.
 
-The catalogue is edited from a built-in dashboard at **`/admin`** and stored in
-Cloudflare D1, so the shop owner can change articles, prices and stock-like
-flags without a redeploy. The dashboard also lists the orders the demo checkout
-records.
+Pages: home with hero, new arrivals, categories, editorial and a shop card;
+a shop page with category and price filters and sorting; product pages with
+options, quantity and an accordion; a slide-out bag with free-delivery progress;
+and a cash-on-delivery checkout that records the order in the dashboard.
 
-The store speaks **Arabic first** (full RTL), with French and English a click
+The shop speaks **Arabic first** (full RTL), with French and English a click
 away, and ships six palettes for clothes, accessories and beauty — sand, noir,
 rose, olive, terracotta and lavender — each with a light and a dark mode.
+
+Prices are in Libyan dinar, formatted by `money()` in `src/app/lib/cart.tsx`.
 
 ## Run it
 
@@ -29,12 +31,15 @@ catalogue, so editing articles never touches production.
 
 ## Make it yours
 
+- `src/data/shop.ts` is the shop itself: address, hours, phone, WhatsApp,
+  Facebook, map link, rating and delivery line, in the three languages. Change
+  it there and the header, the home card, the about page and the footer follow.
 - `src/data/seed.json` is the starter catalogue (all three languages). It seeds
   D1 on first run and is the offline fallback for the storefront.
 - `src/data/products.ts` holds the product shape, the categories and the
   validation used by the dashboard.
 - `src/data/i18n.ts` holds labels that are not per-product: category names, the
-  choice labels ("Oat", "Sage"…) and the country names.
+  choice labels ("Camel", "Gold"…) and the country names (Libya first).
 - `src/app/pages/Admin.tsx` is the dashboard: login, article editor with one tab
   per language, order list.
 - `src/app/lib/catalog.tsx` fetches the catalogue; `src/app/lib/cart.tsx` reads

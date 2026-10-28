@@ -25,7 +25,7 @@ export const THEMES: ThemeChoice[] = [
 export const themeKeyOf = (value: string | undefined): ThemeKey =>
   THEMES.some((t) => t.key === value) ? (value as ThemeKey) : 'sand'
 
-const KEY = 'your-store-prefs'
+const KEY = 'daos-prefs'
 
 interface PrefsState {
   lang: Lang

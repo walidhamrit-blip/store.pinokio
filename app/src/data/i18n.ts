@@ -4,67 +4,74 @@
 import type { Category } from './products'
 import type { Lang } from '../app/i18n/dict'
 
-// Choice values on the product pages ("Oat", "Sage", "Sea salt"...).
+// Choice values on the product pages ("Camel", "Gold", "Amber"...).
 const optionLabels: Partial<Record<Lang, Record<string, string>>> = {
   fr: {
-    Oatmeal: 'Avoine',
-    Ash: 'Cendre',
-    Clay: 'Argile',
-    Oat: 'Avoine',
-    Charcoal: 'Charbon',
-    Sage: 'Sauge',
-    'Cedar and fig': 'Cèdre et figue',
-    'Tobacco leaf': 'Feuille de tabac',
-    'Sea salt': 'Sel marin',
+    Camel: 'Camel',
+    Black: 'Noir',
     Ivory: 'Ivoire',
-    Stone: 'Pierre',
-    Moss: 'Mousse',
-    Natural: 'Naturel',
+    Tan: 'Fauve',
+    Gold: 'Doré',
+    Silver: 'Argenté',
+    Steel: 'Acier',
+    Sage: 'Sauge',
+    Rose: 'Rose',
+    Amber: 'Ambre',
+    Musk: 'Musc',
+    Cedar: 'Cèdre',
   },
   ar: {
-    Oatmeal: 'الشوفان',
-    Ash: 'الرماد',
-    Clay: 'الطين',
-    Oat: 'الشوفان',
-    Charcoal: 'الفحمي',
-    Sage: 'المريمي',
-    'Cedar and fig': 'الأرز والتين',
-    'Tobacco leaf': 'ورق التبغ',
-    'Sea salt': 'ملح البحر',
+    Camel: 'الجمل',
+    Black: 'الأسود',
     Ivory: 'العاجي',
-    Stone: 'الحجري',
-    Moss: 'الطحلبي',
-    Natural: 'الطبيعي',
+    Tan: 'البني الفاتح',
+    Gold: 'الذهبي',
+    Silver: 'الفضي',
+    Steel: 'الستانلس',
+    Sage: 'المريمي',
+    Rose: 'الوردي',
+    Amber: 'العنبر',
+    Musk: 'المسك',
+    Cedar: 'الأرز',
   },
 }
 
 const categoryLabels: Partial<Record<Lang, Partial<Record<Category, string>>>> = {
-  fr: { ceramics: 'Céramiques', textiles: 'Textiles', lighting: 'Luminaires', kitchen: 'Cuisine', home: 'Maison' },
-  ar: { ceramics: 'الخزف', textiles: 'المنسوجات', lighting: 'الإضاءة', kitchen: 'المطبخ', home: 'المنزل' },
+  fr: { bags: 'Sacs', jewelry: 'Bijoux', accessories: 'Accessoires', beauty: 'Beauté' },
+  ar: { bags: 'الحقائب', jewelry: 'المجوهرات', accessories: 'الإكسسوارات', beauty: 'العطور والعناية' },
 }
 
 const categoryBlurbs: Partial<Record<Lang, Partial<Record<Category, string>>>> = {
+  en: {
+    bags: 'Totes, crossbodies and evening bags',
+    jewelry: 'Gold, silver and pearls',
+    accessories: 'Hair, silk and small things',
+    beauty: 'Scent, care and gifts',
+  },
   fr: {
-    ceramics: 'Tournées et émaillées à la main',
-    textiles: 'Lin et coton lavés',
-    lighting: 'Chaleureuse, basse et discrète',
+    bags: 'Cabas, bandoulières et sacs de soirée',
+    jewelry: 'Or, argent et perles',
+    accessories: 'Cheveux, soie et petits riens',
+    beauty: 'Parfums, soins et cadeaux',
   },
   ar: {
-    ceramics: 'مشكول ومطلي باليد',
-    textiles: 'كتّان وقطن مغسول',
-    lighting: 'دافئة وخافتة وهادئة',
+    bags: 'حقائب يد وكتف وحقائب سهرة',
+    jewelry: 'ذهب وفضة ولؤلؤ',
+    accessories: 'شعر وحرير وتفاصيل صغيرة',
+    beauty: 'عطور وعناية وهدايا',
   },
 }
 
+// Libya first: most orders are delivered inside the country.
 export const countryLabels: { key: string; labels: Partial<Record<Lang, string>> }[] = [
-  { key: 'United States', labels: { ar: 'الولايات المتحدة', fr: 'États-Unis' } },
-  { key: 'United Kingdom', labels: { ar: 'المملكة المتحدة', fr: 'Royaume-Uni' } },
-  { key: 'Canada', labels: { ar: 'كندا', fr: 'Canada' } },
-  { key: 'Germany', labels: { ar: 'ألمانيا', fr: 'Allemagne' } },
-  { key: 'France', labels: { ar: 'فرنسا', fr: 'France' } },
-  { key: 'Netherlands', labels: { ar: 'هولندا', fr: 'Pays-Bas' } },
-  { key: 'Portugal', labels: { ar: 'البرتغال', fr: 'Portugal' } },
-  { key: 'Australia', labels: { ar: 'أستراليا', fr: 'Australie' } },
+  { key: 'Libya', labels: { ar: 'ليبيا', fr: 'Libye' } },
+  { key: 'Tunisia', labels: { ar: 'تونس', fr: 'Tunisie' } },
+  { key: 'Algeria', labels: { ar: 'الجزائر', fr: 'Algérie' } },
+  { key: 'Morocco', labels: { ar: 'المغرب', fr: 'Maroc' } },
+  { key: 'Egypt', labels: { ar: 'مصر', fr: 'Égypte' } },
+  { key: 'Saudi Arabia', labels: { ar: 'السعودية', fr: 'Arabie saoudite' } },
+  { key: 'United Arab Emirates', labels: { ar: 'الإمارات', fr: 'Émirats arabes unis' } },
+  { key: 'Türkiye', labels: { ar: 'تركيا', fr: 'Turquie' } },
 ]
 
 export function localizeCategory<T extends { key: Category; label: string; blurb: string }>(category: T, lang: Lang): T {

@@ -90,4 +90,4 @@ export function useCart(): CartState {
   return ctx
 }
 
-export const money = (value: number) => `$${value.toFixed(value % 1 === 0 ? 0 : 2)}`
+export const money = (value: number) => `${value.toFixed(value % 1 === 0 ? 0 : 2)} LYD`

@@ -8,12 +8,12 @@
 import seed from './seed.json'
 import type { Lang } from '../app/i18n/dict'
 
-export type Category = 'ceramics' | 'textiles' | 'lighting' | 'kitchen' | 'home'
+export type Category = 'bags' | 'jewelry' | 'accessories' | 'beauty'
 export type Badge = 'New' | 'Bestseller' | 'Low stock'
-export type OptionName = 'Glaze' | 'Colour' | 'Scent'
+export type OptionName = 'Colour' | 'Finish' | 'Scent'
 
 export const BADGES: Badge[] = ['New', 'Bestseller', 'Low stock']
-export const OPTION_NAMES: OptionName[] = ['Glaze', 'Colour', 'Scent']
+export const OPTION_NAMES: OptionName[] = ['Colour', 'Finish', 'Scent']
 
 export const categories: { key: Category; label: string; image: string; blurb: string }[] = seed.categories as {
   key: Category
@@ -22,7 +22,7 @@ export const categories: { key: Category; label: string; image: string; blurb: s
   blurb: string
 }[]
 
-export const categoryKeys: Category[] = ['ceramics', 'textiles', 'lighting', 'kitchen', 'home']
+export const categoryKeys: Category[] = ['bags', 'jewelry', 'accessories', 'beauty']
 
 /** Copy for one language. English is always present; others fall back to it. */
 export interface ProductCopy {
@@ -95,7 +95,7 @@ export const slugify = (value: string) =>
 export function normaliseProduct(input: Partial<Product>): { ok: true; product: Product } | { ok: false; error: string } {
   const price = Number(input.price)
   if (!Number.isFinite(price) || price < 0) return { ok: false, error: 'Le prix doit être un nombre positif.' }
-  const category = (categoryKeys as string[]).includes(String(input.category)) ? (input.category as Category) : 'home'
+  const category = (categoryKeys as string[]).includes(String(input.category)) ? (input.category as Category) : 'accessories'
   const copy = input.copy ?? ({} as Product['copy'])
   const filled = (['en', 'ar', 'fr'] as const).map((lang) => [lang, copy[lang]] as const).filter(([, value]) => value?.name?.trim())
   if (filled.length === 0) return { ok: false, error: 'Un nom est requis dans au moins une langue.' }
