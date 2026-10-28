@@ -111,7 +111,16 @@ Une seule fois, dans le dépôt `store.pinokio` :
 Les étapes suivantes sont automatiques : chaque push reconstruit l'échantillon
 et le publie.
 
-### Sans GitHub Pages
+### Sans GitHub Pages — Cloudflare Pages
+
+[`.github/workflows/sample-cloudflare.yml`](../../.github/workflows/sample-cloudflare.yml)
+sait publier le même build sur `https://accessoires.pages.dev`. Testé le
+2026-10-28 : le job échoue à `Authentication error [code: 10000]`, car le jeton
+`CLOUDFLARE_API_TOKEN` du dépôt n'a que *Workers Scripts:Edit* et *D1:Edit*.
+Il suffit d'ajouter **Account → Cloudflare Pages → Edit** à ce jeton
+(Cloudflare → My Profile → API Tokens → Edit), puis de relancer le workflow.
+
+### Sans Pages du tout
 
 `accessoires-site.zip` (à la racine du dépôt, non versionné — régénérable avec
 la commande ci-dessus) contient le site prêt à glisser-déposer sur un
