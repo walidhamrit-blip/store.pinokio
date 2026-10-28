@@ -56,7 +56,17 @@ runs:
             echo "::warning::The stored secret is not a bare token (${#raw} characters${bad:+, unexpected [${bad}]}). Extracted the single 40-character API token from it — no action needed, but the secret is worth cleaning up."
           fi
         else
-          echo "::error::CLOUDFLARE_API_TOKEN is not a Cloudflare API token: ${#raw} characters, ${count} token-shaped candidates${bad:+, unexpected characters [${bad}]}. Create a token (My Profile → API Tokens → Create Token → Custom token) and paste only its value, without quotes or line breaks."
+          hint=""
+          case "$raw" in
+            *://*) hint="It looks like a URL." ;;
+            *[/\\]*) hint="It looks like a file path — a secret must contain the token itself, not the name of a file that holds it." ;;
+          esac
+          if [ "${#raw}" -le 20 ]; then
+            preview="$raw"
+          else
+            preview="$(printf '%s' "$raw" | head -c 14 | tr -d '\n')…$(printf '%s' "$raw" | tail -c 4 | tr -d '\n')"
+          fi
+          echo "::error::CLOUDFLARE_API_TOKEN is not a Cloudflare API token: ${#raw} characters, ${count} token-shaped candidates${bad:+, unexpected characters [${bad}]}.${hint:+ $hint} What is stored starts with \`${preview}\`. A token is exactly 40 characters of letters, digits, - and _ on a single line — paste only that value."
           exit 1
         fi
 
