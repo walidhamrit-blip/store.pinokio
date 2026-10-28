@@ -3,12 +3,19 @@ import { ArrowRight, Leaf, RefreshCcw, Truck } from 'lucide-react'
 import { Link } from 'react-router'
 
 import { categories, featured, newArrivals } from '../../data/products'
+import { localizeCategory, localizeProduct } from '../../data/i18n'
 import { ProductCard } from '../components/ProductCard'
 import { ButtonLink, Container, Reveal, SectionTitle } from '../components/ui'
+import { money } from '../lib/cart'
+import { usePrefs } from '../lib/prefs'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
 export function Home() {
+  const { t, lang } = usePrefs()
+  const heroProduct = localizeProduct(newArrivals[0], lang)
+  const heroLines = [t('home.hero.line1'), t('home.hero.line2')]
+
   return (
     <>
       {/* Hero */}
@@ -17,20 +24,16 @@ export function Home() {
           <div className="grid items-end gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
             <div className="pb-4">
               <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease }} className="text-[14px] text-muted">
-                Autumn collection
+                {t('home.eyebrow')}
               </motion.p>
-              <h1 className="font-display mt-4 text-[56px] leading-[0.98] sm:text-[80px] lg:text-[96px]">
-                {['Objects for', 'slow mornings'].map((line, i) => (
+              <h1 className="font-display mt-4 text-[56px] leading-[0.98] sm:text-[80px] lg:text-[96px] rtl:text-[44px] sm:rtl:text-[62px] lg:rtl:text-[76px]">
+                {heroLines.map((line, i) => (
                   <span key={line} className="block overflow-hidden pb-[0.18em] -mb-[0.18em]">
-                    <motion.span
-                      className="block"
-                      initial={{ y: '100%' }}
-                      animate={{ y: 0 }}
-                      transition={{ duration: 0.9, delay: 0.1 + i * 0.12, ease }}
-                    >
+                    <motion.span className="block" initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.9, delay: 0.1 + i * 0.12, ease }}>
                       {i === 1 ? (
                         <>
-                          slow <em className="italic text-accent">mornings</em>
+                          {line}
+                          <em className={lang === 'ar' ? 'text-accent' : 'italic text-accent'}>{t('home.hero.em')}</em>
                         </>
                       ) : (
                         line
@@ -39,16 +42,21 @@ export function Home() {
                   </span>
                 ))}
               </h1>
-              <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.45, ease }} className="mt-6 max-w-md text-[17px] leading-relaxed text-muted">
-                Ceramics, linen and light, made in small batches by people we know. Things that get better the longer you keep them.
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.45, ease }}
+                className="mt-6 max-w-md text-[17px] leading-relaxed text-muted"
+              >
+                {t('home.hero.body')}
               </motion.p>
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.55, ease }} className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <ButtonLink to="/shop" size="lg" className="w-full sm:w-auto">
-                  Shop the collection
-                  <ArrowRight />
+                  {t('home.hero.cta')}
+                  <ArrowRight className="rtl:rotate-180" />
                 </ButtonLink>
                 <ButtonLink to="/about" size="lg" variant="secondary" className="w-full sm:w-auto">
-                  Our studio
+                  {t('home.hero.cta2')}
                 </ButtonLink>
               </motion.div>
             </div>
@@ -58,19 +66,19 @@ export function Home() {
               transition={{ duration: 1.1, delay: 0.2, ease }}
               className="image-frame relative aspect-[4/3] rounded-[32px] lg:aspect-[5/4]"
             >
-              <img src="/images/hero.jpg" alt="Ceramic carafe and mugs on a linen cloth in morning light" className="size-full object-cover" fetchPriority="high" />
+              <img src="/images/hero.jpg" alt={heroProduct.name} className="size-full object-cover" fetchPriority="high" />
               <Link
-                to="/product/pour-over-carafe"
-                className="absolute bottom-4 left-4 flex items-center gap-3 rounded-[16px] bg-surface/90 py-2 pl-2 pr-4 text-[13px] shadow-soft backdrop-blur transition-colors hover:bg-surface"
+                to={`/product/${heroProduct.slug}`}
+                className="absolute bottom-4 start-4 flex items-center gap-3 rounded-[16px] bg-surface/90 py-2 ps-2 pe-4 text-[13px] shadow-soft backdrop-blur transition-colors hover:bg-surface"
               >
                 <span className="image-frame size-10 rounded-[12px]">
-                  <img src="/images/carafe.jpg" alt="" className="size-full object-cover" />
+                  <img src={heroProduct.image} alt="" className="size-full object-cover" />
                 </span>
                 <span>
-                  <span className="block font-medium">Pour-over carafe</span>
-                  <span className="text-muted">$68</span>
+                  <span className="block font-medium">{heroProduct.name}</span>
+                  <span className="text-muted">{money(heroProduct.price)}</span>
                 </span>
-                <ArrowRight className="size-4 text-muted" />
+                <ArrowRight className="size-4 text-muted rtl:rotate-180" />
               </Link>
             </motion.div>
           </div>
@@ -82,12 +90,12 @@ export function Home() {
         <Container>
           <Reveal>
             <SectionTitle
-              eyebrow="Just in"
-              title="New arrivals"
+              eyebrow={t('home.new.eyebrow')}
+              title={t('home.new.title')}
               action={
                 <Link to="/shop" className="hidden items-center gap-1.5 text-[14px] text-muted transition-colors hover:text-fg sm:inline-flex">
-                  View all
-                  <ArrowRight className="size-4" />
+                  {t('home.new.viewAll')}
+                  <ArrowRight className="size-4 rtl:rotate-180" />
                 </Link>
               }
             />
@@ -104,22 +112,29 @@ export function Home() {
       <section className="pt-24 sm:pt-32">
         <Container>
           <div className="grid gap-4 md:grid-cols-3 lg:gap-6">
-            {categories.map((c, i) => (
-              <Reveal key={c.key} delay={i * 0.08}>
-                <Link to={`/shop?category=${c.key}`} className="group image-frame relative block aspect-[4/5] rounded-image">
-                  <img src={c.image} alt={c.label} className="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
-                  <div className="absolute inset-x-4 bottom-4 flex items-end justify-between rounded-[18px] bg-surface/90 p-4 backdrop-blur">
-                    <div>
-                      <p className="font-display text-[28px] leading-none">{c.label}</p>
-                      <p className="mt-1.5 text-[13px] text-muted">{c.blurb}</p>
+            {categories.map((raw, i) => {
+              const c = localizeCategory(raw, lang)
+              return (
+                <Reveal key={c.key} delay={i * 0.08}>
+                  <Link to={`/shop?category=${c.key}`} className="group image-frame relative block aspect-[4/5] rounded-image">
+                    <img
+                      src={c.image}
+                      alt={c.label}
+                      className="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+                    />
+                    <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3 rounded-[18px] bg-surface/90 p-4 backdrop-blur">
+                      <div>
+                        <p className="font-display text-[24px] leading-none sm:text-[28px]">{c.label}</p>
+                        <p className="mt-1.5 text-[13px] text-muted">{c.blurb}</p>
+                      </div>
+                      <span className="grid size-10 shrink-0 place-items-center rounded-[12px] bg-fg text-bg transition-transform duration-300 group-hover:scale-105">
+                        <ArrowRight className="size-4 rtl:rotate-180" />
+                      </span>
                     </div>
-                    <span className="grid size-10 place-items-center rounded-[12px] bg-fg text-bg transition-transform group-hover:translate-x-0.5">
-                      <ArrowRight className="size-4" />
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
+                  </Link>
+                </Reveal>
+              )
+            })}
           </div>
         </Container>
       </section>
@@ -129,16 +144,14 @@ export function Home() {
         <Container>
           <div className="grid items-center gap-10 rounded-[32px] bg-surface-2/60 p-5 sm:p-8 lg:grid-cols-2 lg:gap-16 lg:p-12">
             <Reveal className="image-frame aspect-[4/3] rounded-image">
-              <img src="/images/lookbook.jpg" alt="A sunlit corner with a linen throw and brass lamp" className="size-full object-cover" loading="lazy" />
+              <img src="/images/lookbook.jpg" alt={t('about.imageAlt')} className="size-full object-cover" loading="lazy" />
             </Reveal>
-            <Reveal delay={0.1} className="lg:pr-8">
-              <p className="text-[14px] text-muted">The studio</p>
-              <h2 className="font-display mt-3 text-balance text-[40px] leading-[1.02] sm:text-[52px]">Made slowly, in rooms that look a lot like yours</h2>
-              <p className="mt-5 text-pretty text-[16px] leading-relaxed text-muted">
-                Every piece starts as a conversation with a maker we have worked with for years. We buy small, we pay fairly, and we only stock what we would keep ourselves.
-              </p>
+            <Reveal delay={0.1} className="lg:pe-8">
+              <p className="text-[14px] text-muted">{t('home.editorial.eyebrow')}</p>
+              <h2 className="font-display mt-3 text-balance text-[40px] leading-[1.02] sm:text-[52px] rtl:text-[32px] sm:rtl:text-[40px]">{t('home.editorial.title')}</h2>
+              <p className="mt-5 text-pretty text-[16px] leading-relaxed text-muted">{t('home.editorial.body')}</p>
               <ButtonLink to="/about" variant="secondary" className="mt-8">
-                Read our story
+                {t('home.editorial.cta')}
               </ButtonLink>
             </Reveal>
           </div>
@@ -149,7 +162,7 @@ export function Home() {
       <section className="pt-24 sm:pt-32">
         <Container>
           <Reveal>
-            <SectionTitle eyebrow="Loved for a reason" title="Bestsellers" />
+            <SectionTitle eyebrow={t('home.best.eyebrow')} title={t('home.best.title')} />
           </Reveal>
           <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-3 lg:gap-x-6">
             {featured.slice(0, 6).map((p, i) => (
@@ -158,7 +171,7 @@ export function Home() {
           </div>
           <div className="mt-12 flex justify-center">
             <ButtonLink to="/shop" variant="secondary" size="lg">
-              Shop everything
+              {t('home.best.cta')}
             </ButtonLink>
           </div>
         </Container>
@@ -169,9 +182,9 @@ export function Home() {
         <Container>
           <ul className="grid gap-4 border-y border-line py-10 sm:grid-cols-3">
             {[
-              { icon: Truck, title: 'Free shipping over $120', body: 'Carbon-neutral, in recycled packaging.' },
-              { icon: RefreshCcw, title: '30 day returns', body: 'Change your mind, no questions asked.' },
-              { icon: Leaf, title: 'Made in small batches', body: 'By makers we know by name.' },
+              { icon: Truck, title: t('home.promise1.title'), body: t('home.promise1.body') },
+              { icon: RefreshCcw, title: t('home.promise2.title'), body: t('home.promise2.body') },
+              { icon: Leaf, title: t('home.promise3.title'), body: t('home.promise3.body') },
             ].map(({ icon: Icon, title, body }, i) => (
               <Reveal key={title} delay={i * 0.08}>
                 <li className="flex items-start gap-4">

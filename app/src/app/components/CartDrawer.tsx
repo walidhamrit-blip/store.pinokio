@@ -4,12 +4,15 @@ import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 
 import { FREE_SHIPPING_AT } from '../../data/products'
+import { localizeProduct, optionLabel } from '../../data/i18n'
 import { money, useCart } from '../lib/cart'
+import { usePrefs } from '../lib/prefs'
 import { Button } from './ui'
 
 export function CartDrawer() {
   const cart = useCart()
   const navigate = useNavigate()
+  const { lang, t, dir } = usePrefs()
 
   useEffect(() => {
     if (!cart.open) return
@@ -24,12 +27,13 @@ export function CartDrawer() {
 
   const remaining = Math.max(0, FREE_SHIPPING_AT - cart.subtotal)
   const progress = Math.min(1, cart.subtotal / FREE_SHIPPING_AT)
+  const slide = dir === 'rtl' ? -40 : 40
 
   return (
     <AnimatePresence>
       {cart.open && (
         <motion.div
-          className="fixed inset-0 z-50 bg-fg/30 backdrop-blur-[2px]"
+          className="fixed inset-0 z-50 bg-scrim backdrop-blur-[2px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -38,18 +42,18 @@ export function CartDrawer() {
         >
           <motion.aside
             role="dialog"
-            aria-label="Your bag"
-            initial={{ x: 40, opacity: 0 }}
+            aria-label={t('cart.title')}
+            initial={{ x: slide, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 40, opacity: 0 }}
+            exit={{ x: slide, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-y-2 right-2 flex w-[calc(100%-16px)] max-w-[440px] flex-col rounded-dialog bg-bg shadow-drawer"
+            className="absolute inset-y-2 end-2 flex w-[calc(100%-16px)] max-w-[440px] flex-col rounded-dialog bg-bg shadow-drawer"
           >
             <header className="flex h-16 items-center justify-between border-b border-line px-6">
-              <h2 className="font-display text-[26px]">
-                Your bag {cart.count > 0 && <span className="ml-1.5 font-sans text-[14px] text-muted">{cart.count}</span>}
+              <h2 className="font-display text-[24px]">
+                {t('cart.title')} {cart.count > 0 && <span className="ms-1.5 font-sans text-[14px] text-muted">{cart.count}</span>}
               </h2>
-              <button type="button" aria-label="Close" onClick={() => cart.setOpen(false)} className="grid size-10 place-items-center rounded-control transition-colors hover:bg-surface-2">
+              <button type="button" aria-label={t('nav.close')} onClick={() => cart.setOpen(false)} className="grid size-10 place-items-center rounded-control transition-colors hover:bg-surface-2">
                 <X className="size-5" />
               </button>
             </header>
@@ -57,8 +61,8 @@ export function CartDrawer() {
             {cart.items.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
                 <ShoppingBag className="size-6 text-faint" />
-                <p className="mt-4 font-display text-[28px]">Nothing here yet</p>
-                <p className="mt-1 text-[14px] text-muted">Good things take a moment to choose.</p>
+                <p className="mt-4 font-display text-[26px]">{t('cart.empty.title')}</p>
+                <p className="mt-1 text-[14px] text-muted">{t('cart.empty.body')}</p>
                 <Button
                   variant="secondary"
                   className="mt-6"
@@ -67,13 +71,13 @@ export function CartDrawer() {
                     navigate('/shop')
                   }}
                 >
-                  Browse the shop
+                  {t('cart.empty.cta')}
                 </Button>
               </div>
             ) : (
               <>
                 <div className="px-6 pt-5">
-                  <p className="text-[13px] text-muted">{remaining > 0 ? `${money(remaining)} away from free shipping` : 'Free shipping unlocked'}</p>
+                  <p className="text-[13px] text-muted">{remaining > 0 ? t('cart.freeAway', { amount: money(remaining) }) : t('cart.freeUnlocked')}</p>
                   <div className="mt-2 h-1.5 overflow-hidden rounded-[3px] bg-surface-2">
                     <motion.div className="h-full rounded-[3px] bg-fg" initial={false} animate={{ width: `${progress * 100}%` }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} />
                   </div>
@@ -81,54 +85,57 @@ export function CartDrawer() {
 
                 <ul className="flex-1 divide-y divide-line overflow-y-auto px-6 py-2">
                   <AnimatePresence initial={false}>
-                    {cart.items.map((item) => (
-                      <motion.li
-                        key={`${item.slug}-${item.option ?? ''}`}
-                        layout
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="flex gap-4 py-4">
-                          <Link to={`/product/${item.slug}`} onClick={() => cart.setOpen(false)} className="image-frame size-[88px] shrink-0 rounded-[16px]">
-                            <img src={item.product.image} alt="" className="size-full object-cover" />
-                          </Link>
-                          <div className="flex min-w-0 flex-1 flex-col">
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="min-w-0">
-                                <p className="truncate text-[15px] font-medium">{item.product.name}</p>
-                                {item.option && <p className="text-[13px] text-muted">{item.option}</p>}
+                    {cart.items.map((item) => {
+                      const copy = localizeProduct(item.product, lang)
+                      return (
+                        <motion.li
+                          key={`${item.slug}-${item.option ?? ''}`}
+                          layout
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="flex gap-4 py-4">
+                            <Link to={`/product/${item.slug}`} onClick={() => cart.setOpen(false)} className="image-frame size-[88px] shrink-0 rounded-[16px]">
+                              <img src={item.product.image} alt="" className="size-full object-cover" />
+                            </Link>
+                            <div className="flex min-w-0 flex-1 flex-col">
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0">
+                                  <p className="truncate text-[15px] font-medium">{copy.name}</p>
+                                  {item.option && <p className="text-[13px] text-muted">{optionLabel(item.option, lang)}</p>}
+                                </div>
+                                <p className="shrink-0 tabular-nums">{money(item.product.price * item.quantity)}</p>
                               </div>
-                              <p className="shrink-0 tabular-nums">{money(item.product.price * item.quantity)}</p>
-                            </div>
-                            <div className="mt-auto flex items-center justify-between">
-                              <div className="grid h-9 grid-cols-[36px_32px_36px] items-center rounded-[11px] border border-line-strong text-[14px]">
-                                <button type="button" aria-label="Decrease" onClick={() => cart.setQuantity(item.slug, item.option, item.quantity - 1)} className="h-full text-muted hover:text-fg">
-                                  −
-                                </button>
-                                <span className="text-center tabular-nums">{item.quantity}</span>
-                                <button type="button" aria-label="Increase" onClick={() => cart.setQuantity(item.slug, item.option, item.quantity + 1)} className="h-full text-muted hover:text-fg">
-                                  +
+                              <div className="mt-auto flex items-center justify-between gap-3">
+                                <div className="grid h-9 grid-cols-[36px_32px_36px] items-center rounded-[11px] border border-line-strong text-[14px]">
+                                  <button type="button" aria-label={t('product.decrease')} onClick={() => cart.setQuantity(item.slug, item.option, item.quantity - 1)} className="h-full text-muted hover:text-fg">
+                                    −
+                                  </button>
+                                  <span className="text-center tabular-nums">{item.quantity}</span>
+                                  <button type="button" aria-label={t('product.increase')} onClick={() => cart.setQuantity(item.slug, item.option, item.quantity + 1)} className="h-full text-muted hover:text-fg">
+                                    +
+                                  </button>
+                                </div>
+                                <button type="button" onClick={() => cart.remove(item.slug, item.option)} className="text-[13px] text-muted underline-offset-4 hover:text-fg hover:underline">
+                                  {t('cart.remove')}
                                 </button>
                               </div>
-                              <button type="button" onClick={() => cart.remove(item.slug, item.option)} className="text-[13px] text-muted underline-offset-4 hover:text-fg hover:underline">
-                                Remove
-                              </button>
                             </div>
                           </div>
-                        </div>
-                      </motion.li>
-                    ))}
+                        </motion.li>
+                      )
+                    })}
                   </AnimatePresence>
                 </ul>
 
                 <footer className="border-t border-line px-6 py-5">
-                  <div className="flex items-center justify-between text-[15px]">
-                    <span className="text-muted">Subtotal</span>
+                  <div className="flex items-center justify-between gap-3 text-[15px]">
+                    <span className="text-muted">{t('cart.subtotal')}</span>
                     <span className="tabular-nums">{money(cart.subtotal)}</span>
                   </div>
-                  <p className="mt-1 text-[12.5px] text-faint">Shipping and taxes are calculated at checkout.</p>
+                  <p className="mt-1 text-[12.5px] text-faint">{t('cart.taxes')}</p>
                   <Button
                     size="lg"
                     className="mt-4 w-full"
@@ -137,7 +144,7 @@ export function CartDrawer() {
                       navigate('/checkout')
                     }}
                   >
-                    Checkout
+                    {t('cart.checkout')}
                   </Button>
                 </footer>
               </>

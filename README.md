@@ -6,6 +6,13 @@ a shop page with category and price filters and sorting, product pages with
 options and an accordion, a slide-out bag with free-shipping progress that
 persists in the browser, and a demo checkout with an order confirmation.
 
+The store opens in **Arabic** with a full right-to-left layout, and can be read
+in French or English from the language menu. A theme menu offers six palettes
+made for clothes, accessories and beauty — sand, noir, rose, olive, terracotta
+and lavender — and a sun/moon switch flips each of them between light and dark.
+All three preferences are remembered in the browser and applied before the first
+paint, so the store never flashes the wrong colour.
+
 The storefront is a React + Vite single page app served by a small
 [Hono](https://hono.dev) Worker that handles the API routes. The app ships
 inside this launcher under [`app/`](app), so Install only installs its
@@ -52,8 +59,10 @@ port it actually chose, so you never have to configure one.
   rebuilds a clean environment.
 
 Everything visible in the store is data, not code: the catalogue lives in
-`app/src/data/products.ts`, images in `app/public/images`, and the colours and
-type in `app/src/styles.css`.
+`app/src/data/products.ts`, its French and Arabic copy in
+`app/src/data/i18n.ts`, the interface strings in `app/src/app/i18n/dict.ts`,
+images in `app/public/images`, and the colours, type and all six themes in
+`app/src/styles.css`.
 
 ## API
 

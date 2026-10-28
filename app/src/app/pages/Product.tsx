@@ -4,14 +4,18 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 
 import { bySlug, products } from '../../data/products'
+import { categoryLabel, localizeProduct, optionLabel } from '../../data/i18n'
 import { ProductCard } from '../components/ProductCard'
 import { Button, Container, Stepper } from '../components/ui'
 import { money, useCart } from '../lib/cart'
 import { cx } from '../lib/cx'
+import { usePrefs } from '../lib/prefs'
 
 export function Product() {
   const { slug } = useParams()
-  const product = slug ? bySlug(slug) : undefined
+  const base = slug ? bySlug(slug) : undefined
+  const { lang, t } = usePrefs()
+  const product = base ? localizeProduct(base, lang) : undefined
   const cart = useCart()
   const [option, setOption] = useState<string | undefined>(product?.options?.values[0])
   const [quantity, setQuantity] = useState(1)
@@ -19,31 +23,36 @@ export function Product() {
   const [added, setAdded] = useState(false)
   const [open, setOpen] = useState<number | null>(0)
 
+  // Keyed on the slug so switching language keeps the chosen option and
+  // quantity: only a different product resets the page.
   useEffect(() => {
-    setOption(product?.options?.values[0])
-    setQuantity(1)
     setView(0)
+  }, [slug])
+
+  useEffect(() => {
+    setOption(base?.options?.values[0])
+    setQuantity(1)
     window.scrollTo({ top: 0 })
-  }, [product])
+  }, [base])
 
   if (!product) return <Navigate to="/shop" replace />
 
   // One photo, three framings: a full view and two closer crops read as a
   // small gallery until you add real detail shots.
   const views = [
-    { label: 'Front', style: {} },
-    { label: 'Detail', style: { transform: 'scale(1.8)', transformOrigin: '50% 35%' } },
-    { label: 'Texture', style: { transform: 'scale(2.4)', transformOrigin: '50% 70%' } },
+    { label: t('product.viewFront'), style: {} },
+    { label: t('product.viewDetail'), style: { transform: 'scale(1.8)', transformOrigin: '50% 35%' } },
+    { label: t('product.viewTexture'), style: { transform: 'scale(2.4)', transformOrigin: '50% 70%' } },
   ]
   const related = products.filter((p) => p.slug !== product.slug && (p.category === product.category || p.featured)).slice(0, 4)
   const sections = [
-    { title: 'Details', body: product.details },
-    { title: 'Materials and care', body: [product.materials] },
-    { title: 'Shipping and returns', body: ['Ships in 2 to 4 days from our studio. Free over $120.', 'Returns accepted within 30 days in original condition.'] },
+    { title: t('product.details'), body: product.details },
+    { title: t('product.materials'), body: [product.materials] },
+    { title: t('product.shipping'), body: [t('product.shipping.1'), t('product.shipping.2')] },
   ]
 
   function add() {
-    cart.add(product!, option, quantity)
+    cart.add(base!, option, quantity)
     setAdded(true)
     window.setTimeout(() => setAdded(false), 1600)
   }
@@ -51,8 +60,8 @@ export function Product() {
   return (
     <Container className="pt-6 sm:pt-10">
       <Link to="/shop" className="inline-flex h-9 items-center gap-1.5 text-[14px] text-muted transition-colors hover:text-fg">
-        <ArrowLeft className="size-4" />
-        Shop
+        <ArrowLeft className="size-4 rtl:rotate-180" />
+        {t('product.shopBack')}
       </Link>
 
       <div className="mt-6 grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
@@ -84,20 +93,23 @@ export function Product() {
                 style={views[view].style}
               />
             </AnimatePresence>
-            {product.badge && <span className="absolute left-4 top-4 rounded-[10px] bg-surface/90 px-2.5 py-1 text-[12px] font-medium backdrop-blur">{product.badge}</span>}
+            {base?.badge && (
+              <span className="absolute start-4 top-4 rounded-[10px] bg-surface/90 px-2.5 py-1 text-[12px] font-medium backdrop-blur">{t(`badge.${base.badge}`)}</span>
+            )}
           </div>
         </div>
 
         <div className="lg:pt-4">
-          <p className="text-[14px] capitalize text-muted">{product.category}</p>
-          <h1 className="font-display mt-2 text-[44px] leading-[1] sm:text-[56px]">{product.name}</h1>
+          <p className="text-[14px] text-muted">{categoryLabel(product.category, lang)}</p>
+          <h1 className="font-display mt-2 text-[40px] leading-[1] sm:text-[52px] rtl:text-[32px] sm:rtl:text-[40px]">{product.name}</h1>
           <p className="mt-4 text-[22px] tabular-nums">{money(product.price)}</p>
           <p className="mt-6 text-pretty text-[16px] leading-relaxed text-muted">{product.description}</p>
 
           {product.options && (
             <div className="mt-8">
               <p className="text-[14px] font-medium">
-                {product.options.name} <span className="ml-1 font-normal text-muted">{option}</span>
+                {t(`option.${product.options.name}`)}
+                {option && <span className="ms-1.5 font-normal text-muted">{optionLabel(option, lang)}</span>}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {product.options.values.map((v) => (
@@ -111,7 +123,7 @@ export function Product() {
                       option === v ? 'border-fg bg-fg text-bg' : 'border-line-strong text-fg hover:border-fg',
                     )}
                   >
-                    {v}
+                    {optionLabel(v, lang)}
                   </button>
                 ))}
               </div>
@@ -124,23 +136,23 @@ export function Product() {
               {added ? (
                 <>
                   <Check />
-                  Added to bag
+                  {t('product.added')}
                 </>
               ) : (
-                `Add to bag for ${money(product.price * quantity)}`
+                t('product.addToBagFor', { amount: money(product.price * quantity) })
               )}
             </Button>
           </div>
-          <p className="mt-3 text-[13px] text-faint">Free shipping over $120. 30 day returns.</p>
+          <p className="mt-3 text-[13px] text-faint">{t('product.freeShipping')}</p>
 
           <ul className="mt-10 divide-y divide-line border-y border-line">
             {sections.map((s, i) => {
               const isOpen = open === i
               return (
                 <li key={s.title}>
-                  <button type="button" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : i)} className="flex h-14 w-full items-center justify-between text-left text-[15px] font-medium">
+                  <button type="button" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : i)} className="flex h-14 w-full items-center justify-between gap-4 text-start text-[15px] font-medium">
                     {s.title}
-                    {isOpen ? <Minus className="size-4 text-muted" /> : <Plus className="size-4 text-muted" />}
+                    {isOpen ? <Minus className="size-4 shrink-0 text-muted" /> : <Plus className="size-4 shrink-0 text-muted" />}
                   </button>
                   <AnimatePresence initial={false}>
                     {isOpen && (
@@ -161,7 +173,7 @@ export function Product() {
       </div>
 
       <section className="pt-24 sm:pt-32">
-        <h2 className="font-display text-[36px] sm:text-[44px]">You may also like</h2>
+        <h2 className="font-display text-[30px] sm:text-[40px] rtl:text-[26px] sm:rtl:text-[34px]">{t('product.related')}</h2>
         <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6">
           {related.map((p, i) => (
             <ProductCard key={p.slug} product={p} index={i} />

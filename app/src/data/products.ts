@@ -21,7 +21,7 @@ export interface Product {
   description: string
   details: string[]
   materials: string
-  options?: { name: string; values: string[] }
+  options?: { name: 'Glaze' | 'Colour' | 'Scent'; values: string[] }
   featured?: boolean
 }
 

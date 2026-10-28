@@ -4,6 +4,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { Link } from 'react-router'
 
 import { cx } from '../lib/cx'
+import { usePrefs } from '../lib/prefs'
 
 type Variant = 'primary' | 'secondary' | 'ghost'
 type Size = 'md' | 'lg' | 'sm'
@@ -11,7 +12,7 @@ type Size = 'md' | 'lg' | 'sm'
 const base =
   'inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap font-medium transition-[background-color,color,transform,border-color] duration-200 active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0'
 const variants: Record<Variant, string> = {
-  primary: 'bg-fg text-bg hover:bg-[#33302b]',
+  primary: 'bg-fg text-bg hover:bg-fg/90',
   secondary: 'border border-line-strong bg-transparent text-fg hover:border-fg',
   ghost: 'text-muted hover:text-fg',
 }
@@ -74,13 +75,14 @@ export function SectionTitle({ eyebrow, title, action, className }: { eyebrow?: 
 }
 
 export function Stepper({ value, onChange, min = 1, className }: { value: number; onChange: (v: number) => void; min?: number; className?: string }) {
+  const { t } = usePrefs()
   return (
     <div className={cx('grid h-12 grid-cols-[48px_1fr_48px] items-center rounded-control border border-line-strong text-[15px]', className)}>
-      <button type="button" aria-label="Decrease" onClick={() => onChange(Math.max(min, value - 1))} className="h-full rounded-l-control text-muted transition-colors hover:text-fg">
+      <button type="button" aria-label={t('product.decrease')} onClick={() => onChange(Math.max(min, value - 1))} className="h-full rounded-s-control text-muted transition-colors hover:text-fg">
         −
       </button>
       <span className="text-center tabular-nums">{value}</span>
-      <button type="button" aria-label="Increase" onClick={() => onChange(value + 1)} className="h-full rounded-r-control text-muted transition-colors hover:text-fg">
+      <button type="button" aria-label={t('product.increase')} onClick={() => onChange(value + 1)} className="h-full rounded-e-control text-muted transition-colors hover:text-fg">
         +
       </button>
     </div>

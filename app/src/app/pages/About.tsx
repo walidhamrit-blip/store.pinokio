@@ -1,39 +1,35 @@
 import { ButtonLink, Container, Reveal } from '../components/ui'
+import { usePrefs } from '../lib/prefs'
 
 export function About() {
+  const { t } = usePrefs()
   return (
     <Container className="pt-10 sm:pt-16">
       <div className="max-w-3xl">
-        <p className="text-[14px] text-muted">The studio</p>
-        <h1 className="font-display mt-3 text-balance text-[48px] leading-[1] sm:text-[72px]">A small shop for things made by hand, kept for years</h1>
+        <p className="text-[14px] text-muted">{t('about.eyebrow')}</p>
+        <h1 className="font-display mt-3 text-balance text-[44px] leading-[1] sm:text-[68px] rtl:text-[34px] sm:rtl:text-[50px]">{t('about.title')}</h1>
       </div>
       <Reveal className="image-frame mt-12 aspect-[16/9] rounded-[32px]">
-        <img src="/images/lookbook.jpg" alt="A sunlit corner of the studio" className="size-full object-cover" />
+        <img src="/images/lookbook.jpg" alt={t('about.imageAlt')} className="size-full object-cover" />
       </Reveal>
       <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_2fr]">
         <Reveal>
-          <p className="font-display text-[32px] leading-[1.1]">We started in 2019 with a kiln, a loom and a lot of patience.</p>
+          <p className="font-display text-[26px] leading-[1.15] sm:text-[32px] rtl:text-[24px]">{t('about.quote')}</p>
         </Reveal>
         <Reveal delay={0.1} className="flex flex-col gap-5 text-[17px] leading-relaxed text-muted">
-          <p>
-            Your Store began as a corner of a ceramics studio in Lisbon, selling seconds to friends. It grew the way we hope everything we sell does: slowly, and because people kept coming back.
-          </p>
-          <p>
-            Today we work with eleven makers across Portugal, Japan and the Pacific Northwest. We visit every workshop, we agree prices together, and we never ask anyone to make more than they want to.
-          </p>
-          <p>
-            Everything ships from our studio in recycled packaging. If something arrives and is not right, tell us and we will fix it.
-          </p>
+          <p>{t('about.p1')}</p>
+          <p>{t('about.p2')}</p>
+          <p>{t('about.p3')}</p>
           <ButtonLink to="/shop" className="mt-2 self-start">
-            Shop the collection
+            {t('about.cta')}
           </ButtonLink>
         </Reveal>
       </div>
       <dl className="mt-20 grid gap-8 border-t border-line pt-10 sm:grid-cols-3">
         {[
-          ['Makers', '11'],
-          ['Countries', '3'],
-          ['Pieces returned last year', '0.8%'],
+          [t('about.stats.makers'), '11'],
+          [t('about.stats.countries'), '3'],
+          [t('about.stats.returns'), '0.8%'],
         ].map(([label, value]) => (
           <div key={label}>
             <dt className="text-[14px] text-muted">{label}</dt>

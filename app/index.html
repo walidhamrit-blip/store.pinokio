@@ -1,13 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl" data-lang="ar" data-theme="sand" data-mode="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f6f1ea" />
-    <title>Your Store</title>
-    <meta name="description" content="Objects for slow mornings. Ceramics, textiles and lighting made in small batches." />
+    <title>متجرك — أزياء وإكسسوارات وعناية بالجمال</title>
+    <meta
+      name="description"
+      content="متجر صغير للأزياء والإكسسوارات والعناية بالجمال: قطع مصنوعة بكميات صغيرة، بأيدي صانعين نعرفهم. Clothes, accessories and beauty, made in small batches."
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Apply the saved language, theme and light/dark mode before the first
+      // paint so the store never flashes the wrong palette or direction.
+      ;(function () {
+        var root = document.documentElement
+        var saved = {}
+        try {
+          saved = JSON.parse(localStorage.getItem('your-store-prefs') || '{}') || {}
+        } catch (e) {}
+        var themes = ['sand', 'noir', 'rose', 'olive', 'terra', 'lavender']
+        var lang = saved.lang === 'fr' || saved.lang === 'en' ? saved.lang : 'ar'
+        var theme = themes.indexOf(saved.theme) > -1 ? saved.theme : 'sand'
+        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        var mode = saved.mode === 'dark' || saved.mode === 'light' ? saved.mode : dark ? 'dark' : 'light'
+        root.lang = lang
+        root.dir = lang === 'ar' ? 'rtl' : 'ltr'
+        root.dataset.lang = lang
+        root.dataset.theme = theme
+        root.dataset.mode = mode
+        root.classList.toggle('dark', mode === 'dark')
+        root.style.colorScheme = mode
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
