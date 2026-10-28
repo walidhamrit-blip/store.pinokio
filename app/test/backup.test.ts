@@ -61,6 +61,19 @@ describe('db:backup', () => {
     expect(join(dir, 'backups')).toBe(out)
   })
 
+  it('understands --out dir as well as --out=dir', () => {
+    // The nightly workflow passes `--out ../backups`; a parser that only knew
+    // the `=` form silently wrote the dump next to the script instead.
+    const { dir, bin } = workspace()
+    const spaced = join(dir, 'spaced')
+    stubNpx(bin, GOOD_DUMP)
+    const result = run('scripts/backup.mjs', ['--out', spaced, '--keep', '1'], {
+      PATH: `${bin}:${process.env.PATH}`,
+    })
+    expect(result.status, result.stderr).toBe(0)
+    expect(readdirSync(spaced)).toHaveLength(1)
+  })
+
   it('fails instead of committing an empty dump', () => {
     const { bin, out } = workspace()
     stubNpx(bin, EMPTY_DUMP)
