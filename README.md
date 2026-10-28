@@ -52,6 +52,8 @@ port it actually chose, so you never have to configure one.
 
 - **Open Web UI** opens the running storefront.
 - **Terminal** shows the live server log for the running session.
+- **Deploy to Cloudflare** builds the store and uploads it as a Worker with
+  static assets (see [Deploy to Cloudflare](#deploy-to-cloudflare)).
 - **Update** pulls this launcher (when it is a git checkout) and re-runs Install.
 - **Reinstall** runs Install again, for example after changing package.json.
 - **Reset** removes `app/node_modules`, `app/dist`, `app/.wrangler` and the
@@ -63,6 +65,71 @@ Everything visible in the store is data, not code: the catalogue lives in
 `app/src/data/i18n.ts`, the interface strings in `app/src/app/i18n/dict.ts`,
 images in `app/public/images`, and the colours, type and all six themes in
 `app/src/styles.css`.
+
+## Deploy to Cloudflare
+
+The app already ships as a Cloudflare **Worker with static assets**: `src/worker/index.ts`
+is the Worker (it serves `/api/orders`, `/api/newsletter`, `/api/health` and hands
+everything else to the assets binding), `wrangler.jsonc` points the assets binding at
+the build output with SPA fallback, and `npm run build` writes both halves:
+
+```
+dist/client/   the store (HTML, JS, CSS, fonts, images)
+dist/store/    index.js — the Worker bundle
+```
+
+### Option A — from the Pinokio menu (easiest)
+
+1. Install and start the launcher once (for the node modules).
+2. In `app/`, sign in once: open **Terminal** and run `npx wrangler login`
+   (a browser tab opens; approve it). A `CLOUDFLARE_API_TOKEN` +
+   `CLOUDFLARE_ACCOUNT_ID` pair in the environment works too, for CI.
+3. Click **Deploy to Cloudflare** in the menu. It builds and runs `wrangler deploy`.
+
+### Option B — from a terminal
+
+```sh
+cd app
+npm install
+npx wrangler login      # once
+npm run deploy          # build + wrangler deploy
+```
+
+Check the result before uploading, without touching your account:
+
+```sh
+npm run deploy:dry      # builds and prints what would be uploaded
+npm run build && npx wrangler dev   # runs the real Worker + assets on :8787
+```
+
+The first deploy prints the live URL, e.g.
+`https://store.<your-subdomain>.workers.dev`. Routes are SPA-friendly, so
+`/shop`, `/product/linen-apron` or `/checkout` all open directly.
+
+### Useful knobs
+
+- **Rename the Worker** — change `"name": "store"` in `app/wrangler.jsonc`
+  (the workers.dev subdomain name comes from it, and must be free in your account).
+- **Your own domain** — Dashboard → Workers & Pages → `store` → Settings →
+  Domains & Routes → *Add custom domain*, then point the DNS record at it.
+- **Arabic-friendly headers** — nothing to do: the HTML is served with
+  `lang="ar" dir="rtl"` already, and fonts are self-hosted (no Google Fonts call).
+- **Secrets** — `npx wrangler secret put STRIPE_SECRET_KEY` (or Dashboard →
+  Settings → Variables) when you replace the demo checkout with Stripe.
+- **Logs** — `npx wrangler tail` streams requests from production.
+- **Order data** — the demo returns a reference without storing anything. To keep
+  orders, add a D1 database (`npx wrangler d1 create store`), bind it in
+  `wrangler.jsonc`, and write to it in the `/api/orders` handler.
+
+### Alternative: Cloudflare Pages
+
+Pages works too if you prefer Git-based deploys: create a Pages project, connect
+the repo, and use `app` as the root directory, `npm run build` as the build
+command and `dist/client` as the output directory. Note that Pages then serves
+only the static storefront — the `/api/*` routes belong to the Worker, so either
+deploy the Worker separately or move those handlers to Pages Functions
+(`app/functions/api/orders.ts`) if you go that way. The Workers route above keeps
+both halves in one deployment and is what `deploy.js` uses.
 
 ## API
 
@@ -158,6 +225,7 @@ print(res.json())  # {'ok': True}
 store/
 ├── app/            # The storefront (React + Vite + Hono Worker)
 ├── icon.jpg        # Launcher icon
+├── deploy.js       # Builds and deploys the Worker to Cloudflare
 ├── install.js      # npm install inside app/
 ├── start.js        # Starts the dev server, captures its URL
 ├── update.js       # Pulls the launcher and re-installs

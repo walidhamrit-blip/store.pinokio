@@ -42,7 +42,31 @@ bun run build      # dist/client (assets) + dist/store/index.js (Worker)
   checkout is a demo: swap the order handler for a Stripe Checkout session
   (keep the secret in Sites → Secrets) or save orders to D1.
 
-## Deploy with Freebuff Sites
+## Deploy
 
-`deploy.json` points at the build output. After `bun run build`, deploy with
-the `sites_deploy` tool from this directory.
+### Cloudflare Workers (recommended)
+
+```sh
+npx wrangler login   # once
+npm run deploy       # build + wrangler deploy
+npm run deploy:dry   # build + show what would be uploaded, no account needed
+```
+
+`wrangler.jsonc` bundles the Worker (`src/worker/index.ts`, the `/api/*` routes)
+with the built store as static assets and SPA fallback, so a single deploy
+serves both. The live URL is `https://<name>.<subdomain>.workers.dev`; rename
+`"name": "store"` in `wrangler.jsonc` to pick another subdomain, and add a
+custom domain from the dashboard. Logs: `npx wrangler tail`.
+
+If you would rather not touch Wrangler, deploy the same `dist/` with
+Cloudflare Pages: root directory `app`, build `npm run build`, output
+`dist/client`. Pages then serves the static store only — the `/api/*` routes
+live in the Worker, so keep the Worker deployed or move those handlers to
+Pages Functions (`functions/api/*.ts`).
+
+### Freebuff Sites
+
+`deploy.json` points at the build output. After `npm run build`, deploy with
+the `sites_deploy` tool from this directory. `scripts/postbuild.mjs` strips
+hidden files, source maps and their `sourceMappingURL` comments, so the same
+`dist/` is accepted by both targets.
