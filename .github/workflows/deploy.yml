@@ -67,11 +67,21 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Explain missing credentials
-        if: env.CLOUDFLARE_API_TOKEN == ''
+      - name: Check credentials
         run: |
-          echo "::error::CLOUDFLARE_API_TOKEN is not set. Add it in Settings → Secrets and variables → Actions."
-          exit 1
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is not set — Settings → Secrets and variables → Actions → New repository secret."
+            exit 1
+          fi
+          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "::error::CLOUDFLARE_ACCOUNT_ID is not set (32 hex characters, visible in the dashboard URL)."
+            exit 1
+          fi
+          if [ -z "${ADMIN_PASSWORD:-}" ]; then
+            echo "::warning::ADMIN_PASSWORD is not set — the password already stored on the Worker is left untouched and the dashboard stays as it is."
+          fi
+          echo "Credentials present."
 
       - name: Push the dashboard password
         if: env.ADMIN_PASSWORD != ''
