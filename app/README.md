@@ -124,10 +124,11 @@ Nothing to run by hand once the repository secrets exist:
 | `Restore D1` | *Actions → Restore D1* | `npm run db:restore` on a snapshot, guarded by typing `restore` |
 
 **One secret is required**: `CLOUDFLARE_API_TOKEN` (Workers Scripts:Edit +
-D1:Edit). Everything else is optional and auto-detected: `CLOUDFLARE_ACCOUNT_ID`
-(wrangler finds the single account), `ADMIN_PASSWORD` (only to change the
+D1:Edit). Everything else is optional: `ADMIN_PASSWORD` (only to *change* the
 dashboard password from GitHub — a deploy never removes the secret stored on the
-Worker), `STORE_URL` (the deploy output is used otherwise), `BACKUP_KEEP`.
+Worker), `STORE_URL` (the deploy output is used otherwise), `BACKUP_KEEP`. The
+account id is committed in `app/wrangler.jsonc`, so `wrangler` never has to look
+it up with an API call the token may not be allowed to make.
 `Deploy` is the only pipeline; Cloudflare's own Git build stays disconnected.
 
 The scripts are plain Node so they run identically on Windows and in CI:

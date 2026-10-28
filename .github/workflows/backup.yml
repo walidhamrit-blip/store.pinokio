@@ -6,9 +6,10 @@ name: Backup D1
 # Retention: the newest `BACKUP_KEEP` snapshots (repository variable, default
 # 30) are kept; older ones are pruned in the same commit.
 #
-# Requires the same secrets as Deploy: CLOUDFLARE_API_TOKEN (with D1:Edit) and
-# CLOUDFLARE_ACCOUNT_ID. The dumps are plain SQL, so they can be read, diffed,
-# or re-imported with the "Restore D1" workflow.
+# Requires the same single secret as Deploy: CLOUDFLARE_API_TOKEN, with
+# D1:Edit. The account is taken from app/wrangler.jsonc. The dumps are plain
+# SQL, so they can be read, diffed, or re-imported with the "Restore D1"
+# workflow.
 
 on:
   schedule:
@@ -37,7 +38,6 @@ jobs:
         working-directory: app
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       BACKUP_KEEP: ${{ inputs.keep || vars.BACKUP_KEEP || '30' }}
     steps:
       - uses: actions/checkout@v4
@@ -55,10 +55,10 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Explain missing credentials
-        if: env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == ''
+      - name: Check credentials
+        if: env.CLOUDFLARE_API_TOKEN == ''
         run: |
-          echo "::error::CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID must be set in Settings → Secrets and variables → Actions."
+          echo "::error::CLOUDFLARE_API_TOKEN is not set — Settings → Secrets and variables → Actions → New repository secret."
           exit 1
 
       - name: Export the database

@@ -193,7 +193,7 @@ That is the whole setup. Everything else is detected or already in place:
 | Kind | Name | Needed? |
 |---|---|---|
 | Secret | `CLOUDFLARE_API_TOKEN` | **yes** — the only required field |
-| Secret | `CLOUDFLARE_ACCOUNT_ID` | no — wrangler finds the single account by itself |
+| Secret | `CLOUDFLARE_ACCOUNT_ID` | no — the account id is committed in `app/wrangler.jsonc` (an id, not a credential) |
 | Secret | `ADMIN_PASSWORD` | no — only to *change* the dashboard password from GitHub; a deploy never removes the secret already on the Worker |
 | Variable | `STORE_URL` | no — the URL is read from `wrangler deploy` output for the health check |
 | Variable | `BACKUP_KEEP` | no — 30 snapshots by default |

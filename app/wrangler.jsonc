@@ -1,6 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "store",
+  // Not a secret: an account id is an identifier, not a credential. Committed
+  // here so that every automated command (deploy, secret put, D1 export,
+  // restore) finds the account without an extra GitHub secret or a lookup that
+  // the API token is not allowed to perform.
+  "account_id": "c49a339ecc1caadccb50c672cdbd88da",
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-09-29",
   "assets": {
