@@ -83,5 +83,23 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # Without a Pages site, deploy-pages fails with a bare 404 in one second.
+      # Say what to click instead.
+      - name: Is GitHub Pages enabled?
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -e
+          status=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "authorization: Bearer $GH_TOKEN" \
+            -H "accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/pages")
+          if [ "$status" != "200" ]; then
+            echo "::error::GitHub Pages is not enabled for $REPO (HTTP $status). Open https://github.com/$REPO/settings/pages → Build and deployment → Source: GitHub Actions, then re-run this workflow."
+            exit 1
+          fi
+          echo "Pages is enabled."
+
       - id: deployment
         uses: actions/deploy-pages@v4

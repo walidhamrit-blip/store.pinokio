@@ -92,3 +92,28 @@ pour obtenir un lien propre du type `https://<compte>.github.io/accessoires/`.
 
 Limite de GitHub Pages : un lien profond partagé (`/accessoires/product/...`)
 retombe sur la page d'accueil. Le lien à envoyer est la racine du site.
+
+## Mise en ligne — ce qui bloque, et quoi faire
+
+Le lien `https://walidhamrit-blip.github.io/store.pinokio/accessoires/` ne
+répond **que si GitHub Pages est activé** sur le dépôt. Tant que ce n'est pas
+fait, le job `deploy` échoue en une seconde et l'URL renvoie 404 (il n'existe
+aucun site à cette adresse).
+
+Une seule fois, dans le dépôt `store.pinokio` :
+
+1. https://github.com/walidhamrit-blip/store.pinokio/settings/pages
+2. **Build and deployment → Source** : choisir **GitHub Actions**
+   (et non « Deploy from a branch »).
+3. Enregistrer, puis relancer le workflow *Publish the samples to GitHub Pages*
+   (Actions → le run → **Re-run all jobs**), ou pousser un commit.
+
+Les étapes suivantes sont automatiques : chaque push reconstruit l'échantillon
+et le publie.
+
+### Sans GitHub Pages
+
+`accessoires-site.zip` (à la racine du dépôt, non versionné — régénérable avec
+la commande ci-dessus) contient le site prêt à glisser-déposer sur un
+hébergeur statique : Netlify Drop, Cloudflare Pages (*Upload assets*), Vercel…
+L'URL est fournie par l'hébergeur en quelques secondes.

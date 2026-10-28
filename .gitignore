@@ -6,3 +6,6 @@ app/.dev.vars
 app/.dev.vars.*
 !.dev.vars.example
 *.log
+
+# Built sample site, zipped for drag-and-drop hosts (Netlify, Cloudflare Pages)
+accessoires-site.zip
