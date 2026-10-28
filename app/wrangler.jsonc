@@ -21,7 +21,7 @@
       "database_id": "ef272e27-db8d-4a23-b62e-51c72e31e54a"
     }
   ],
-  // Set the dashboard password with `npx wrangler secret put ADMIN_PASSWORD`.
+  // Set the dashboard password with `npx wrangler secret put ADMIN_PASSWORD`
   "vars": {},
   "observability": { "enabled": true }
 }
