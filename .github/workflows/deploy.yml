@@ -14,13 +14,11 @@ name: Deploy
 #                                    is kept by every deploy
 #   Variables STORE_URL              health-check target; otherwise the URL is
 #                                    read from the deploy output
-#             SKIP_ACTIONS_DEPLOY    "true" to let Cloudflare's own Git build
-#                                    deploy instead of this workflow
 #             BACKUP_KEEP            snapshots to keep (default 30)
 #
-# If Cloudflare is already building from GitHub (Workers & Pages → store →
-# Settings → Builds), turn that off first: two pipelines deploying the same
-# Worker race each other.
+# This is the only deploy pipeline: Cloudflare's own Git build must stay
+# disconnected (Workers & Pages → store → Settings → Builds), otherwise two
+# pipelines deploy the same Worker and race each other.
 
 on:
   push:
@@ -40,7 +38,6 @@ permissions:
 
 jobs:
   deploy:
-    if: vars.SKIP_ACTIONS_DEPLOY != 'true'
     runs-on: ubuntu-latest
     defaults:
       run:

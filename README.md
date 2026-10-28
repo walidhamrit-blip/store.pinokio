@@ -197,13 +197,11 @@ That is the whole setup. Everything else is detected or already in place:
 | Secret | `ADMIN_PASSWORD` | no — only to *change* the dashboard password from GitHub; a deploy never removes the secret already on the Worker |
 | Variable | `STORE_URL` | no — the URL is read from `wrangler deploy` output for the health check |
 | Variable | `BACKUP_KEEP` | no — 30 snapshots by default |
-| Variable | `SKIP_ACTIONS_DEPLOY` | no — `true` only if Cloudflare's own Git build deploys instead |
 
 3. **Keep a single deploy pipeline** — Workers & Pages → `store` →
    *Settings → Builds*: **disconnect** the repository so only `deploy.yml`
-   deploys. (The alternative, keeping Cloudflare's builds, requires
-   `SKIP_ACTIONS_DEPLOY=true` plus a build watch-path exclusion `backups/*`,
-   otherwise every nightly backup commit triggers a pointless rebuild.)
+   deploys. Leaving Cloudflare's build connected would race this workflow on
+   every push; removing that build is the whole step.
 4. Merge the branch. The first deploy runs on its own and `Actions` shows the
    health check result.
 5. Take the first snapshot immediately instead of waiting for 03:17 UTC:
