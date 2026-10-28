@@ -18,7 +18,7 @@
     {
       "binding": "DB",
       "database_name": "store",
-      "database_id": "00000000-0000-0000-0000-000000000000"
+      "database_id": "ef272e27-db8d-4a23-b62e-51c72e31e54a"
     }
   ],
   // Set the dashboard password with `npx wrangler secret put ADMIN_PASSWORD`.
