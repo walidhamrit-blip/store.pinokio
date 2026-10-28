@@ -9,10 +9,17 @@ name: Publish the samples to GitHub Pages
 # Add another specialty by copying samples/accessoires to samples/<slug>,
 # then adding one step copy below — nothing else in the site changes.
 on:
+  # Only from main: the `github-pages` environment accepts no other branch, and
+  # a red run on every push would be noise. The samples are published to a
+  # Cloudflare Worker by sample-cloudflare.yml; this workflow stays for the day
+  # the repository serves Pages from main.
   push:
     branches:
       - main
-      - arena/bb8a518e-store-pinokio
+    paths:
+      - 'samples/**'
+      - 'samples/index.html'
+      - '.github/workflows/samples-pages.yml'
   workflow_dispatch:
 
 permissions:

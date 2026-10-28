@@ -1,11 +1,13 @@
-name: Publish the sample to Cloudflare Pages
+name: Publish the accessories sample (Cloudflare Worker)
 
-# A permanent link for the accessories sample, independent of GitHub Pages:
-#   https://accessoires.pages.dev
+# A permanent public link for the accessories sample, served from Cloudflare's
+# edge as a static Worker — no database, no logic, no cost beyond the free plan:
 #
-# It reuses CLOUDFLARE_API_TOKEN, the secret the shop's own deploy already
-# needs (Workers Scripts:Edit + D1:Edit — add Pages:Edit to it for this job).
-# The sample is a static build: no Worker, no database, no cost.
+#   https://noor-accessoires.<account>.workers.dev
+#
+# It needs only CLOUDFLARE_API_TOKEN with Workers Scripts:Edit — the same
+# permission the shop's own deploy already uses, so nothing has to be granted
+# again. (GitHub Pages would work too, but its environment only allows `main`.)
 on:
   workflow_dispatch:
   push:
@@ -28,8 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      # Committed on purpose (it is an identifier, not a secret) — same account
-      # as app/wrangler.jsonc.
+      # Committed on purpose (an identifier, not a secret) — the same account
+      # that app/wrangler.jsonc deploys the shop to.
       CLOUDFLARE_ACCOUNT_ID: c49a339ecc1caadccb50c672cdbd88da
     steps:
       - uses: actions/checkout@v4
@@ -47,13 +49,10 @@ jobs:
       - name: Build the static sample
         working-directory: samples/accessoires/app
         env:
+          # Static sample: bundled catalogue, checkout confirmed in the browser,
+          # no dashboard. Served from the root of its own host, so no SITE_BASE.
           VITE_DEMO: '1'
-        # Served from the root of its own domain, so no SITE_BASE.
         run: npx vite build
-
-      - name: SPA fallback for shared deep links
-        working-directory: samples/accessoires/app
-        run: cp dist/client/index.html dist/client/404.html
 
       - name: Check credentials
         run: |
@@ -62,25 +61,32 @@ jobs:
             exit 1
           fi
 
-      - name: Create the Pages project (once)
-        working-directory: samples/accessoires/app
-        continue-on-error: true
-        run: npx wrangler pages project create accessoires --production-branch main
-
       - name: Deploy
         id: deploy
         working-directory: samples/accessoires/app
         run: |
           set +e
-          npx wrangler pages deploy dist/client --project-name accessoires --branch main 2>&1 | tee /tmp/pages.log
+          npx wrangler deploy --config wrangler.sample.jsonc 2>&1 | tee /tmp/deploy.log
           code=${PIPESTATUS[0]}
           set -e
           if [ "$code" -ne 0 ]; then
-            # Annotations stay readable in the Actions UI and through the API,
-            # unlike the raw log. Mirrors the shop's own deploy workflow.
-            tail -n 20 /tmp/pages.log | sed 's/^/::error::wrangler: /'
+            # Annotations survive in the Actions UI and through the API, unlike
+            # the raw log. A missing permission reads as "Authentication error".
+            tail -n 20 /tmp/deploy.log | sed 's/^/::error::wrangler: /'
             exit "$code"
           fi
-          url=$(grep -Eo 'https://[A-Za-z0-9.-]+\.pages\.dev' /tmp/pages.log | tail -n 1 || true)
+          url=$(grep -Eo 'https://[A-Za-z0-9.-]+\.workers\.dev' /tmp/deploy.log | tail -n 1 || true)
           echo "url=$url" >> "$GITHUB_OUTPUT"
-          echo "Published: ${url:-unknown}"
+          echo "::notice::Sample published: ${url:-see the deploy log}"
+
+      - name: Say the link
+        if: steps.deploy.outputs.url != ''
+        run: |
+          {
+            echo "### The accessories sample is live"
+            echo
+            echo "[${{ steps.deploy.outputs.url }}](${{ steps.deploy.outputs.url }})"
+            echo
+            echo "Send that link to a client. Prices in LYD, Arabic first (RTL),"
+            echo "French and English one click away — a static build, nothing to pay for."
+          } >> "$GITHUB_STEP_SUMMARY"

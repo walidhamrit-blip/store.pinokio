@@ -1,0 +1,14 @@
+{
+  // The accessories sample as a static Cloudflare Worker: no database, no
+  // logic, just the built storefront served from the edge. Deployed by
+  // .github/workflows/sample-cloudflare.yml — needs only Workers Scripts:Edit,
+  // the permission the shop's own deploy already uses.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "noor-accessoires",
+  "compatibility_date": "2026-09-29",
+  "assets": {
+    "directory": "./dist/client",
+    "not_found_handling": "single-page-application"
+  },
+  "observability": { "enabled": true }
+}
