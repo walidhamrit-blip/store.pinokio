@@ -1,11 +1,12 @@
 name: Clean credentials
 description: >
-  Recover from a badly pasted Cloudflare credential. A token copied from the
-  dashboard often arrives with a trailing newline, a surrounding line of text,
-  or an `export CLOUDFLARE_API_TOKEN=…` prefix, and wrangler then fails with the
-  unhelpful `Headers.set: "***" is an invalid header value`. This action trims
-  the value, extracts the 40-character token when it is embedded in something
-  longer, and reports precisely what is wrong when it cannot.
+  Check the Cloudflare credential before wrangler touches it. A token pasted
+  from the dashboard often arrives with a trailing newline or a surrounding
+  fragment of text, and wrangler then fails with the unhelpful
+  `Headers.set: "***" is an invalid header value`. This action trims the value,
+  extracts the token when it is embedded in longer text, knows both the legacy
+  40-character format and the current cfut_/cfat_ scannable format, and says
+  precisely what is wrong when it cannot use the value.
 
 runs:
   using: composite
@@ -14,6 +15,33 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
+
+        # 0 = usable, 1 = not a token, 2 = a Global API Key (cfk_)
+        check_token() {
+          local value="$1" body
+          case "$value" in
+            cfut_*|cfat_*)
+              # 2026 scannable format: cfut_/cfat_ + 40 characters + 8-character
+              # checksum, 53 in total. The checksum length is undocumented, so
+              # anything from 40 characters after the prefix is accepted.
+              body="${value#*_}"
+              [ "${#body}" -ge 40 ] || return 1
+              case "$body" in
+                *[!A-Za-z0-9]*) return 1 ;;
+              esac
+              return 0
+              ;;
+            cfk_*)
+              return 2
+              ;;
+          esac
+          # Legacy format: exactly 40 characters of [A-Za-z0-9_-].
+          [ "${#value}" -eq 40 ] || return 1
+          case "$value" in
+            *[!A-Za-z0-9_-]*) return 1 ;;
+          esac
+          return 0
+        }
 
         raw=$(printf '%s' "${CLOUDFLARE_API_TOKEN:-}")
         # Mask every line: GitHub masks literal strings, not whole blocks, and a
@@ -27,50 +55,53 @@ runs:
           exit 1
         fi
 
-        # A Cloudflare API token is exactly 40 characters of [A-Za-z0-9_-].
-        # Anything else means the paste carried something extra: a newline, a
-        # whole `export …=` line, a JSON snippet, a label, a second value.
-        # Split the pasted text into maximal word-like runs and keep the ones
-        # whose length is exactly 40 — one and only one, or we refuse to guess.
-        runs=()
-        while IFS= read -r run; do
-          [ "${#run}" -eq 40 ] && runs+=("$run")
-        done < <(printf '%s' "$raw" | grep -oE '[A-Za-z0-9_-]+' || true)
-
-        unique=()
-        for candidate in "${runs[@]+"${runs[@]}"}"; do
-          duplicate=0
-          for seen in "${unique[@]+"${unique[@]}"}"; do
-            [ "$seen" = "$candidate" ] && duplicate=1
-          done
-          [ "$duplicate" -eq 0 ] && unique+=("$candidate")
-        done
-
-        count=${#unique[@]}
-        bad=$(printf '%s' "$raw" | tr -d 'A-Za-z0-9_-' | head -c 40 | fold -w1 | LC_ALL=C sort -u | tr -d '[:space:]')
-
-        if [ "$count" -eq 1 ]; then
-          token="${unique[0]}"
-          echo "::add-mask::$token"
-          if [ "$raw" != "$token" ]; then
-            echo "::warning::The stored secret is not a bare token (${#raw} characters${bad:+, unexpected [${bad}]}). Extracted the single 40-character API token from it — no action needed, but the secret is worth cleaning up."
-          fi
+        token=""
+        trimmed=$(printf '%s' "$raw" | tr -d '[:space:]')
+        if check_token "$trimmed"; then
+          token="$trimmed"
         else
-          hint=""
-          case "$raw" in
-            *://*) hint="It looks like a URL." ;;
-            *[/\\]*) hint="It looks like a file path — a secret must contain the token itself, not the name of a file that holds it." ;;
-          esac
-          if [ "${#raw}" -le 20 ]; then
-            preview="$raw"
+          # Whatever was pasted carries something else: a newline in the middle,
+          # an `export …=` line, a label, quotes, a second value. Collect the
+          # token-shaped pieces and accept only an unambiguous single one.
+          unique=()
+          while IFS= read -r candidate; do
+            [ -z "$candidate" ] && continue
+            check_token "$candidate" || continue
+            duplicate=0
+            for seen in "${unique[@]+"${unique[@]}"}"; do
+              [ "$seen" = "$candidate" ] && duplicate=1
+            done
+            [ "$duplicate" -eq 0 ] && unique+=("$candidate")
+          done < <(printf '%s' "$raw" | grep -oE '(cfut_|cfat_)[A-Za-z0-9]{40,}|[A-Za-z0-9_-]{40}' || true)
+
+          count=${#unique[@]}
+          if [ "$count" -eq 1 ]; then
+            token="${unique[0]}"
+            echo "::add-mask::$token"
+            echo "::warning::The stored secret is not a bare token (${#trimmed} characters). Extracted the ${#token}-character token from it — the deploy is fine, but the secret is worth cleaning up."
           else
-            preview="$(printf '%s' "$raw" | head -c 14 | tr -d '\n')…$(printf '%s' "$raw" | tail -c 4 | tr -d '\n')"
+            state=0
+            check_token "$trimmed" || state=$?
+            if [ "$state" -eq 2 ]; then
+              echo "::error::CLOUDFLARE_API_TOKEN holds a Global API Key (cfk_), which wrangler cannot use as a token. Create a scoped token instead: My Profile → API Tokens → Create Token → Custom token, with Account → Workers Scripts → Edit and Account → D1 → Edit."
+              exit 1
+            fi
+            hint=""
+            case "$trimmed" in
+              *://*) hint="It looks like a URL." ;;
+              *[/\\\\]*) hint="It looks like a file path — a secret must contain the token itself, not the name of a file that holds it." ;;
+            esac
+            if [ "${#trimmed}" -le 24 ]; then
+              preview="$trimmed"
+            else
+              preview="$(printf '%s' "$trimmed" | head -c 12)…$(printf '%s' "$trimmed" | tail -c 4)"
+            fi
+            echo "::error::CLOUDFLARE_API_TOKEN is not a Cloudflare API token: ${#trimmed} characters, ${count} token-shaped candidates.${hint:+ $hint} What is stored starts with \`${preview}\`. A token is either 40 characters of [A-Za-z0-9_-] (older tokens) or cfut_/cfat_ followed by 40 characters and a checksum, 53 in total (2026 tokens)."
+            exit 1
           fi
-          echo "::error::CLOUDFLARE_API_TOKEN is not a Cloudflare API token: ${#raw} characters, ${count} token-shaped candidates${bad:+, unexpected characters [${bad}]}.${hint:+ $hint} What is stored starts with \`${preview}\`. A token is exactly 40 characters of letters, digits, - and _ on a single line — paste only that value."
-          exit 1
         fi
 
-        echo "::notice::CLOUDFLARE_API_TOKEN accepted (${#token} characters)."
+        echo "::notice::CLOUDFLARE_API_TOKEN accepted (${#token} characters, $(case "$token" in cfut_*) echo user ;; cfat_*) echo account ;; *) echo legacy ;; esac) format)."
         printf 'CLOUDFLARE_API_TOKEN=%s\n' "$token" >> "$GITHUB_ENV"
 
     - name: Normalise ADMIN_PASSWORD
@@ -84,4 +115,20 @@ runs:
         # Only line breaks are removed: a password may legitimately contain spaces.
         password=$(printf '%s' "$ADMIN_PASSWORD" | tr -d '\r\n')
         echo "::add-mask::$password"
+
+        # This secret overwrites the live dashboard password, so a value that is
+        # obviously not a password (a file path, a URL) must never be pushed: it
+        # would lock the shop's owner out of their own dashboard.
+        refuse=""
+        [ "${#password}" -ge 8 ] || refuse="shorter than 8 characters"
+        [ "${#password}" -le 128 ] || refuse="longer than 128 characters"
+        case "$password" in
+          */*|*\\*|*://*) refuse="it looks like a file path or a URL" ;;
+        esac
+        if [ -n "$refuse" ]; then
+          echo "::warning::ADMIN_PASSWORD not used (${refuse}). The password already stored on the Worker is kept, and the dashboard keeps working. Store the password itself, not the name of a file that holds it."
+          exit 0
+        fi
+
         printf 'ADMIN_PASSWORD=%s\n' "$password" >> "$GITHUB_ENV"
+        printf 'ADMIN_PASSWORD_READY=1\n' >> "$GITHUB_ENV"
