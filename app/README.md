@@ -34,6 +34,18 @@ catalogue, so editing articles never touches production.
 - `src/data/shop.ts` is the shop itself: address, hours, phone, WhatsApp,
   Facebook, map link, rating and delivery line, in the three languages. Change
   it there and the header, the home card, the about page and the footer follow.
+- `src/data/brands.ts` is the list on the running banner under the hero
+  (accessories, ready-to-wear, watches). Reorder or replace it freely — the
+  banner loops whatever names it gets.
+- `src/app/components/BrandMarquee.tsx` is that banner: two copies of the list
+  on one track, sliding by half its width, in the theme's own `line`, `muted`
+  and `accent` tokens, paused on hover and stopped when the visitor asks for
+  reduced motion.
+- `src/app/components/QrDialog.tsx` gives every piece a QR code of its own
+  address, generated in the browser (`qrcode.react`) — on the card as a small
+  icon, and next to the price on the product page. Nothing is sent anywhere.
+- `src/app/components/WhatsAppButton.tsx` is the floating WhatsApp bubble, fed
+  by `shop.whatsapp`.
 - `src/data/seed.json` is the starter catalogue (all three languages). It seeds
   D1 on first run and is the offline fallback for the storefront.
 - `src/data/products.ts` holds the product shape, the categories and the

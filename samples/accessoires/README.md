@@ -46,8 +46,10 @@ Sans ces variables, l'application tourne normalement derrière son Worker
 2. **Le catalogue** — `app/src/data/seed.json` (10 pièces, trois langues) ou,
    en version Worker, le tableau de bord `/admin`.
 3. **Les textes** — `app/src/app/i18n/dict.ts`, une clé par langue.
-4. **Les images** — `app/public/images/` (ratios 4:5 pour les fiches).
-5. **Les couleurs et les polices** — `app/src/styles.css`.
+4. **Les marques du bandeau** — `app/src/data/brands.ts` : la liste défile
+   sous le hero, dans le style du thème actif (elle se met en pause au survol).
+5. **Les images** — `app/public/images/` (ratios 4:5 pour les fiches).
+6. **Les couleurs et les polices** — `app/src/styles.css`.
 
 Pour un autre métier, il suffit de recopier ce dépôt et de changer ces cinq
 endroits : la structure (accueil, boutique, fiche, panier, commande, à propos)
