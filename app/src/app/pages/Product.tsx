@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowLeft, Check, Minus, Plus } from 'lucide-react'
+import { ArrowLeft, Check, Minus, Plus, QrCode } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 
@@ -7,6 +7,7 @@ import { localized, type Badge, type OptionName } from '../../data/products'
 import { categoryLabel, optionLabel } from '../../data/i18n'
 import { useCatalog } from '../lib/catalog'
 import { ProductCard } from '../components/ProductCard'
+import { QrDialog, productUrl } from '../components/QrDialog'
 import { Button, Container, Stepper } from '../components/ui'
 import { money, useCart } from '../lib/cart'
 import { asset } from '../lib/demo'
@@ -28,6 +29,7 @@ export function Product() {
   const [quantity, setQuantity] = useState(1)
   const [view, setView] = useState(0)
   const [added, setAdded] = useState(false)
+  const [qr, setQr] = useState(false)
   const [open, setOpen] = useState<number | null>(0)
 
   // A newly chosen product starts from the top with its first option; a
@@ -111,7 +113,17 @@ export function Product() {
         <div className="lg:pt-4">
           <p className="text-[14px] text-muted">{categoryLabel(product.category, lang)}</p>
           <h1 className="font-display mt-2 text-[40px] leading-[1] sm:text-[52px] rtl:text-[32px] sm:rtl:text-[40px]">{product.name}</h1>
-          <p className="mt-4 text-[22px] tabular-nums">{money(product.price)}</p>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <p className="text-[22px] tabular-nums">{money(product.price)}</p>
+            <button
+              type="button"
+              onClick={() => setQr(true)}
+              className="inline-flex h-9 items-center gap-1.5 rounded-[11px] border border-line px-3 text-[13px] text-muted transition-colors hover:bg-surface-2 hover:text-fg"
+            >
+              <QrCode className="size-3.5" />
+              {t('qr.open')}
+            </button>
+          </div>
           <p className="mt-6 text-pretty text-[16px] leading-relaxed text-muted">{product.description}</p>
 
           {product.options && (
@@ -189,6 +201,7 @@ export function Product() {
           ))}
         </div>
       </section>
+      <QrDialog open={qr} onClose={() => setQr(false)} url={productUrl(product.slug)} name={product.name} />
     </Container>
   )
 }

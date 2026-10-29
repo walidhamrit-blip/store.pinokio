@@ -334,3 +334,33 @@ html[lang='ar'] .font-display {
   background: var(--color-frame);
   overflow: hidden;
 }
+
+/* The brands banner: one track, two copies of the list, sliding by half its
+   width so the loop has no seam. It pauses while the pointer is over it. */
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility marquee-track {
+  animation-name: marquee-scroll;
+  animation-duration: 52s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.group:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    transform: none;
+  }
+}

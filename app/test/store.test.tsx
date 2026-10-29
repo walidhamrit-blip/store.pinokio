@@ -121,3 +121,33 @@ it('normalises dashboard input: mirrors English, keeps slugs and prices valid', 
   expect(normaliseProduct({ price: 10, copy: {} })).toEqual({ ok: false, error: expect.any(String) })
   expect(normaliseProduct({ price: 10, category: 'nope' as never, copy: { en: { name: 'x', short: '', description: '', details: [], materials: '' } } }).ok).toBe(true)
 })
+
+it('runs the brands banner, the per-piece QR code and the WhatsApp button', async () => {
+  render(<App />)
+  await waitFor(() => expect(screen.getAllByText('CHANEL').length).toBeGreaterThan(0))
+
+  // One track holds the list twice: the second copy only closes the loop and
+  // is hidden from screen readers, so nothing is announced twice.
+  const track = document.querySelector('.marquee-track')
+  expect(track).toBeTruthy()
+  const names = track!.querySelectorAll('span')
+  expect(names.length).toBe(22 * 2)
+  expect(track!.querySelectorAll('span[aria-hidden="true"]').length).toBe(22)
+
+  // Every card carries a QR trigger, in French like the rest of the page.
+  const triggers = screen.getAllByRole('button', { name: 'Code QR' })
+  expect(triggers.length).toBeGreaterThan(0)
+  fireEvent.click(triggers[0])
+
+  await waitFor(() => expect(screen.getByRole('dialog', { name: /Code QR/ })).toBeTruthy())
+  // qrcode.react renders a real <svg> with a <title>, so the code is there.
+  expect(document.querySelector('svg > title')).toBeTruthy()
+  expect(screen.getByText(/\/product\/camel-leather-tote$/)).toBeTruthy()
+
+  fireEvent.keyDown(document, { key: 'Escape' })
+  await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+
+  // WhatsApp: the floating button and the footer link both point at wa.me.
+  const links = screen.getAllByRole('link', { name: /WhatsApp/ })
+  expect(links.some((a) => a.getAttribute('href')?.startsWith('https://wa.me/'))).toBe(true)
+})

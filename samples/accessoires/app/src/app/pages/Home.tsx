@@ -7,6 +7,7 @@ import { categories, localized } from '../../data/products'
 import { localizeCategory } from '../../data/i18n'
 import { useCatalog } from '../lib/catalog'
 import { asset } from '../lib/demo'
+import { BrandMarquee } from '../components/BrandMarquee'
 import { ProductCard } from '../components/ProductCard'
 import { ButtonLink, Container, Reveal, SectionTitle } from '../components/ui'
 import { money } from '../lib/cart'
@@ -90,6 +91,11 @@ export function Home() {
           </div>
         </Container>
       </section>
+
+      {/* The houses we carry — a quiet running banner between hero and grid */}
+      <div className="pt-16 sm:pt-20">
+        <BrandMarquee />
+      </div>
 
       {/* New arrivals */}
       <section className="pt-24 sm:pt-32">

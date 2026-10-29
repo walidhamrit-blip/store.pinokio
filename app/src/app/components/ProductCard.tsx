@@ -1,7 +1,9 @@
 import { motion } from 'motion/react'
+import { QrCode } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
 
+import { QrDialog, productUrl } from './QrDialog'
 import { money, useCart } from '../lib/cart'
 import { asset } from '../lib/demo'
 import { cx } from '../lib/cx'
@@ -12,6 +14,7 @@ export function ProductCard({ product, index = 0, priority }: { product: Product
   const cart = useCart()
   const { lang, t } = usePrefs()
   const [added, setAdded] = useState(false)
+  const [qr, setQr] = useState(false)
   const copy = localized(product, lang)
 
   function quickAdd(e: React.MouseEvent) {
@@ -27,7 +30,7 @@ export function ProductCard({ product, index = 0, priority }: { product: Product
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px 0px -6% 0px' }}
       transition={{ duration: 0.7, delay: (index % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
-      className="group"
+      className="group relative"
     >
       <Link to={`/product/${product.slug}`} className="block">
         <div className="image-frame relative aspect-[3/4] rounded-image">
@@ -69,6 +72,20 @@ export function ProductCard({ product, index = 0, priority }: { product: Product
           </p>
         </div>
       </Link>
+
+      {/* The QR of this piece's address, for a phone in the shop. Sits outside
+          the link so it stays a real button, not a button inside a link. */}
+      <button
+        type="button"
+        onClick={() => setQr(true)}
+        aria-label={t('qr.open')}
+        title={t('qr.open')}
+        className="absolute end-3 top-3 z-10 grid size-9 place-items-center rounded-[11px] bg-surface/85 text-muted shadow-soft backdrop-blur transition-colors hover:text-fg focus-visible:text-fg sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+      >
+        <QrCode className="size-4" />
+      </button>
+
+      <QrDialog open={qr} onClose={() => setQr(false)} url={productUrl(product.slug)} name={copy.name} />
     </motion.article>
   )
 }
