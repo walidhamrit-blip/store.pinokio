@@ -135,6 +135,32 @@ const en = {
   'cart.checkout': 'Checkout',
   'cart.remove': 'Remove',
 
+  // WhatsApp — the channel most of this shop's customers actually use.
+  'wa.fab.label': 'Chat with the shop',
+  'wa.fab.aria': 'Chat with the shop on WhatsApp, {number}',
+  'wa.fab.message': 'Hello! I would like a hand with an order.',
+  'wa.cart.cta': 'Order on WhatsApp',
+  'wa.cart.helper': 'Answered in minutes. Stock, delivery and payment confirmed in the chat.',
+  'wa.checkout.title': 'Order on WhatsApp instead',
+  'wa.checkout.body': 'Send us your bag as a message and we take it from there — no form to fill in.',
+  'wa.checkout.cta': 'Send my bag on WhatsApp',
+  'wa.product.cta': 'Ask about this piece',
+  'wa.greeting': 'Hello! I would like to order from {brand}:',
+  'wa.signature': 'Could you confirm availability and delivery? Thank you!',
+
+  // QR codes: one per article, generated from its own address.
+  'qr.button': 'QR code',
+  'qr.button.aria': 'QR code for {name}',
+  'qr.title': 'Scan to open',
+  'qr.body': 'Point a phone camera at the code to open this article, or share the link below.',
+  'qr.copy': 'Copy link',
+  'qr.copied': 'Copied',
+  'qr.open': 'Open article',
+  'qr.svgAlt': 'QR code linking to {name}',
+  'qr.error': 'A QR code could not be generated for this address.',
+
+  'brands.label': 'Houses we follow',
+
   'badge.New': 'New',
   'badge.Bestseller': 'Bestseller',
   'badge.Low stock': 'Low stock',
@@ -271,6 +297,9 @@ const en = {
   'admin.settings.seedHint': 'The starter catalogue is bundled in the app, so the shop stays browsable before the database is connected.',
   'admin.settings.password': 'Password',
   'admin.settings.passwordHint': 'Set it once with npx wrangler secret put ADMIN_PASSWORD.',
+  'admin.settings.whatsapp': 'WhatsApp',
+  'admin.settings.whatsappHint': 'The number behind the floating button, the bag and the footer. Change it in src/data/contact.ts.',
+  'admin.settings.whatsappTest': 'Test number — replace it with the shop’s own line before going live.',
   'admin.error.generic': 'The action failed.',
 } as const
 
@@ -396,6 +425,30 @@ const fr: Partial<Record<TKey, string>> = {
   'cart.taxes': 'Livraison et taxes calculées au paiement.',
   'cart.checkout': 'Paiement',
   'cart.remove': 'Retirer',
+
+  'wa.fab.label': 'Écrire à la boutique',
+  'wa.fab.aria': 'Écrire à la boutique sur WhatsApp, {number}',
+  'wa.fab.message': 'Bonjour ! J’aurais besoin d’un renseignement sur une commande.',
+  'wa.cart.cta': 'Commander sur WhatsApp',
+  'wa.cart.helper': 'Réponse en quelques minutes. Stock, livraison et paiement confirmés dans la conversation.',
+  'wa.checkout.title': 'Commander sur WhatsApp plutôt',
+  'wa.checkout.body': 'Envoyez-nous votre panier en message, on s’occupe du reste — sans formulaire à remplir.',
+  'wa.checkout.cta': 'Envoyer mon panier sur WhatsApp',
+  'wa.product.cta': 'Poser une question sur cette pièce',
+  'wa.greeting': 'Bonjour ! Je souhaite commander chez {brand} :',
+  'wa.signature': 'Pouvez-vous me confirmer la disponibilité et la livraison ? Merci !',
+
+  'qr.button': 'QR code',
+  'qr.button.aria': 'QR code de {name}',
+  'qr.title': 'Scanner pour ouvrir',
+  'qr.body': 'Visez le code avec l’appareil photo du téléphone pour ouvrir cet article, ou partagez le lien ci-dessous.',
+  'qr.copy': 'Copier le lien',
+  'qr.copied': 'Copié',
+  'qr.open': 'Ouvrir l’article',
+  'qr.svgAlt': 'QR code menant à {name}',
+  'qr.error': 'Impossible de générer un QR code pour cette adresse.',
+
+  'brands.label': 'Maisons suivies',
 
   'badge.New': 'Nouveau',
   'badge.Bestseller': 'Best-seller',
@@ -532,6 +585,9 @@ const fr: Partial<Record<TKey, string>> = {
   'admin.settings.seedHint': 'Le catalogue de départ est embarqué dans l’application : la boutique reste consultable avant même la connexion de la base.',
   'admin.settings.password': 'Mot de passe',
   'admin.settings.passwordHint': 'Définissez-le une fois avec npx wrangler secret put ADMIN_PASSWORD.',
+  'admin.settings.whatsapp': 'WhatsApp',
+  'admin.settings.whatsappHint': 'Le numéro du bouton flottant, du panier et du pied de page. Modifiez-le dans src/data/contact.ts.',
+  'admin.settings.whatsappTest': 'Numéro de test — remplacez-le par la ligne de la boutique avant la mise en ligne.',
   'admin.error.generic': 'L’action a échoué.',
 }
 
@@ -655,6 +711,30 @@ const ar: Partial<Record<TKey, string>> = {
   'cart.taxes': 'يُحسب الشحن والضرائب عند إتمام الشراء.',
   'cart.checkout': 'إتمام الشراء',
   'cart.remove': 'إزالة',
+
+  'wa.fab.label': 'تحدّث مع المتجر',
+  'wa.fab.aria': 'تحدّث مع المتجر على واتساب، {number}',
+  'wa.fab.message': 'مرحبًا! أحتاج مساعدة بخصوص طلب.',
+  'wa.cart.cta': 'اطلب عبر واتساب',
+  'wa.cart.helper': 'نجيب خلال دقائق. نؤكد التوفر والتوصيل والدفع في المحادثة.',
+  'wa.checkout.title': 'اطلب عبر واتساب بدلًا من ذلك',
+  'wa.checkout.body': 'أرسل لنا حقيبتك كرسالة ونكمل الباقي — بلا استمارة تُملأ.',
+  'wa.checkout.cta': 'أرسل حقيبتي على واتساب',
+  'wa.product.cta': 'اسأل عن هذه القطعة',
+  'wa.greeting': 'مرحبًا! أرغب في الطلب من {brand}:',
+  'wa.signature': 'هل يمكنكم تأكيد التوفر والتوصيل؟ شكرًا!',
+
+  'qr.button': 'رمز QR',
+  'qr.button.aria': 'رمز QR لـ {name}',
+  'qr.title': 'امسح للفتح',
+  'qr.body': 'وجّه كاميرا الهاتف نحو الرمز لفتح هذا المقال، أو شارك الرابط أدناه.',
+  'qr.copy': 'نسخ الرابط',
+  'qr.copied': 'تم النسخ',
+  'qr.open': 'فتح المقال',
+  'qr.svgAlt': 'رمز QR يفتح {name}',
+  'qr.error': 'تعذّر إنشاء رمز QR لهذا العنوان.',
+
+  'brands.label': 'دور نتابعها',
 
   'badge.New': 'جديد',
   'badge.Bestseller': 'الأكثر مبيعًا',
@@ -791,6 +871,9 @@ const ar: Partial<Record<TKey, string>> = {
   'admin.settings.seedHint': 'الكتالوج الأولي مضمّن في التطبيق، فيبقى المتجر قابلًا للتصفح قبل ربط قاعدة البيانات.',
   'admin.settings.password': 'كلمة المرور',
   'admin.settings.passwordHint': 'اضبطها مرة واحدة بالأمر npx wrangler secret put ADMIN_PASSWORD.',
+  'admin.settings.whatsapp': 'واتساب',
+  'admin.settings.whatsappHint': 'رقم الزر العائم والحقيبة وتذييل الصفحة. غيّره في src/data/contact.ts.',
+  'admin.settings.whatsappTest': 'رقم تجريبي — استبدله برقم المتجر قبل الإطلاق.',
   'admin.error.generic': 'فشل الإجراء.',
 }
 

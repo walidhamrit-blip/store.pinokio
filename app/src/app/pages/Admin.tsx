@@ -3,6 +3,7 @@ import { ArrowLeft, Box, ClipboardList, ImagePlus, LogOut, Plus, RotateCcw, Sett
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 
+import { WHATSAPP } from '../../data/contact'
 import { BADGES, OPTION_NAMES, categoryKeys, slugify, type Badge, type Category, type Product, type ProductCopy } from '../../data/products'
 import { categoryLabel } from '../../data/i18n'
 import { Button, Container, inputClass } from '../components/ui'
@@ -287,6 +288,14 @@ export function Admin() {
               npx wrangler secret put ADMIN_PASSWORD
             </code>
             <p className="mt-2 text-[13px] leading-relaxed text-muted">{t('admin.settings.passwordHint')}</p>
+          </div>
+          <div className="rounded-card border border-line bg-surface p-6 sm:col-span-2">
+            <h2 className="text-[15px] font-medium">{t('admin.settings.whatsapp')}</h2>
+            <code dir="ltr" className="mt-3 block rounded-[10px] bg-surface-2 px-3 py-2 text-[12.5px] tabular-nums">
+              {WHATSAPP.display}
+            </code>
+            <p className="mt-2 text-[13px] leading-relaxed text-muted">{t('admin.settings.whatsappHint')}</p>
+            {WHATSAPP.test && <p className="mt-2 text-[13px] leading-relaxed text-accent">{t('admin.settings.whatsappTest')}</p>}
           </div>
         </section>
       )}

@@ -4,6 +4,8 @@ import { Link } from 'react-router'
 
 import { Container, inputClass } from './ui'
 import { Logo } from './Nav'
+import { WhatsAppIcon } from './icons'
+import { WHATSAPP, whatsappLink } from '../../data/contact'
 import { usePrefs } from '../lib/prefs'
 import type { TKey } from '../i18n/dict'
 
@@ -105,6 +107,18 @@ export function Footer() {
         </div>
         <div className="mt-16 flex flex-col-reverse items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
           <p className="text-[13px] text-faint">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
+          <a
+            href={whatsappLink(t('wa.fab.message'))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-[13px] text-muted transition-colors hover:text-fg"
+          >
+            <WhatsAppIcon className="size-4" />
+            {t('wa.fab.label')}
+            <span dir="ltr" className="tabular-nums text-faint">
+              {WHATSAPP.display}
+            </span>
+          </a>
           <Logo className="text-muted" />
         </div>
       </Container>

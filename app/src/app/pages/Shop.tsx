@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router'
 import { categoryKeys, type Category } from '../../data/products'
 import { categoryLabel } from '../../data/i18n'
 import { useCatalog } from '../lib/catalog'
+import { BrandMarquee } from '../components/BrandMarquee'
 import { ProductCard } from '../components/ProductCard'
 import { Button, Container } from '../components/ui'
 import { cx } from '../lib/cx'
@@ -76,98 +77,102 @@ export function Shop() {
   )
 
   return (
-    <Container className="pt-10 sm:pt-14">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-[14px] text-muted">{t('shop.eyebrow')}</p>
-          <h1 className="font-display mt-2 text-[40px] sm:text-[52px] rtl:text-[34px] sm:rtl:text-[44px]">
-            {title} <span className="text-[22px] text-faint sm:text-[24px]">{list.length}</span>
-          </h1>
+    <>
+      <Container className="pt-10 sm:pt-14">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-[14px] text-muted">{t('shop.eyebrow')}</p>
+            <h1 className="font-display mt-2 text-[40px] sm:text-[52px] rtl:text-[34px] sm:rtl:text-[44px]">
+              {title} <span className="text-[22px] text-faint sm:text-[24px]">{list.length}</span>
+            </h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" size="sm" className="lg:hidden" onClick={() => setMobileOpen(true)}>
+              <SlidersHorizontal />
+              {activeCount > 0 ? t('shop.filtersWith', { n: activeCount }) : t('shop.filters')}
+            </Button>
+            <label className="relative">
+              <span className="sr-only">{t('shop.sort')}</span>
+              <select
+                value={sort}
+                onChange={(e) => update({ sort: e.target.value })}
+                className="h-10 appearance-none rounded-[12px] border border-line-strong bg-transparent ps-4 pe-9 text-[14px] focus:border-fg focus:outline-none"
+              >
+                {sortOptions.map((s) => (
+                  <option key={s.key} value={s.key}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+              <svg
+                className="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </label>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm" className="lg:hidden" onClick={() => setMobileOpen(true)}>
-            <SlidersHorizontal />
-            {activeCount > 0 ? t('shop.filtersWith', { n: activeCount }) : t('shop.filters')}
-          </Button>
-          <label className="relative">
-            <span className="sr-only">{t('shop.sort')}</span>
-            <select
-              value={sort}
-              onChange={(e) => update({ sort: e.target.value })}
-              className="h-10 appearance-none rounded-[12px] border border-line-strong bg-transparent ps-4 pe-9 text-[14px] focus:border-fg focus:outline-none"
-            >
-              {sortOptions.map((s) => (
-                <option key={s.key} value={s.key}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-            <svg
-              className="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </label>
-        </div>
-      </div>
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-[220px_1fr] lg:gap-14">
-        <aside className="hidden lg:block">
-          <div className="sticky top-24">{filters}</div>
-        </aside>
-        <div>
-          <motion.div layout className="grid grid-cols-2 gap-x-4 gap-y-10 xl:grid-cols-3 xl:gap-x-6">
-            <AnimatePresence mode="popLayout">
-              {list.map((p, i) => (
-                <motion.div key={p.slug} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-                  <ProductCard product={p} index={i} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
-          {list.length === 0 && (
-            <div className="py-24 text-center">
-              <p className="font-display text-[26px] sm:text-[32px]">{t('shop.nothing')}</p>
-              <Button variant="secondary" className="mt-6" onClick={() => update({ category: '', price: '' })}>
-                {t('shop.clear')}
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div className="fixed inset-0 z-50 bg-scrim lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)}>
-            <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 40, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-2 bottom-2 rounded-dialog bg-bg p-6 shadow-drawer"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between">
-                <p className="font-display text-[24px]">{t('shop.filters')}</p>
-                <button type="button" aria-label={t('nav.close')} onClick={() => setMobileOpen(false)} className="grid size-10 place-items-center rounded-control hover:bg-surface-2">
-                  <X className="size-5" />
-                </button>
-              </div>
-              <div className="mt-6">{filters}</div>
-              <Button className="mt-8 w-full" onClick={() => setMobileOpen(false)}>
-                {list.length === 1 ? t('shop.showOne', { n: list.length }) : t('shop.showMany', { n: list.length })}
-              </Button>
+        <div className="mt-10 grid gap-10 lg:grid-cols-[220px_1fr] lg:gap-14">
+          <aside className="hidden lg:block">
+            <div className="sticky top-24">{filters}</div>
+          </aside>
+          <div>
+            <motion.div layout className="grid grid-cols-2 gap-x-4 gap-y-10 xl:grid-cols-3 xl:gap-x-6">
+              <AnimatePresence mode="popLayout">
+                {list.map((p, i) => (
+                  <motion.div key={p.slug} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                    <ProductCard product={p} index={i} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </Container>
+            {list.length === 0 && (
+              <div className="py-24 text-center">
+                <p className="font-display text-[26px] sm:text-[32px]">{t('shop.nothing')}</p>
+                <Button variant="secondary" className="mt-6" onClick={() => update({ category: '', price: '' })}>
+                  {t('shop.clear')}
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div className="fixed inset-0 z-50 bg-scrim lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)}>
+              <motion.div
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 40, opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-x-2 bottom-2 rounded-dialog bg-bg p-6 shadow-drawer"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between">
+                  <p className="font-display text-[24px]">{t('shop.filters')}</p>
+                  <button type="button" aria-label={t('nav.close')} onClick={() => setMobileOpen(false)} className="grid size-10 place-items-center rounded-control hover:bg-surface-2">
+                    <X className="size-5" />
+                  </button>
+                </div>
+                <div className="mt-6">{filters}</div>
+                <Button className="mt-8 w-full" onClick={() => setMobileOpen(false)}>
+                  {list.length === 1 ? t('shop.showOne', { n: list.length }) : t('shop.showMany', { n: list.length })}
+                </Button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Container>
+
+      <BrandMarquee className="mt-20" />
+    </>
   )
 }
 

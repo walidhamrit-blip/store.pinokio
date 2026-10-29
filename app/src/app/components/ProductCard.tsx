@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { useState } from 'react'
 import { Link } from 'react-router'
 
+import { ProductQr } from './ProductQr'
 import { money, useCart } from '../lib/cart'
 import { cx } from '../lib/cx'
 import { usePrefs } from '../lib/prefs'
@@ -26,7 +27,7 @@ export function ProductCard({ product, index = 0, priority }: { product: Product
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px 0px -6% 0px' }}
       transition={{ duration: 0.7, delay: (index % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
-      className="group"
+      className="group relative"
     >
       <Link to={`/product/${product.slug}`} className="block">
         <div className="image-frame relative aspect-[3/4] rounded-image">
@@ -68,6 +69,7 @@ export function ProductCard({ product, index = 0, priority }: { product: Product
           </p>
         </div>
       </Link>
+      <ProductQr slug={product.slug} name={copy.name} />
     </motion.article>
   )
 }

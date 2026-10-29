@@ -2,11 +2,14 @@ import { Check, Lock } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router'
 
+import { whatsappLink } from '../../data/contact'
 import { FREE_SHIPPING_AT } from '../../data/products'
 import { countryLabels, optionLabel } from '../../data/i18n'
 import { localized } from '../../data/products'
+import { WhatsAppIcon } from '../components/icons'
 import { Button, ButtonLink, Container, inputClass } from '../components/ui'
 import { money, useCart } from '../lib/cart'
+import { cartMessage } from '../lib/whatsapp'
 import { usePrefs } from '../lib/prefs'
 
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
@@ -57,6 +60,28 @@ export function Checkout() {
       <h1 className="font-display text-[40px] sm:text-[52px] rtl:text-[34px] sm:rtl:text-[44px]">{t('checkout.title')}</h1>
       <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_420px] lg:gap-20">
         <form onSubmit={submit} className="flex flex-col gap-10">
+          {/* The chat comes first: for most orders it is the shortest route. */}
+          <section className="rounded-card border border-line bg-surface p-5">
+            <div className="flex items-start gap-3">
+              <span className="grid size-10 shrink-0 place-items-center rounded-[12px] bg-surface-2 text-fg">
+                <WhatsAppIcon className="size-[18px]" />
+              </span>
+              <div>
+                <h2 className="text-[16px] font-medium">{t('wa.checkout.title')}</h2>
+                <p className="mt-1 text-[13.5px] leading-relaxed text-muted">{t('wa.checkout.body')}</p>
+              </div>
+            </div>
+            <a
+              href={whatsappLink(cartMessage(cart.items, cart.subtotal, lang))}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-control bg-fg text-[15px] font-medium text-bg transition-colors hover:bg-fg/90"
+            >
+              <WhatsAppIcon className="size-[18px]" />
+              {t('wa.checkout.cta')}
+            </a>
+          </section>
+
           <section>
             <h2 className="text-[16px] font-medium">{t('checkout.contact')}</h2>
             <Field label={t('checkout.email')} className="mt-4 block">

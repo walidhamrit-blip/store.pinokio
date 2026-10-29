@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-route
 import { CartDrawer } from './components/CartDrawer'
 import { Footer } from './components/Footer'
 import { Nav } from './components/Nav'
+import { WhatsAppFab } from './components/WhatsAppFab'
 import { CartProvider } from './lib/cart'
 import { CatalogProvider } from './lib/catalog'
 import { PrefsProvider } from './lib/prefs'
@@ -33,6 +34,7 @@ function SiteChrome({ children }: { children: ReactNode }) {
       {children}
       <Footer />
       <CartDrawer />
+      <WhatsAppFab />
     </>
   )
 }

@@ -334,3 +334,67 @@ html[lang='ar'] .font-display {
   background: var(--color-frame);
   overflow: hidden;
 }
+
+/* ------------------------------------------------------------------ *
+ * Signature strip
+ *
+ * Two identical halves, each exactly half the track's width, so a
+ * -50% translation lands on an identical frame: no seam, no jump.
+ * Arabic runs the other way and the band rests on hover.
+ * ------------------------------------------------------------------ */
+
+.marquee-track {
+  animation: brand-marquee 46s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track[data-direction='reverse'] {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes brand-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* A slow halo under the WhatsApp button: present, never blinking. */
+.wa-halo {
+  animation: wa-halo 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes wa-halo {
+  0% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+/* The one place motion has to stop completely: a near-zero duration would
+   make these loop at a flicker instead of simply resting. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .wa-halo {
+    animation: none !important;
+    transform: none !important;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
+}

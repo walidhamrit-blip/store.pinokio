@@ -3,12 +3,16 @@ import { ArrowLeft, Check, Minus, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 
+import { whatsappLink } from '../../data/contact'
 import { localized, type Badge, type OptionName } from '../../data/products'
 import { categoryLabel, optionLabel } from '../../data/i18n'
 import { useCatalog } from '../lib/catalog'
 import { ProductCard } from '../components/ProductCard'
+import { ProductQr } from '../components/ProductQr'
+import { WhatsAppIcon } from '../components/icons'
 import { Button, Container, Stepper } from '../components/ui'
 import { money, useCart } from '../lib/cart'
+import { productMessage } from '../lib/whatsapp'
 import { cx } from '../lib/cx'
 import { usePrefs } from '../lib/prefs'
 import type { TKey } from '../i18n/dict'
@@ -42,7 +46,7 @@ export function Product() {
   }, [current, lang])
 
   // Wait for the catalogue before deciding the product is gone.
-  if (!product) return ready ? <Navigate to="/shop" replace /> : <Container className="min-h-[50vh]">{null}</Container>
+  if (!current || !product) return ready ? <Navigate to="/shop" replace /> : <Container className="min-h-[50vh]">{null}</Container>
 
 
   // One photo, three framings: a full view and two closer crops read as a
@@ -60,7 +64,8 @@ export function Product() {
   ]
 
   function add() {
-    cart.add(current!, option, quantity)
+    if (!current) return
+    cart.add(current, option, quantity)
     setAdded(true)
     window.setTimeout(() => setAdded(false), 1600)
   }
@@ -152,6 +157,19 @@ export function Product() {
             </Button>
           </div>
           <p className="mt-3 text-[13px] text-faint">{t('product.freeShipping')}</p>
+
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <a
+              href={whatsappLink(productMessage(current, lang, `${window.location.origin}/product/${product.slug}`, option))}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center gap-2 rounded-[12px] border border-line-strong px-3.5 text-[13.5px] transition-colors hover:border-fg"
+            >
+              <WhatsAppIcon className="size-4" />
+              {t('wa.product.cta')}
+            </a>
+            <ProductQr slug={product.slug} name={product.name} variant="inline" />
+          </div>
 
           <ul className="mt-10 divide-y divide-line border-y border-line">
             {sections.map((s, i) => {

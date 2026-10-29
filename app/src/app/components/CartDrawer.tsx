@@ -3,11 +3,14 @@ import { ShoppingBag, X } from 'lucide-react'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 
+import { whatsappLink } from '../../data/contact'
 import { FREE_SHIPPING_AT } from '../../data/products'
 import { optionLabel } from '../../data/i18n'
 import { localized } from '../../data/products'
 import { money, useCart } from '../lib/cart'
 import { usePrefs } from '../lib/prefs'
+import { cartMessage } from '../lib/whatsapp'
+import { WhatsAppIcon } from './icons'
 import { Button } from './ui'
 
 export function CartDrawer() {
@@ -26,6 +29,9 @@ export function CartDrawer() {
     }
   }, [cart])
 
+  // The bag travels to the shop as a message: that is the fastest way to
+  // confirm stock and delivery in this market, so it leads the footer.
+  const waHref = whatsappLink(cartMessage(cart.items, cart.subtotal, lang))
   const remaining = Math.max(0, FREE_SHIPPING_AT - cart.subtotal)
   const progress = Math.min(1, cart.subtotal / FREE_SHIPPING_AT)
   const slide = dir === 'rtl' ? -40 : 40
@@ -137,9 +143,22 @@ export function CartDrawer() {
                     <span className="tabular-nums">{money(cart.subtotal)}</span>
                   </div>
                   <p className="mt-1 text-[12.5px] text-faint">{t('cart.taxes')}</p>
+
+                  <a
+                    href={waHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => cart.setOpen(false)}
+                    className="mt-4 inline-flex h-14 w-full items-center justify-center gap-2 rounded-[16px] bg-fg text-[16px] font-medium text-bg transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-[0.985]"
+                  >
+                    <WhatsAppIcon className="size-[18px]" />
+                    {t('wa.cart.cta')}
+                  </a>
+                  <p className="mt-2 text-center text-[12px] leading-snug text-faint">{t('wa.cart.helper')}</p>
+
                   <Button
-                    size="lg"
-                    className="mt-4 w-full"
+                    variant="secondary"
+                    className="mt-3 w-full"
                     onClick={() => {
                       cart.setOpen(false)
                       navigate('/checkout')

@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { categories, localized } from '../../data/products'
 import { localizeCategory } from '../../data/i18n'
 import { useCatalog } from '../lib/catalog'
+import { BrandMarquee } from '../components/BrandMarquee'
 import { ProductCard } from '../components/ProductCard'
 import { ButtonLink, Container, Reveal, SectionTitle } from '../components/ui'
 import { money } from '../lib/cart'
@@ -88,6 +89,9 @@ export function Home() {
           </div>
         </Container>
       </section>
+
+      {/* Houses we follow: a quiet band between the hero and the catalogue. */}
+      <BrandMarquee className="mt-16 sm:mt-24" />
 
       {/* New arrivals */}
       <section className="pt-24 sm:pt-32">

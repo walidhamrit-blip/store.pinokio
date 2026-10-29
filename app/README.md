@@ -49,6 +49,14 @@ catalogue, so editing articles never touches production.
   accent. Instrument Serif sets display type in French and English, Inter the
   rest; Arabic uses Noto Kufi for display and Noto Sans Arabic for text.
   Everything rounded is a squircle via `corner-shape`; true circles use `.round`.
+- `src/data/contact.ts` holds the WhatsApp number used by the floating button,
+  the bag, the checkout and the footer.
+- `src/data/brands.ts` is the list of houses in the scrolling strip; the band
+  itself is `src/app/components/BrandMarquee.tsx` and takes its colours from
+  the active theme.
+- `src/app/lib/qr.ts` is a dependency-free QR encoder (versions 1–20, error
+  correction M). `src/app/components/ProductQr.tsx` uses it to draw a code for
+  the article on screen.
 - `src/app/lib/prefs.tsx` stores language, theme and light/dark in
   `localStorage` and writes them onto `<html>` (`lang`, `dir`, `data-theme`,
   `.dark`). The small script in `index.html` applies them before first paint.
@@ -58,6 +66,24 @@ catalogue, so editing articles never touches production.
   checkout is a demo: it stores the order and takes no money. Swap the order
   handler for a Stripe Checkout session when you want real payments, keeping
   the key in a Worker secret.
+
+## Ordering on WhatsApp
+
+The shop's line lives in one place, `src/data/contact.ts` (`WHATSAPP.number`,
+digits only, international format). It powers:
+
+- the floating button on every shop page — hidden on `/admin`;
+- the first action in the bag, which sends the whole bag as a prefilled
+  message; the form checkout stays one step behind it;
+- the same offer at the top of `/checkout` and on each article page;
+- the line printed in the footer, and a reminder card in the dashboard's Setup
+  tab so a test number cannot go live unnoticed.
+
+Each article also carries a QR code: the icon on a product card, or the "QR
+code" button on the article page, opens a code drawn in the browser from that
+article's own URL. Nothing is stored and no image service is called, so the
+code keeps working if the shop moves domain, and a code printed today is still
+right for an article edited tomorrow.
 
 ## Dashboard
 
