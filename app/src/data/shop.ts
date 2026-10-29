@@ -18,12 +18,14 @@ export const shop = {
   mapUrl:
     'https://www.google.com/maps/place/DAOS+%D8%AF%D8%A7%D9%88%D8%B3/@32.4661282,14.5610501,17z/data=!4m6!3m5!1s0x13a893914c693807:0xcdc4ac59c8aa4d2a!8m2!3d32.4661282!4d14.5610501!16s%2Fg%2F11j99lf0cw',
   coordinates: { lat: 32.4661282, lng: 14.5610501 },
-  phone: '+218 92-5252526',
-  whatsapp: '218925252526',
   /**
-   * Orders go here first — the cart and the checkout write to this number.
-   * Keep the digits only, with the country code (wa.me format).
+   * One number for the whole shop: calls, WhatsApp and orders. It is the only
+   * place the number is written — the floating button, the footer, the shop
+   * card, the about page, the bag and the checkout all read it from here.
+   * `whatsapp`/`orderWhatsapp` are digits only, in wa.me format.
    */
+  phone: '+218 91 344 2640',
+  whatsapp: '218913442640',
   orderWhatsapp: '218913442640',
   orderPhone: '+218 91 344 2640',
   facebook: 'https://www.facebook.com/daosworld',

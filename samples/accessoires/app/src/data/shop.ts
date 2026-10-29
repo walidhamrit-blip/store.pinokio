@@ -19,14 +19,15 @@ export const shop = {
   /** A neutral map link: the sample has no real location. */
   mapUrl: 'https://www.google.com/maps/search/?api=1&query=Tripoli+Libya',
   coordinates: { lat: 32.8872, lng: 13.1913 },
-  phone: '+218 91 000 0000',
-  whatsapp: '218910000000',
   /**
-   * Orders go here first — the cart and the checkout write to this number.
-   * Keep the digits only, with the country code (wa.me format).
+   * One number for the whole sample: calls, WhatsApp and orders. Demo orders
+   * really arrive there, which is what makes the sample convincing.
+   * `whatsapp`/`orderWhatsapp` are digits only, in wa.me format.
    */
-  orderWhatsapp: '218910000000',
-  orderPhone: '+218 91 000 0000',
+  phone: '+218 91 344 2640',
+  whatsapp: '218913442640',
+  orderWhatsapp: '218913442640',
+  orderPhone: '+218 91 344 2640',
   facebook: 'https://www.facebook.com/',
   rating: 4.9,
   reviews: 128,

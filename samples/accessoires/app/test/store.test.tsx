@@ -173,7 +173,7 @@ it('turns the bag into a WhatsApp message for the priority number', async () => 
 
   const href = link.getAttribute('href')!
   // The order number, not the general contact number.
-  expect(href.startsWith('https://wa.me/218910000000?text=')).toBe(true)
+  expect(href.startsWith('https://wa.me/218913442640?text=')).toBe(true)
 
   const text = decodeURIComponent(href.split('text=')[1])
   expect(text).toContain('Bonjour NOOR, je souhaite commander')
