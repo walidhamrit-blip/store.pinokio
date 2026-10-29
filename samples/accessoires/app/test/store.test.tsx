@@ -151,3 +151,33 @@ it('runs the brands banner, the per-piece QR code and the WhatsApp button', asyn
   const links = screen.getAllByRole('link', { name: /WhatsApp/ })
   expect(links.some((a) => a.getAttribute('href')?.startsWith('https://wa.me/'))).toBe(true)
 })
+
+it('turns the bag into a WhatsApp message for the priority number', async () => {
+  render(<App />)
+  await waitFor(() => expect(screen.getAllByText('Cabas en cuir camel').length).toBeGreaterThan(0))
+
+  window.history.pushState({}, '', '/shop')
+  await waitFor(() => expect(screen.getAllByRole('button', { name: 'Ajouter au panier' }).length).toBeGreaterThan(0))
+  fireEvent.click(screen.getAllByRole('button', { name: 'Ajouter au panier' })[0])
+
+  // The header button is labelled 'Panier, N articles'.
+  // Two bag buttons exist for the two header layouts; either opens the drawer.
+  fireEvent.click(screen.getAllByRole('button', { name: /^Panier,/ })[0])
+
+  const link = await waitFor(() => {
+    // The bag's link carries the order; the floating bubble is contact only.
+    const found = screen.getAllByRole('link').find((a) => a.getAttribute('href')?.includes('?text='))
+    expect(found).toBeTruthy()
+    return found!
+  })
+
+  const href = link.getAttribute('href')!
+  // The order number, not the general contact number.
+  expect(href.startsWith('https://wa.me/218910000000?text=')).toBe(true)
+
+  const text = decodeURIComponent(href.split('text=')[1])
+  expect(text).toContain('Bonjour NOOR, je souhaite commander')
+  expect(text).toContain('×1 —')
+  expect(text).toContain('Total')
+  expect(text).toContain('LYD')
+})

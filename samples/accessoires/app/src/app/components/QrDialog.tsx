@@ -3,13 +3,10 @@ import { QRCodeSVG } from 'qrcode.react'
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import { BASENAME } from '../lib/demo'
 import { usePrefs } from '../lib/prefs'
+import { productUrl } from '../lib/whatsapp'
 
-/** The absolute address of a piece, on whatever host is serving the shop. */
-export function productUrl(slug: string) {
-  return `${window.location.origin}${BASENAME}/product/${slug}`
-}
+export { productUrl }
 
 /**
  * The QR code of one article, in a small dialog.

@@ -5,9 +5,11 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router'
 import { FREE_SHIPPING_AT } from '../../data/products'
 import { countryLabels, optionLabel } from '../../data/i18n'
 import { localized } from '../../data/products'
-import { Button, ButtonLink, Container, inputClass } from '../components/ui'
+import { ButtonLink, Container, inputClass } from '../components/ui'
 import { money, useCart } from '../lib/cart'
 import { DEMO, asset } from '../lib/demo'
+import { buildOrderMessage, whatsappOrderLink } from '../lib/whatsapp'
+import { WhatsAppGlyph } from '../components/WhatsAppButton'
 import { shop } from '../../data/shop'
 import { usePrefs } from '../lib/prefs'
 
@@ -24,7 +26,7 @@ export function Checkout() {
   const cart = useCart()
   const navigate = useNavigate()
   const { lang, t } = usePrefs()
-  const [form, setForm] = useState({ email: '', first: '', last: '', address: '', city: '', postcode: '', country: 'Libya' })
+  const [form, setForm] = useState({ email: '', phone: '', first: '', last: '', address: '', city: '', postcode: '', country: 'Libya' })
   const [state, setState] = useState<'idle' | 'sending' | 'error'>('idle')
   const [error, setError] = useState('')
 
@@ -33,6 +35,38 @@ export function Checkout() {
   const shipping = cart.subtotal >= FREE_SHIPPING_AT ? 0 : 8
   const total = cart.subtotal + shipping
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm({ ...form, [key]: e.target.value })
+
+  /** The order as a WhatsApp message: bag, details and total, ready to send. */
+  const waLink = whatsappOrderLink(
+    buildOrderMessage({
+      items: cart.items,
+      lang,
+      t,
+      subtotal: cart.subtotal,
+      shipping,
+      total,
+      details: {
+        name: `${form.first} ${form.last}`.trim(),
+        phone: form.phone,
+        city: form.city,
+        address: form.address,
+        email: form.email,
+      },
+    }),
+  )
+
+  /**
+   * WhatsApp first: the visitor is sent to the chat, and the site shows the
+   * usual confirmation with a reference they can quote back to the shop.
+   */
+  function orderOnWhatsApp() {
+    window.open(waLink, '_blank', 'noopener,noreferrer')
+    const prefix = shop.name.toUpperCase().replace(/[^A-Z0-9]/g, '') || 'ORDER'
+    const reference = `${prefix}-${Date.now().toString(36).slice(-6).toUpperCase()}`
+    const summary = { reference, email: form.email, items: cart.items, total }
+    cart.clear()
+    navigate(`/order/${reference}`, { state: summary })
+  }
 
   async function submit(e: FormEvent) {
     e.preventDefault()
@@ -73,6 +107,9 @@ export function Checkout() {
             <h2 className="text-[16px] font-medium">{t('checkout.contact')}</h2>
             <Field label={t('checkout.email')} className="mt-4 block">
               <input type="email" dir="ltr" required className={inputClass} value={form.email} onChange={set('email')} autoComplete="email" />
+            </Field>
+            <Field label={t('wa.phone')} className="mt-3 block">
+              <input type="tel" dir="ltr" required className={inputClass} value={form.phone} onChange={set('phone')} autoComplete="tel" placeholder="+218 9…" />
             </Field>
           </section>
           <section>
@@ -129,9 +166,26 @@ export function Checkout() {
             </div>
           </section>
           {state === 'error' && <p className="text-[14px] text-accent">{error}</p>}
-          <Button type="submit" size="lg" loading={state === 'sending'} className="w-full sm:w-auto">
-            {t('checkout.place')} {money(total)}
-          </Button>
+
+          {/* The shop takes orders on WhatsApp: this is the main path. */}
+          <div className="flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={orderOnWhatsApp}
+              className="inline-flex h-13 min-h-12 w-full items-center justify-center gap-2.5 rounded-control bg-[#25D366] px-6 text-[15px] font-medium text-white transition-[filter] hover:brightness-95 sm:w-auto"
+            >
+              <WhatsAppGlyph className="size-5" />
+              {t('checkout.whatsapp')} · {money(total)}
+            </button>
+            <p className="max-w-md text-[13px] leading-relaxed text-muted">{t('checkout.waHint')}</p>
+            <button
+              type="submit"
+              disabled={state === 'sending'}
+              className="mt-1 inline-flex h-10 items-center self-start text-[13.5px] text-muted underline underline-offset-4 transition-colors hover:text-fg"
+            >
+              {state === 'sending' ? t('admin.loading') : t('checkout.record')}
+            </button>
+          </div>
         </form>
 
         <aside className="lg:sticky lg:top-24 lg:self-start">

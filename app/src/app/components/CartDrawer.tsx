@@ -4,11 +4,15 @@ import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 
 import { FREE_SHIPPING_AT } from '../../data/products'
+import { shop } from '../../data/shop'
 import { optionLabel } from '../../data/i18n'
 import { localized } from '../../data/products'
+import { FREE_SHIPPING_AT as FREE_AT } from '../../data/products'
 import { money, useCart } from '../lib/cart'
+import { buildOrderMessage, whatsappOrderLink } from '../lib/whatsapp'
 import { asset } from '../lib/demo'
 import { usePrefs } from '../lib/prefs'
+import { WhatsAppGlyph } from './WhatsAppButton'
 import { Button } from './ui'
 
 export function CartDrawer() {
@@ -138,9 +142,31 @@ export function CartDrawer() {
                     <span className="tabular-nums">{money(cart.subtotal)}</span>
                   </div>
                   <p className="mt-1 text-[12.5px] text-faint">{t('cart.taxes')}</p>
+                  {/* Orders go to WhatsApp first: the bag is written into the
+                      message, so sending it is the whole checkout. */}
+                  <a
+                    href={whatsappOrderLink(
+                      buildOrderMessage({
+                        items: cart.items,
+                        lang,
+                        t,
+                        subtotal: cart.subtotal,
+                        shipping: cart.subtotal >= FREE_AT ? 0 : 8,
+                        total: cart.subtotal + (cart.subtotal >= FREE_AT ? 0 : 8),
+                      }),
+                    )}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    onClick={() => cart.setOpen(false)}
+                    className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-control bg-[#25D366] text-[15px] font-medium text-white transition-[filter] hover:brightness-95"
+                  >
+                    <WhatsAppGlyph className="size-5" />
+                    {t('cart.whatsapp')}
+                  </a>
                   <Button
                     size="lg"
-                    className="mt-4 w-full"
+                    variant="secondary"
+                    className="mt-2 w-full"
                     onClick={() => {
                       cart.setOpen(false)
                       navigate('/checkout')
@@ -148,6 +174,7 @@ export function CartDrawer() {
                   >
                     {t('cart.checkout')}
                   </Button>
+                  <p className="mt-2 text-center text-[12px] text-faint">{t('cart.waHint', { phone: shop.orderPhone })}</p>
                 </footer>
               </>
             )}

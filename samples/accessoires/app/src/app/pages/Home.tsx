@@ -257,7 +257,7 @@ export function Home() {
                   {t('about.visit.map')}
                 </a>
                 <a
-                  href={`https://wa.me/${shop.whatsapp}`}
+                  href={`https://wa.me/${shop.orderWhatsapp}`}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-control border border-line text-[15px] font-medium transition-colors hover:bg-surface-2"

@@ -21,6 +21,12 @@ export const shop = {
   coordinates: { lat: 32.8872, lng: 13.1913 },
   phone: '+218 91 000 0000',
   whatsapp: '218910000000',
+  /**
+   * Orders go here first — the cart and the checkout write to this number.
+   * Keep the digits only, with the country code (wa.me format).
+   */
+  orderWhatsapp: '218910000000',
+  orderPhone: '+218 91 000 0000',
   facebook: 'https://www.facebook.com/',
   rating: 4.9,
   reviews: 128,

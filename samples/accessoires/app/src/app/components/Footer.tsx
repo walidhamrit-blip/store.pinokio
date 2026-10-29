@@ -35,7 +35,7 @@ const columns: { title: TKey; links: [TKey, string][] }[] = [
       ['footer.link.about', '/about'],
       ['footer.link.visit', '/about'],
       ['footer.link.facebook', shop.facebook],
-      ['footer.link.whatsapp', `https://wa.me/${shop.whatsapp}`],
+      ['footer.link.whatsapp', `https://wa.me/${shop.orderWhatsapp}`],
     ],
   },
 ]

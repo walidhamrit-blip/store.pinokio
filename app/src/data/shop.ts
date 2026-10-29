@@ -20,6 +20,12 @@ export const shop = {
   coordinates: { lat: 32.4661282, lng: 14.5610501 },
   phone: '+218 92-5252526',
   whatsapp: '218925252526',
+  /**
+   * Orders go here first — the cart and the checkout write to this number.
+   * Keep the digits only, with the country code (wa.me format).
+   */
+  orderWhatsapp: '218913442640',
+  orderPhone: '+218 91 344 2640',
   facebook: 'https://www.facebook.com/daosworld',
   rating: 4.7,
   reviews: 7,
